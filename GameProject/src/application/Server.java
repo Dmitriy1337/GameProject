@@ -42,6 +42,7 @@ public class Server {
                     final Thread thread = new Thread(processor); // создаем отдельную асинхронную нить чтения из сокета
                     thread.setDaemon(true); //ставим ее в демона (чтобы не ожидать ее закрытия)
                     thread.start(); //запускаем
+                  System.out.println("connect");
                     q.offer(processor); //добавляем в список активных сокет-процессоров
                 } //тут прикол в замысле. Если попытка создать (new SocketProcessor()) безуспешна,
                 // то остальные строки обойдем, нить запускать не будем, в список не сохраним
@@ -112,12 +113,16 @@ public class Server {
          * Главный цикл чтения сообщений/рассылки
          */
         public void run() {
-            while (!s.isClosed()) { // пока сокет не закрыт...
-                String line = null;
+        	
+        	while (!s.isClosed()) { // пока сокет не закрыт...
+        		 System.out.println("run");
+        		String line = null;
                 try {
                     line = br.readLine(); // пробуем прочесть.
+               
                 } catch (IOException e) {
-                    close(); // если не получилось - закрываем сокет.
+                	 System.out.println("ex");
+                	close(); // если не получилось - закрываем сокет.
                 }
  
                 if (line == null) { // если строка null - клиент отключился в штатном режиме.
@@ -125,14 +130,17 @@ public class Server {
                 } else if ("shutdown".equals(line)) { // если поступила команда "погасить сервер", то...
                     serverThread.interrupt(); // сначала возводим флаг у северной нити о необходимости прерваться.
                     try {
-                        new Socket("localhost", port); // создаем фейк-коннект (чтобы выйти из .accept())
+                        new Socket("localhost", 23454); // создаем фейк-коннект (чтобы выйти из .accept())
                     } catch (IOException ignored) { //ошибки неинтересны
                     } finally {
                         shutdownServer(); // а затем глушим сервер вызовом его метода shutdownServer().
                     }
                 } else { // иначе - банальная рассылка по списку сокет-процессоров
-                    for (SocketProcessor sp:q) {
-                        sp.send(line);
+                   System.out.println("sending/");
+                	line = line+"7";
+                   for (SocketProcessor sp:q) {
+                       
+                		sp.send(line);
                     }
                 }
             }
@@ -144,7 +152,8 @@ public class Server {
          */
         public synchronized void send(String line) {
             try {
-                bw.write(line); // пишем строку
+               line = "5/"+line;
+            	bw.write(line); // пишем строку
                 bw.write("\n"); // пишем перевод строки
                 bw.flush(); // отправляем
             } catch (IOException e) {

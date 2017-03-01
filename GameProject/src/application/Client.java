@@ -44,8 +44,10 @@ public class Client extends Application {
 	static Socket s;  // это будет сокет для сервера
 	private BufferedReader input;
     private PrintWriter output;
-
-	int money=50000;
+    static AffableThread mSecondThread;
+    String line = null;
+    String lin2e = "";
+    int money=50000;
 	int ore = 0;
 	int res = 0;
 	int[][]map =new int[12][6];
@@ -79,27 +81,8 @@ public class Client extends Application {
     BufferedWriter socketWriter; // буферизированный писатель на сервер
      BufferedReader userInput; // буферизированный читатель пользовательского ввода с консоли
 	
-    public void run() {
-        
-    	for(int i = 0;i<12;i++)
-    	{
-    		for(int j = 0;j<6;j++){
-    			m+=status[i][j]+"/";
-    		}
-    	}
-    	
-    	System.out.println("Type phrase(s) (hit Enter to exit):");
-        while (true) {
-            try {
-                    socketWriter.write(m); //пишем строку пользователя
-                    socketWriter.write("\n"); //добавляем "новою строку", дабы readLine() сервера сработал
-                    socketWriter.flush(); // отправляем
-                } catch (IOException e) {
-                    close(); // в любой ошибке - закрываем.
-                }
-            
-        }
-    }
+    
+    
     
     public synchronized void close() {//метод синхронизирован, чтобы исключить двойное закрытие.
         if (!so.isClosed()) { // проверяем, что сокет не закрыт...
@@ -114,14 +97,15 @@ public class Client extends Application {
     
     
     public void start(Stage s) {
-		  try {
-			so = new Socket("127.0.0.1",23454);
+		 
+    	try {
+			so = new Socket("localhost",23454);
 			 socketReader = new BufferedReader(new InputStreamReader(so.getInputStream(), "UTF-8"));
 		        socketWriter = new BufferedWriter(new OutputStreamWriter(so.getOutputStream(), "UTF-8"));
 		        // создаем читателя с консоли (от пользователя)
-		        userInput = new BufferedReader(new InputStreamReader(System.in));
+		      
 		        new Thread(new Receiver()).start();// создаем и запускаем нить асинхронного чтения из сокета
-		run();
+
 		  } catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -130,9 +114,6 @@ public class Client extends Application {
 			e.printStackTrace();
 		} // создаем сокет
 	        // создаем читателя и писателя в сокет с дефолной кодировкой UTF-8
-	       
-		
-		
 		
 		
 		
@@ -980,8 +961,23 @@ public class Client extends Application {
 	s.setFullScreen(true);//фуллскрин
 	s.setScene(sc1);//установка сцены
 	s.show();//запуск стейджа
-	
-
+	mSecondThread = new AffableThread();	//Создание потока
+	mSecondThread.start();	
+	try {
+		socketWriter.write(m);
+		socketWriter.write("\n"); //добавляем "новою строку", дабы readLine() сервера сработал
+        socketWriter.flush(); // отправляем
+		} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} //пишем строку пользователя
+	System.out.println(lin2e);
+	for(int i = 0;i<12;i++)
+ 	{
+ 		for(int j = 0;j<6;j++){
+ 			System.out.print(status[i][j]+"+");
+ 		}
+ 	}
 	}
 	
   
@@ -1005,7 +1001,7 @@ public class Client extends Application {
 	         */
 	        public void run() {
 	            while (!so.isClosed()) { //сходу проверяем коннект.
-	                String line = null;
+	                
 	                try {
 	                    line = socketReader.readLine(); // пробуем прочесть
 	                } catch (IOException e) { // если в момент чтения ошибка, то...
@@ -1020,15 +1016,20 @@ public class Client extends Application {
 	                    System.out.println("Server has closed connection");
 	                    close(); // ...закрываемся
 	                } else { // иначе печатаем то, что прислал сервер.
-	                    System.out.println("Server:" + line);
-	                    for(int i =0;i<line.length();i++){
+	                  //  System.out.println("Server:" + line);
+	                	System.out.println(line);
+	                	lin2e += line;
+	                	for(int i =0;i<line.length();i++){
 	                    	int c1 = 0;
 	                    	int c2 = 0;
+	                    	int m2 = 0;
 	                    	char ch = line.charAt(i);
 	                    	String m1 = "";
 	                    	if(ch==47){
-	                    		int m2  = Integer.parseInt(m1);
-	                    		status[c1][c2] = m2;
+	                    		if(m1!=""){
+	                    		 m2  = Integer.parseInt(m1);
+	                    	}
+	                    	status[c1][c2] = m2;
 	                    		if(c1!=12){
 	                    		c1++;
 	                    		}
@@ -1049,9 +1050,23 @@ public class Client extends Application {
 	                    	}
 	                    	
 	                    }
+	                
+	                	 
 	                }
 	            }
 	        }
 	    }
 
+	 class AffableThread extends Thread
+	 {
+	 	@Override
+	 	public void run()	//Этот метод будет выполнен в побочном потоке
+	 	{
+	 			 		
+	 		
+            
+		       
+			 
+	 	}
+	 }
 }

@@ -8,3 +8,4 @@
 /Server$ConnectedClient.class
 /Server$Connection.class
 /Client$Receiver.class
+/Client$AffableThread.class
