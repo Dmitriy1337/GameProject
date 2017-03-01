@@ -3,8 +3,20 @@ package application;
 
 import java.awt.MouseInfo;
 import java.awt.Point;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import javax.swing.JLabel;
 
@@ -24,7 +36,15 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+
 public class Client extends Application {
+	static BufferedReader br; // буферизировнный читатель сокета 
+	static BufferedWriter bw; // буферизированный писатель в сокет 
+	String m = "";
+	static Socket s;  // это будет сокет для сервера
+	private BufferedReader input;
+    private PrintWriter output;
+
 	int money=50000;
 	int ore = 0;
 	int res = 0;
@@ -53,8 +73,68 @@ public class Client extends Application {
 	ImageView helic;
 	ImageView cran2;
 	Button infomenu;
-	@Override
-	public void start(Stage s) {
+	
+	Socket so;  // это будет сокет для сервера
+    BufferedReader socketReader; // буферизированный читатель с сервера
+    BufferedWriter socketWriter; // буферизированный писатель на сервер
+     BufferedReader userInput; // буферизированный читатель пользовательского ввода с консоли
+	
+    public void run() {
+        
+    	for(int i = 0;i<12;i++)
+    	{
+    		for(int j = 0;j<6;j++){
+    			m+=status[i][j]+"/";
+    		}
+    	}
+    	
+    	System.out.println("Type phrase(s) (hit Enter to exit):");
+        while (true) {
+            try {
+                    socketWriter.write(m); //пишем строку пользователя
+                    socketWriter.write("\n"); //добавляем "новою строку", дабы readLine() сервера сработал
+                    socketWriter.flush(); // отправляем
+                } catch (IOException e) {
+                    close(); // в любой ошибке - закрываем.
+                }
+            
+        }
+    }
+    
+    public synchronized void close() {//метод синхронизирован, чтобы исключить двойное закрытие.
+        if (!so.isClosed()) { // проверяем, что сокет не закрыт...
+            try {
+                so.close(); // закрываем...
+                System.exit(0); // выходим!
+            } catch (IOException ignored) {
+                ignored.printStackTrace();
+            }
+        }
+    }
+    
+    
+    public void start(Stage s) {
+		  try {
+			so = new Socket("127.0.0.1",23454);
+			 socketReader = new BufferedReader(new InputStreamReader(so.getInputStream(), "UTF-8"));
+		        socketWriter = new BufferedWriter(new OutputStreamWriter(so.getOutputStream(), "UTF-8"));
+		        // создаем читателя с консоли (от пользователя)
+		        userInput = new BufferedReader(new InputStreamReader(System.in));
+		        new Thread(new Receiver()).start();// создаем и запускаем нить асинхронного чтения из сокета
+		run();
+		  } catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} // создаем сокет
+	        // создаем читателя и писателя в сокет с дефолной кодировкой UTF-8
+	       
+		
+		
+		
+		
 		
 		for(int i = 0;i<12;i++){
 			for(int j = 0;j<6;j++){
@@ -903,10 +983,75 @@ public class Client extends Application {
 	
 
 	}
+	
+  
+   
 
 	
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
+		
+   
+		
+		  
+		
 		launch(args);
+		
 	}
+
+	 private class Receiver implements Runnable{
+	        /**
+	         * run() вызовется после запуска нити из конструктора клиента чата.
+	         */
+	        public void run() {
+	            while (!so.isClosed()) { //сходу проверяем коннект.
+	                String line = null;
+	                try {
+	                    line = socketReader.readLine(); // пробуем прочесть
+	                } catch (IOException e) { // если в момент чтения ошибка, то...
+	                    // проверим, что это не банальное штатное закрытие сокета сервером
+	                    if ("Socket closed".equals(e.getMessage())) {
+	                        break;
+	                    }
+	                    System.out.println("Connection lost"); // а сюда мы попадем в случае ошибок сети.
+	                    close(); // ну и закрываем сокет (кстати, вызвается метод класса ChatClient, есть доступ)
+	                }
+	                if (line == null) {  // строка будет null если сервер прикрыл коннект по своей инициативе, сеть работает
+	                    System.out.println("Server has closed connection");
+	                    close(); // ...закрываемся
+	                } else { // иначе печатаем то, что прислал сервер.
+	                    System.out.println("Server:" + line);
+	                    for(int i =0;i<line.length();i++){
+	                    	int c1 = 0;
+	                    	int c2 = 0;
+	                    	char ch = line.charAt(i);
+	                    	String m1 = "";
+	                    	if(ch==47){
+	                    		int m2  = Integer.parseInt(m1);
+	                    		status[c1][c2] = m2;
+	                    		if(c1!=12){
+	                    		c1++;
+	                    		}
+	                    		else{
+	                    			c1 =0;
+	                    			c2++;
+	                    		}	
+	                    		if(c2==6){
+	                    			break;
+	                    		}
+	                    		
+	                    		m1="";
+	                    		
+	                    	}
+	                    	else{
+	                    		m1+=ch;
+	                    		
+	                    	}
+	                    	
+	                    }
+	                }
+	            }
+	        }
+	    }
+
 }

@@ -1,3 +1,10 @@
 /Client$1.class
 /Client.class
 /application.css
+/Server.class
+/Server$SocketProcessor.class
+/Client$2.class
+/SampleServer.class
+/Server$ConnectedClient.class
+/Server$Connection.class
+/Client$Receiver.class
