@@ -40,7 +40,12 @@ import javafx.stage.Stage;
 public class Client extends Application {
 	static BufferedReader br; // буферизировнный читатель сокета 
 	static BufferedWriter bw; // буферизированный писатель в сокет 
+	Label moneyl;
 	String m = "";
+	int tid = 0;
+	String tt="";
+	int tapcounter;
+	int MOVE_C=0;;
 	static Socket s;  // это будет сокет для сервера
 	private BufferedReader input;
     private PrintWriter output;
@@ -48,6 +53,8 @@ public class Client extends Application {
     String line = null;
     String lin2e = "";
     int money=50000;
+	String TURN_ID="";
+    Button buyq;
 	int ore = 0;
 	int res = 0;
 	int[][]map =new int[12][6];
@@ -55,6 +62,7 @@ public class Client extends Application {
 	int tecnic[] = new int[6];
 	int menuIsPressed = 0;
 	ImageView oType;
+	Button nextTurn;
 	Label tcost;
 	Label name;
 	Label bcost,bchance,bprofit;
@@ -210,7 +218,7 @@ public class Client extends Application {
 		music.setLayoutY(0);//
 		music.setFitHeight(75);//
 		music.setFitWidth(75);//
-		a1.getChildren().add(music);
+		a1.getChildren().add(music);//
 	
 		ImageView qu = new ImageView("img/qest.png");//кнопка об игре
 		qu.setLayoutX(160);//
@@ -309,8 +317,7 @@ public class Client extends Application {
 		
 		
 		
-		
-		Label moneyl = new Label(""+money); //показатель денег
+		 moneyl = new Label(""+money); //показатель денег
 		moneyl.setFont(new Font("Showcard Gothic",40));
 		moneyl.setLayoutX(780);
 		moneyl.setLayoutY(13);
@@ -364,7 +371,7 @@ public class Client extends Application {
 		resume.setDisable(true);
 		resume.setOnAction(resum->{
 			menui.setVisible(false);
-			a1.getChildren().remove(resume);
+			resume.setVisible(false);
 			
 		});
 		
@@ -397,7 +404,7 @@ public class Client extends Application {
 				menui.setVisible(false);
 				System.out.println("f");
 				resume.setDisable(true);
-				a1.getChildren().remove(resume);
+				resume.setDisable(true);
 				s.show();//запуск стейджа
 				
 				
@@ -432,6 +439,59 @@ public class Client extends Application {
 			infomenu.setOpacity(0);
 			a1.getChildren().add(infomenu);
 		
+			
+			
+			
+			
+			
+			nextTurn = new Button();
+			nextTurn.setLayoutX(310);//50
+			nextTurn.setLayoutY(2);//125
+			nextTurn.setPrefHeight(75);//
+			nextTurn.setPrefWidth(320);//
+			nextTurn.setDisable(false);
+			nextTurn.setOpacity(0);
+		if(TURN_ID=="2"){
+			nextTurn.setDisable(true);
+			
+		}
+			nextTurn.setOnAction(nturn->{
+				MOVE_C=0;
+				
+			
+			System.out.println(TURN_ID);	
+			if(TURN_ID.equals("1")){
+					try {
+						tapcounter++;
+						
+						socketWriter.write("5555/1");
+						socketWriter.write("\n"); //добавляем "новою строку", дабы readLine() сервера сработал
+				        socketWriter.flush(); // отправляем
+						} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				
+			}
+				
+				if(TURN_ID.equals("2")){
+					tapcounter++;
+					try{
+					System.out.print("test");
+						socketWriter.write("5555/2");
+					socketWriter.write("\n"); //добавляем "новою строку", дабы readLine() сервера сработал
+			        socketWriter.flush(); // отправляем
+					}
+			        catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}	
+				}
+				
+			nextTurn.setDisable(true);
+			});
+			a1.getChildren().add(nextTurn);
+			
 			
 			
 			cityinfo = new ImageView("img/infomenu.png");//50+10
@@ -620,6 +680,17 @@ public class Client extends Application {
 		closeim.setOpacity(0);
 		closeim.setDisable(true);
 		a1.getChildren().add(closeim);
+		
+		buyq = new Button();
+		buyq.setLayoutX(800);//50
+		buyq.setLayoutY(320);//125
+		buyq.setPrefHeight(100);//
+		buyq.setPrefWidth(500);//
+		buyq.setDisable(true);
+		buyq.setOpacity(0);
+		
+		a1.getChildren().add(buyq);
+		
 		
 		
 		EventHandler handler = new EventHandler<InputEvent>() {
@@ -886,28 +957,139 @@ public class Client extends Application {
 	    			
 	    		}	
 	    		if(oType.getImage()==o){
+	    			buyq.setOnAction(ha->{
+	    			if(MOVE_C==0){
+	    				char l = level.getText().charAt(0);	
+	    			String l2 = ""+l;
+	    			int ll = Integer.parseInt(l2);
+	    			System.out.println(ll);
+	    			if(ll==1&&money>8000&&status[(int) x][(int) y]==0){
+	    				System.out.println("bp");
+	    				money = money-8000;
+	    				moneyl.setText(""+money);
+	    				status[(int) x][(int) y]=1;
+	    				if(status[(int) x][(int) y]==0){
+		    				owner.setVisible(true);
+		    			
+		    				owner.setText("Not Defined");
+		    				s.setScene(sc1);//установка сцены
+			    			s.show();//запуск стейджа
+		    			}
+		    			if(status[(int) x][(int) y]==1){
+		    				owner.setVisible(true);
+		    				owner.setText("Yours");
+		    				s.setScene(sc1);//установка сцены
+			    			s.show();//запуск стейджа
+		    			}
+	    				s.setScene(sc1);//установка сцены
+		    			s.show();//запуск стейджа
+	    			}
+	    				
+	    				
+	    			if(ll==2&&money>16000&&status[(int) x][(int) y]==0){
+	    				System.out.println("bp");
+	    				money = money-16000;
+	    				moneyl.setText(""+money);
+	    				status[(int) x][(int) y]=1;
+	    				if(status[(int) x][(int) y]==0){
+		    				owner.setVisible(true);
+		    			
+		    				owner.setText("Not Defined");
+		    				s.setScene(sc1);//установка сцены
+			    			s.show();//запуск стейджа
+		    			}
+		    			if(status[(int) x][(int) y]==1){
+		    				owner.setVisible(true);
+		    				owner.setText("Yours");
+		    				s.setScene(sc1);//установка сцены
+			    			s.show();//запуск стейджа
+		    			}
+	    				s.setScene(sc1);//установка сцены
+		    			s.show();//запуск стейджа
+	    				
+	    				
+	    			}	
+	    			if(ll==3&&money>32000&&status[(int) x][(int) y]==0){
+	    				System.out.println("bp");
+	    				money = money-32000;
+	    				moneyl.setText(""+money);
+	    				status[(int) x][(int) y]=1;
+	    				if(status[(int) x][(int) y]==0){
+		    				owner.setVisible(true);
+		    			
+		    				owner.setText("Not Defined");
+		    				s.setScene(sc1);//установка сцены
+			    			s.show();//запуск стейджа
+		    			}
+		    			if(status[(int) x][(int) y]==1){
+		    				owner.setVisible(true);
+		    				owner.setText("Yours");
+		    				s.setScene(sc1);//установка сцены
+			    			s.show();//запуск стейджа
+		    			}
+	    				s.setScene(sc1);//установка сцены
+		    			s.show();//запуск стейджа
+	    				
+	    				
+	    			}	
+	    			if(ll==4&&money>64000&&status[(int) x][(int) y]==0){
+	    				System.out.println("bp");
+	    				money = money-64000;
+	    				moneyl.setText(""+money);
+	    				status[(int) x][(int) y]=1;
+	    				if(status[(int) x][(int) y]==0){
+		    				owner.setVisible(true);
+		    			
+		    				owner.setText("Not Defined");
+		    				s.setScene(sc1);//установка сцены
+			    			s.show();//запуск стейджа
+		    			}
+		    			if(status[(int) x][(int) y]==1){
+		    				owner.setVisible(true);
+		    				owner.setText("Yours");
+		    				s.setScene(sc1);//установка сцены
+			    			s.show();//запуск стейджа
+		    			}
+	    			
+		    			s.setScene(sc1);//установка сцены
+		    			s.show();//запуск стейджа
+	    			}
+	    				
+	    			MOVE_C=1;
+	    			}	
+	    				
+	    			});
 	    			System.out.println("lol");
+	    			if(status[(int) x][(int) y]==0){
+	    				owner.setVisible(true);
+	    			
+	    				owner.setText("Not Defined");
+	    				s.setScene(sc1);//установка сцены
+		    			s.show();//запуск стейджа
+	    			}
+	    			if(status[(int) x][(int) y]==1){
+	    				owner.setVisible(true);
+	    				owner.setText("Yours");
+	    				s.setScene(sc1);//установка сцены
+		    			s.show();//запуск стейджа
+	    			}
 	    			qinfo.setVisible(true);
 	    			lpanel.setVisible(false);
+	    			buyq.setDisable(false);
 	    			oType.setLayoutY(155);
 	    			name.setLayoutY(170);
 	    			level.setLayoutY(250);
 	    			description.setLayoutY(170);
-	    			if(status[(int) x][(int) y]==0){
-	    				owner.setVisible(true);
-	    				owner.setText("Not Defined");
-	    			}
+	    			
 	    			closeim.setDisable(false);
 	    			closeim.setOnAction(cl->{
 	    				qinfo.setVisible(false);
 		    			lpanel.setVisible(true);
 		    			oType.setLayoutY(665);
 		    			name.setLayoutY(680);
+		    			owner.setVisible(false);
 		    			level.setLayoutY(735);
-		    			if(status[(int) x][(int) y]==0){
-		    				owner.setVisible(false);
-		    				owner.setText("Not Defined");
-		    			}
+		    			
 		    			description.setLayoutY(680);
 	    			});
 	    			
@@ -935,10 +1117,9 @@ public class Client extends Application {
 		    			name.setLayoutY(680);
 		    			level.setLayoutY(735);
 		    			description.setLayoutY(680);
-		    			if(status[(int) x][(int) y]==0){
-		    				owner.setVisible(false);
-		    				owner.setText("Not Defined");
-		    			}
+		    			owner.setVisible(false);
+		    				
+		    			
 	    			});
 	    			
 	    			s.setScene(sc1);//установка сцены
@@ -964,7 +1145,9 @@ public class Client extends Application {
 	mSecondThread = new AffableThread();	//Создание потока
 	mSecondThread.start();	
 	try {
-		socketWriter.write(m);
+		
+		
+		socketWriter.write("5555");
 		socketWriter.write("\n"); //добавляем "новою строку", дабы readLine() сервера сработал
         socketWriter.flush(); // отправляем
 		} catch (IOException e) {
@@ -972,13 +1155,8 @@ public class Client extends Application {
 		e.printStackTrace();
 	} //пишем строку пользователя
 	System.out.println(lin2e);
-	for(int i = 0;i<12;i++)
- 	{
- 		for(int j = 0;j<6;j++){
- 			System.out.print(status[i][j]+"+");
- 		}
- 	}
-	}
+	
+    }
 	
   
    
@@ -1004,7 +1182,40 @@ public class Client extends Application {
 	                
 	                try {
 	                    line = socketReader.readLine(); // пробуем прочесть
-	                } catch (IOException e) { // если в момент чтения ошибка, то...
+	               
+	                    
+	                    if(tid==0){
+	                    String[]parts = line.split("/");
+	               tt = parts[1];
+	               if(TURN_ID.equals("")){
+	            	   TURN_ID = tt;
+	            	   
+	               }
+	               if(TURN_ID.equals("1")){
+	            	   TURN_ID = "1";
+	            	   
+	               }
+	               tid=1;
+	               } 
+	                    
+	                    String[]parts = line.split("/");
+	 	               tt = parts[1];
+	 	               System.out.println(":"+tt+"/"+TURN_ID);
+	 	               if(TURN_ID=="1"){
+	 	            	   if(tt=="2"){
+	 	            		 nextTurn.setDisable(false);  
+	 	            	   }
+	 	               }
+	 	               if(TURN_ID=="2"){
+	 	            	   if(tt=="1"){
+	 	            		  nextTurn.setDisable(false);  	   
+	 	            		   
+	 	            		   
+	 	            	   }
+	 	               }
+	 	               System.out.println("message"+line+"/"+TURN_ID);
+	                    
+	                } catch (IOException e) { // +если в момент чтения ошибка, то...
 	                    // проверим, что это не банальное штатное закрытие сокета сервером
 	                    if ("Socket closed".equals(e.getMessage())) {
 	                        break;
@@ -1017,39 +1228,9 @@ public class Client extends Application {
 	                    close(); // ...закрываемся
 	                } else { // иначе печатаем то, что прислал сервер.
 	                  //  System.out.println("Server:" + line);
-	                	System.out.println(line);
+	                	//System.out.println(line);
 	                	lin2e += line;
-	                	for(int i =0;i<line.length();i++){
-	                    	int c1 = 0;
-	                    	int c2 = 0;
-	                    	int m2 = 0;
-	                    	char ch = line.charAt(i);
-	                    	String m1 = "";
-	                    	if(ch==47){
-	                    		if(m1!=""){
-	                    		 m2  = Integer.parseInt(m1);
-	                    	}
-	                    	status[c1][c2] = m2;
-	                    		if(c1!=12){
-	                    		c1++;
-	                    		}
-	                    		else{
-	                    			c1 =0;
-	                    			c2++;
-	                    		}	
-	                    		if(c2==6){
-	                    			break;
-	                    		}
-	                    		
-	                    		m1="";
-	                    		
-	                    	}
-	                    	else{
-	                    		m1+=ch;
-	                    		
-	                    	}
-	                    	
-	                    }
+	                	
 	                
 	                	 
 	                }

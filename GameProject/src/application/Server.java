@@ -137,10 +137,10 @@ public class Server {
                     }
                 } else { // иначе - банальная рассылка по списку сокет-процессоров
                    System.out.println("sending/");
-                	line = line+"7";
+                	
                    for (SocketProcessor sp:q) {
                        
-                		sp.send(line);
+                		sp.send(line+"/"+q.size());
                     }
                 }
             }
@@ -152,7 +152,7 @@ public class Server {
          */
         public synchronized void send(String line) {
             try {
-               line = "5/"+line;
+               line = line;
             	bw.write(line); // пишем строку
                 bw.write("\n"); // пишем перевод строки
                 bw.flush(); // отправляем
