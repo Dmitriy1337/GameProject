@@ -21,6 +21,7 @@ import java.util.Scanner;
 import javax.swing.JLabel;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
@@ -42,7 +43,7 @@ public class Client extends Application {
 	static BufferedReader br; // буферизировнный читатель сокета 
 	static BufferedWriter bw; // буферизированный писатель в сокет 
 	
-	int PROFIT=0;
+	int QPROFIT=0;
 	int LOSS=0;
 	
 	ImageView eb;
@@ -50,9 +51,12 @@ public class Client extends Application {
 	AnchorPane a1 ;
 	Scene sc1;
 	Image bb2;
+	Image bb;
+	Label orel;
 	String m = "";
 	int tid = 0;
 	Label cpt;
+	Label mpt;
 	String tt="";
 	int tapcounter;
 	int MOVE_C=0;;
@@ -116,7 +120,7 @@ public class Client extends Application {
             }
         }
     }
-    
+   
     
     public void start(Stage s) {
 		 
@@ -377,7 +381,7 @@ public class Client extends Application {
 		moneyl.setLayoutY(13);
 		a1.getChildren().add(moneyl);
 		
-		Label orel = new Label(""+ore); //показатель сырь€фаывп
+		 orel = new Label(""+ore); //показатель сырь€фаывп
 		orel.setFont(new Font("Showcard Gothic",40));
 		orel.setLayoutX(1030);
 		orel.setLayoutY(13);
@@ -498,26 +502,24 @@ public class Client extends Application {
 			
 			
 			 bb2 = new Image("img/endbutt2.png");
+			 bb = new Image("img/endbutt.png");
 			nextTurn = new Button();
 			nextTurn.setLayoutX(310);//50
 			nextTurn.setLayoutY(2);//125
 			nextTurn.setPrefHeight(75);//
 			nextTurn.setPrefWidth(320);//
 			nextTurn.setDisable(false);
-			nextTurn.setOpacity(0);
-		if(TURN_ID=="2"){
-			nextTurn.setDisable(true);
-			eb.setImage(bb2);
-			//s.setScene(sc1);//установка сцены
-    		//s.show();//запуск стейджа
-		}
+			nextTurn.setOpacity(1);
+		System.out.println("Turnid"+TURN_ID);
+			
 			nextTurn.setOnAction(nturn->{
 				MOVE_C=0;
 				money = money-LOSS;
 			moneyl.setText(""+money);
-			System.out.println(TURN_ID);	
+			
 			if(TURN_ID.equals("1")){
-					try {
+				System.out.println("TURNID3"+TURN_ID);		
+				try {
 						tapcounter++;
 						
 						socketWriter.write("5555/1");
@@ -532,6 +534,7 @@ public class Client extends Application {
 				
 				if(TURN_ID.equals("2")){
 					tapcounter++;
+					System.out.println("TURNID3"+TURN_ID);	
 					try{
 					System.out.print("test");
 						socketWriter.write("5555/2");
@@ -684,6 +687,12 @@ public class Client extends Application {
 		cpt.setVisible(false);
 		a1.getChildren().add(cpt);
 		
+		mpt = new Label("city"); //им€ обьекта
+		mpt.setFont(new Font("Showcard Gothic",30));
+		mpt.setLayoutX(440);
+		mpt.setLayoutY(363);//170
+		mpt.setVisible(false);
+		a1.getChildren().add(mpt);
 		
 		
 		name = new Label("city"); //им€ обьекта
@@ -1060,7 +1069,9 @@ public class Client extends Application {
 	    			int ll = Integer.parseInt(l2);
 	    			System.out.println(ll);
 	    			if(ll==1&&money>8000&&status[(int) x][(int) y]==0){
+	    				if(nextTurn.isDisable()==false){
 	    				LOSS = LOSS+300;
+	    				QPROFIT = QPROFIT+6;
 	    				System.out.println("bp");
 	    				money = money-8000;
 	    				moneyl.setText(""+money);
@@ -1082,12 +1093,14 @@ public class Client extends Application {
 		    			}
 	    				s.setScene(sc1);//установка сцены
 		    			s.show();//запуск стейджа
-	    			}
+	    			}}
 	    				
 	    				
 	    			if(ll==2&&money>16000&&status[(int) x][(int) y]==0){
+	    				if(nextTurn.isDisable()==false){
 	    				System.out.println("bp");
 	    				LOSS = LOSS+300;
+	    				QPROFIT = QPROFIT+12;
 	    				money = money-16000;
 	    				double dwinp = money/1000000.0;
 	    				winp.setProgress(dwinp);
@@ -1108,12 +1121,14 @@ public class Client extends Application {
 		    			}
 	    				s.setScene(sc1);//установка сцены
 		    			s.show();//запуск стейджа
-	    				
+	    				}
 	    				
 	    			}	
 	    			if(ll==3&&money>32000&&status[(int) x][(int) y]==0){
+	    				if(nextTurn.isDisable()==false){
 	    				System.out.println("bp");
 	    				LOSS = LOSS+300;
+	    				QPROFIT = QPROFIT+24;
 	    				money = money-32000;
 	    				double dwinp = money/1000000.0;
 	    				winp.setProgress(dwinp);
@@ -1134,12 +1149,14 @@ public class Client extends Application {
 		    			}
 	    				s.setScene(sc1);//установка сцены
 		    			s.show();//запуск стейджа
-	    				
+	    				}
 	    				
 	    			}	
 	    			if(ll==4&&money>64000&&status[(int) x][(int) y]==0){
+	    				if(nextTurn.isDisable()==false){
 	    				System.out.println("bp");
 	    				LOSS = LOSS+300;
+	    				QPROFIT = QPROFIT+48;
 	    				money = money-64000;
 	    				double dwinp = money/1000000.0;
 	    				winp.setProgress(dwinp);
@@ -1162,9 +1179,11 @@ public class Client extends Application {
 		    			s.setScene(sc1);//установка сцены
 		    			s.show();//запуск стейджа
 	    			}
-	    				
-	    			MOVE_C=1;
 	    			}	
+	    			MOVE_C=1;
+	    			
+	    			}
+	    				
 	    				
 	    			});
 	    			System.out.println("lol");
@@ -1286,7 +1305,9 @@ public class Client extends Application {
 		launch(args);
 		
 	}
-
+public void updateUi(Stage s){
+	s.show();
+}
 	 private class Receiver implements Runnable{
 	        /**
 	         * run() вызоветс€ после запуска нити из конструктора клиента чата.
@@ -1311,23 +1332,44 @@ public class Client extends Application {
 	               }
 	               tid=1;
 	               } 
-	                    
+	                 if(TURN_ID.equals("2")){
+	                	 Platform.runLater(() -> {
+	                	 nextTurn.setDisable(true);   
+	                eb.setImage(bb2);});
+	                 }
+	                    System.out.println("Turnid2"+TURN_ID);
 	                    String[]parts = line.split("/");
 	 	               tt = parts[1];
 	 	               System.out.println(":"+tt+"/"+TURN_ID);
-	 	               if(TURN_ID=="1"){
-	 	  			
-	 	            	   if(tt=="2"){
-	 	            		 nextTurn.setDisable(false);  
+	 	               if(TURN_ID.equals("1")){
+	 	            	  System.out.println("+"+tt);
 	 	            	   
-	 	            	   }
+	 	            	  if(tt.equals("2")){
+	 	            		 System.out.println("+++++++");
+	 	            		  Platform.runLater(() -> {
+	 	            			 System.out.println("+++++++");
+	 	            			  nextTurn.setDisable(false);    
+	 	            			 eb.setImage(bb);	
+	 	            		 ore = ore+QPROFIT;
+	 	            		 orel.setText(""+ore);
+	 	            		  });
+	 	            		
+	 	            	  }
 	 	               }
-	 	               if(TURN_ID=="2"){
-	 	            	  eb.setImage(bb2);
-	 	            	   if(tt=="1"){
-	 	            		  nextTurn.setDisable(false);  	   
-	 	            		 
-	 	        			
+	 	               if(TURN_ID.equals("2")){
+	 	            	  
+	 	            	   if(tt.equals("1")){
+	 	            		  System.out.println("+++++++");
+	 	            		   	   
+	 	            		
+	 	            		
+	 	            		  Platform.runLater(() -> {
+	 	            			 System.out.println("+++++++");
+	 	            			  nextTurn.setDisable(false);    
+	 	            			 eb.setImage(bb);
+	 	            			 ore = ore+QPROFIT;
+		 	            		 orel.setText(""+ore);
+	 	            		  });
 	 	            		   
 	 	            	   }
 	 	               }
