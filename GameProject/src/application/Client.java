@@ -27,6 +27,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.InputEvent;
@@ -40,9 +41,18 @@ import javafx.stage.Stage;
 public class Client extends Application {
 	static BufferedReader br; // буферизировнный читатель сокета 
 	static BufferedWriter bw; // буферизированный писатель в сокет 
+	
+	int PROFIT=0;
+	int LOSS=0;
+	
+	ImageView eb;
 	Label moneyl;
+	AnchorPane a1 ;
+	Scene sc1;
+	Image bb2;
 	String m = "";
 	int tid = 0;
+	Label cpt;
 	String tt="";
 	int tapcounter;
 	int MOVE_C=0;;
@@ -54,7 +64,8 @@ public class Client extends Application {
     String lin2e = "";
     int money=50000;
 	String TURN_ID="";
-    Button buyq;
+	ProgressBar winp;
+	Button buyq;
 	int ore = 0;
 	int res = 0;
 	int[][]map =new int[12][6];
@@ -63,6 +74,7 @@ public class Client extends Application {
 	int menuIsPressed = 0;
 	ImageView oType;
 	Button nextTurn;
+	//
 	Label tcost;
 	Label name;
 	Label bcost,bchance,bprofit;
@@ -73,6 +85,8 @@ public class Client extends Application {
 	Label aprofit;
 	Label profit;
 	Label nres;
+	Label salary;
+	Label qcost;
 	ImageView cityinfo;
 	ImageView cran1;
 	ImageView exc;
@@ -191,18 +205,29 @@ public class Client extends Application {
 				 
 		
 		
-		AnchorPane a1 = new AnchorPane();
-		Scene sc1 = new Scene(a1);
+		 a1 = new AnchorPane();
+		 sc1 = new Scene(a1);
 		
 		
 		
 		
 		ImageView upbg = new ImageView("img/upbg.png");//бэкграунд верхней	панели
+		
 		upbg.setLayoutX(0);//
 		upbg.setLayoutY(0);//
 		upbg.setFitHeight(80);//
 		upbg.setFitWidth(a1.getHeight());//
 		a1.getChildren().add(upbg);
+		
+		
+		ImageView progbar = new ImageView("img/progressbar.png");//бэкграунд верхней	панели
+		
+		progbar.setLayoutX(970);//
+		progbar.setLayoutY(90);//
+		progbar.setFitHeight(250);//
+		progbar.setFitWidth(300);//
+		a1.getChildren().add(progbar);
+		
 		
 		
 		ImageView menub = new ImageView("img/menub.png");//кнопка меню
@@ -227,7 +252,7 @@ public class Client extends Application {
 		qu.setFitWidth(75);//
 		a1.getChildren().add(qu);
 	
-		ImageView eb = new ImageView("img/endbutt.png");//кнопка передачи хода
+		 eb = new ImageView("img/endbutt.png");//кнопка передачи хода
 		eb.setLayoutX(300);//
 		eb.setLayoutY(0);//
 		eb.setFitHeight(80);//
@@ -249,8 +274,37 @@ public class Client extends Application {
 		a1.getChildren().add(orecounter);
 		
 		
-
+		 winp = new ProgressBar();
+		winp.setLayoutX(990);
+		winp.setLayoutY(135);
 		
+		double dwinp = money/1000000.0;
+		System.out.println(money+"/"+dwinp);
+		winp.setProgress(dwinp);
+		winp.setPrefWidth(250);
+		a1.getChildren().add(winp);
+		
+		ProgressBar housepp = new ProgressBar();
+		housepp.setLayoutX(990);
+		housepp.setLayoutY(180);
+		housepp.setProgress(0.6);
+		housepp.setPrefWidth(250);
+		a1.getChildren().add(housepp);
+		
+		ProgressBar quarryp = new ProgressBar();
+		quarryp.setLayoutX(990);
+		quarryp.setLayoutY(240);
+		quarryp.setProgress(0.6);
+		quarryp.setPrefWidth(250);
+		a1.getChildren().add(quarryp);
+		
+		
+		ProgressBar factp = new ProgressBar();
+		factp.setLayoutX(990);
+		factp.setLayoutY(285);
+		factp.setProgress(0.6);
+		factp.setPrefWidth(250);
+		a1.getChildren().add(factp);
 		
 		
 		
@@ -267,7 +321,7 @@ public class Client extends Application {
 		mapi.setLayoutX(150);//
 		mapi.setLayoutY(80);//
 		mapi.setFitHeight(570);//6x95height
-		mapi.setFitWidth(1200);//12x100width
+		mapi.setFitWidth(800);//12x100width
 		a1.getChildren().add(mapi);
 		
 		
@@ -277,28 +331,28 @@ public class Client extends Application {
 				if(map[i][j]==1||map[i][j]==2||map[i][j]==3||map[i][j]==4||map[i][j]==5){
 				
 				ImageView house = new ImageView("img/cityi.png");//бэкграунд верхней	панели
-				house.setLayoutX(150+100*i);//
-				house.setLayoutY(80+95*j);//
-				house.setFitHeight(95);//
-				house.setFitWidth(100);//
+				house.setLayoutX(150+67*i);//
+				house.setLayoutY(85+95*j);//
+				house.setFitHeight(70);//
+				house.setFitWidth(63);//
 				a1.getChildren().add(house);
 			}
 				if(map[i][j]==11||map[i][j]==12||map[i][j]==13||map[i][j]==14||map[i][j]==15||map[i][j]==16||map[i][j]==17||map[i][j]==18||map[i][j]==19||map[i][j]==20){
 					
 					ImageView ore = new ImageView("img/orei.png");//бэкграунд верхней	панели
-					ore.setLayoutX(150+100*i);//
-					ore.setLayoutY(80+95*j);//
-					ore.setFitHeight(95);//
-					ore.setFitWidth(100);//
+					ore.setLayoutX(150+67*i);//
+					ore.setLayoutY(85+95*j);//
+					ore.setFitHeight(70);//
+					ore.setFitWidth(63);//
 					a1.getChildren().add(ore);
 				}
 				if(map[i][j]==21||map[i][j]==22||map[i][j]==23||map[i][j]==24||map[i][j]==25||map[i][j]==26||map[i][j]==27||map[i][j]==28||map[i][j]==29||map[i][j]==30){
 					
 					ImageView res = new ImageView("img/factl.png");//бэкграунд верхней	панели
-					res.setLayoutX(150+100*i);//
-					res.setLayoutY(80+95*j);//
-					res.setFitHeight(95);//
-					res.setFitWidth(100);//
+					res.setLayoutX(150+67*i);//
+					res.setLayoutY(85+95*j);//
+					res.setFitHeight(70);//
+					res.setFitWidth(63);//
 					a1.getChildren().add(res);
 				}
 			
@@ -443,7 +497,7 @@ public class Client extends Application {
 			
 			
 			
-			
+			 bb2 = new Image("img/endbutt2.png");
 			nextTurn = new Button();
 			nextTurn.setLayoutX(310);//50
 			nextTurn.setLayoutY(2);//125
@@ -453,12 +507,14 @@ public class Client extends Application {
 			nextTurn.setOpacity(0);
 		if(TURN_ID=="2"){
 			nextTurn.setDisable(true);
-			
+			eb.setImage(bb2);
+			//s.setScene(sc1);//установка сцены
+    		//s.show();//запуск стейджа
 		}
 			nextTurn.setOnAction(nturn->{
 				MOVE_C=0;
-				
-			
+				money = money-LOSS;
+			moneyl.setText(""+money);
 			System.out.println(TURN_ID);	
 			if(TURN_ID.equals("1")){
 					try {
@@ -489,6 +545,9 @@ public class Client extends Application {
 				}
 				
 			nextTurn.setDisable(true);
+			eb.setImage(bb2);
+			s.setScene(sc1);//установка сцены
+    		s.show();//запуск стейджа
 			});
 			a1.getChildren().add(nextTurn);
 			
@@ -528,12 +587,32 @@ public class Client extends Application {
 		oType.setVisible(false);
 		a1.getChildren().add(oType);
 		
+		
+		
+		
 		owner = new Label("city"); //имя обьекта
 		owner.setFont(new Font("Showcard Gothic",30));
 		owner.setLayoutX(330);
 		owner.setLayoutY(320);//170
 		owner.setVisible(false);
 		a1.getChildren().add(owner);
+		
+		qcost = new Label("city"); //имя обьекта
+		qcost.setFont(new Font("Showcard Gothic",30));
+		qcost.setLayoutX(320);
+		qcost.setLayoutY(443);//170
+		qcost.setVisible(false);
+		a1.getChildren().add(qcost);
+		
+		
+		salary = new Label("city"); //имя обьекта
+		salary.setFont(new Font("Showcard Gothic",30));
+		salary.setLayoutX(360);
+		salary.setLayoutY(400);//170
+		salary.setVisible(false);
+		a1.getChildren().add(salary);
+		
+		
 		
 		profit = new Label("city"); //имя обьекта
 		profit.setFont(new Font("Showcard Gothic",25));
@@ -595,6 +674,15 @@ public class Client extends Application {
 		nres.setLayoutY(550);//170
 		nres.setVisible(false);
 		a1.getChildren().add(nres);
+		
+		
+		
+		cpt = new Label("city"); //имя обьекта
+		cpt.setFont(new Font("Showcard Gothic",30));
+		cpt.setLayoutX(440);
+		cpt.setLayoutY(363);//170
+		cpt.setVisible(false);
+		a1.getChildren().add(cpt);
 		
 		
 		
@@ -696,7 +784,7 @@ public class Client extends Application {
 		EventHandler handler = new EventHandler<InputEvent>() {
 		    public void handle(InputEvent event) {
 		    	Point location = MouseInfo.getPointerInfo().getLocation();
-		        double x = (int)(location.getX()-150)/100;
+		        double x = (int)(location.getX()-150)/67;
 		        double y =(int) (location.getY()-80)/95;
 		    	
 		    	System.out.println("Handling event " + event.getEventType()+"/"+x+"/"+y); 
@@ -763,22 +851,30 @@ public class Client extends Application {
 		    		if(map[(int) x][(int) y]==11||map[(int) x][(int) y]==12||map[(int) x][(int) y]==13||map[(int) x][(int) y]==14){
 		    			level.setText("1 lvl");
 			    		level.setVisible(true);	
-		    			
+			    		cpt.setText("6/turn");
+			    		salary.setText("300$/turn");
+			    		qcost.setText("8000$");
 		    		}
 		    		if(map[(int) x][(int) y]==15||map[(int) x][(int) y]==16||map[(int) x][(int) y]==17){
 		    			level.setText("2 lvl");
 			    		level.setVisible(true);	
-		    			
+			    		cpt.setText("12/turn");
+			    		salary.setText("600$/turn");
+			    		qcost.setText("16000$");
 		    		}
 		    		if(map[(int) x][(int) y]==18||map[(int) x][(int) y]==19){
 		    			level.setText("3 lvl");
 			    		level.setVisible(true);	
-		    			
+			    		cpt.setText("24/turn");
+			    		salary.setText("1200$/turn");
+			    		qcost.setText("32000$");
 		    		}
 		    		if(map[(int) x][(int) y]==20){
 		    			level.setText("4 lvl");
 			    		level.setVisible(true);	
-		    			
+			    		cpt.setText("48/turn");
+			    		salary.setText("2400$/turn");
+			    		qcost.setText("64000$");
 		    		}
 		    		
 		    		
@@ -964,9 +1060,12 @@ public class Client extends Application {
 	    			int ll = Integer.parseInt(l2);
 	    			System.out.println(ll);
 	    			if(ll==1&&money>8000&&status[(int) x][(int) y]==0){
+	    				LOSS = LOSS+300;
 	    				System.out.println("bp");
 	    				money = money-8000;
 	    				moneyl.setText(""+money);
+	    				double dwinp = money/1000000.0;
+	    				winp.setProgress(dwinp);
 	    				status[(int) x][(int) y]=1;
 	    				if(status[(int) x][(int) y]==0){
 		    				owner.setVisible(true);
@@ -988,7 +1087,10 @@ public class Client extends Application {
 	    				
 	    			if(ll==2&&money>16000&&status[(int) x][(int) y]==0){
 	    				System.out.println("bp");
+	    				LOSS = LOSS+300;
 	    				money = money-16000;
+	    				double dwinp = money/1000000.0;
+	    				winp.setProgress(dwinp);
 	    				moneyl.setText(""+money);
 	    				status[(int) x][(int) y]=1;
 	    				if(status[(int) x][(int) y]==0){
@@ -1011,7 +1113,10 @@ public class Client extends Application {
 	    			}	
 	    			if(ll==3&&money>32000&&status[(int) x][(int) y]==0){
 	    				System.out.println("bp");
+	    				LOSS = LOSS+300;
 	    				money = money-32000;
+	    				double dwinp = money/1000000.0;
+	    				winp.setProgress(dwinp);
 	    				moneyl.setText(""+money);
 	    				status[(int) x][(int) y]=1;
 	    				if(status[(int) x][(int) y]==0){
@@ -1034,7 +1139,10 @@ public class Client extends Application {
 	    			}	
 	    			if(ll==4&&money>64000&&status[(int) x][(int) y]==0){
 	    				System.out.println("bp");
+	    				LOSS = LOSS+300;
 	    				money = money-64000;
+	    				double dwinp = money/1000000.0;
+	    				winp.setProgress(dwinp);
 	    				moneyl.setText(""+money);
 	    				status[(int) x][(int) y]=1;
 	    				if(status[(int) x][(int) y]==0){
@@ -1074,6 +1182,9 @@ public class Client extends Application {
 		    			s.show();//запуск стейджа
 	    			}
 	    			qinfo.setVisible(true);
+	    			cpt.setVisible(true);
+	    			qcost.setVisible(true);
+	    			salary.setVisible(true);
 	    			lpanel.setVisible(false);
 	    			buyq.setDisable(false);
 	    			oType.setLayoutY(155);
@@ -1089,8 +1200,10 @@ public class Client extends Application {
 		    			name.setLayoutY(680);
 		    			owner.setVisible(false);
 		    			level.setLayoutY(735);
-		    			
+		    			cpt.setVisible(false);	
 		    			description.setLayoutY(680);
+		    			salary.setVisible(false);
+		    			qcost.setVisible(false);
 	    			});
 	    			
 	    			s.setScene(sc1);//установка сцены
@@ -1111,6 +1224,7 @@ public class Client extends Application {
 	    			}
 	    			closeim.setDisable(false);
 	    			closeim.setOnAction(cl->{
+	    				
 	    				finfo.setVisible(false);
 		    			lpanel.setVisible(true);
 		    			oType.setLayoutY(665);
@@ -1118,7 +1232,7 @@ public class Client extends Application {
 		    			level.setLayoutY(735);
 		    			description.setLayoutY(680);
 		    			owner.setVisible(false);
-		    				
+		    			
 		    			
 	    			});
 	    			
@@ -1202,14 +1316,18 @@ public class Client extends Application {
 	 	               tt = parts[1];
 	 	               System.out.println(":"+tt+"/"+TURN_ID);
 	 	               if(TURN_ID=="1"){
+	 	  			
 	 	            	   if(tt=="2"){
 	 	            		 nextTurn.setDisable(false);  
+	 	            	   
 	 	            	   }
 	 	               }
 	 	               if(TURN_ID=="2"){
+	 	            	  eb.setImage(bb2);
 	 	            	   if(tt=="1"){
 	 	            		  nextTurn.setDisable(false);  	   
-	 	            		   
+	 	            		 
+	 	        			
 	 	            		   
 	 	            	   }
 	 	               }
