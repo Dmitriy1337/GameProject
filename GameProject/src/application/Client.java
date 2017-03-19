@@ -29,6 +29,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.InputEvent;
@@ -44,6 +45,7 @@ public class Client extends Application {
 	static BufferedWriter bw; // буферизированный писатель в сокет 
 	
 	int QPROFIT=0;
+	int RPROFIT=0;
 	int LOSS=0;
 	
 	ImageView eb;
@@ -70,6 +72,8 @@ public class Client extends Application {
 	String TURN_ID="";
 	ProgressBar winp;
 	Button buyq;
+	Button buyf;
+
 	int ore = 0;
 	int res = 0;
 	int[][]map =new int[12][6];
@@ -786,7 +790,24 @@ public class Client extends Application {
 		buyq.setDisable(true);
 		buyq.setOpacity(0);
 		
-		a1.getChildren().add(buyq);
+		
+		buyf = new Button();
+		buyf.setLayoutX(800);//50
+		buyf.setLayoutY(320);//125
+		buyf.setPrefHeight(100);//
+		buyf.setPrefWidth(500);//
+		buyf.setDisable(true);
+		buyf.setOpacity(0);
+		a1.getChildren().add(buyf);
+		
+		TextArea er = new TextArea("test");
+		er.setLayoutX(330);
+		er.setLayoutY(620);
+		er.setPrefHeight(19);
+		
+		er.setPrefWidth(110);
+		er.setFont(new Font("Showcard Gothic",27));
+		a1.getChildren().add(er);
 		
 		
 		
@@ -797,7 +818,7 @@ public class Client extends Application {
 		        double y =(int) (location.getY()-80)/95;
 		    	
 		    	System.out.println("Handling event " + event.getEventType()+"/"+x+"/"+y); 
-		        if(location.getX()>150&&location.getY()>80){
+		        if(location.getX()>150&&location.getY()>80&&location.getX()<950&&location.getY()<650){//950/650
 		    	if(map[(int) x][(int) y]==1||map[(int) x][(int) y]==2||map[(int) x][(int) y]==3||map[(int) x][(int) y]==4||map[(int) x][(int) y]==5){
 		    		level.setText("");
 		    		level.setVisible(true);
@@ -1185,7 +1206,7 @@ public class Client extends Application {
 	    			}
 	    				
 	    				
-	    			});
+	    			});//
 	    			System.out.println("lol");
 	    			if(status[(int) x][(int) y]==0){
 	    				owner.setVisible(true);
@@ -1206,6 +1227,7 @@ public class Client extends Application {
 	    			salary.setVisible(true);
 	    			lpanel.setVisible(false);
 	    			buyq.setDisable(false);
+	    			buyf.setDisable(false);
 	    			oType.setLayoutY(155);
 	    			name.setLayoutY(170);
 	    			level.setLayoutY(250);
@@ -1230,6 +1252,136 @@ public class Client extends Application {
 	    			
 	    		}	
 	    		if(oType.getImage()==r){
+	    			
+	    			buyf.setOnAction(ha->{
+		    			if(MOVE_C==0){
+		    				char l = level.getText().charAt(0);	
+		    			String l2 = ""+l;
+		    			int ll = Integer.parseInt(l2);
+		    			System.out.println(ll);
+		    			if(ll==1&&money>12000&&status[(int) x][(int) y]==0){
+		    				if(nextTurn.isDisable()==false){
+		    				LOSS = LOSS+450;
+		    				
+		    				System.out.println("bp");
+		    				money = money-12000;
+		    				moneyl.setText(""+money);
+		    				double dwinp = money/1000000.0;
+		    				winp.setProgress(dwinp);
+		    				status[(int) x][(int) y]=1;
+		    				if(status[(int) x][(int) y]==0){
+			    				owner.setVisible(true);
+			    			
+			    				owner.setText("Not Defined");
+			    				s.setScene(sc1);//установка сцены
+				    			s.show();//запуск стейджа
+			    			}
+			    			if(status[(int) x][(int) y]==1){
+			    				owner.setVisible(true);
+			    				owner.setText("Yours");
+			    				s.setScene(sc1);//установка сцены
+				    			s.show();//запуск стейджа
+			    			}
+		    				s.setScene(sc1);//установка сцены
+			    			s.show();//запуск стейджа
+		    			}}
+		    				
+		    				
+		    			if(ll==2&&money>24000&&status[(int) x][(int) y]==0){
+		    				if(nextTurn.isDisable()==false){
+		    				System.out.println("bp");
+		    				LOSS = LOSS+900;
+		    				
+		    				money = money-24000;
+		    				double dwinp = money/1000000.0;
+		    				winp.setProgress(dwinp);
+		    				moneyl.setText(""+money);
+		    				status[(int) x][(int) y]=1;
+		    				if(status[(int) x][(int) y]==0){
+			    				owner.setVisible(true);
+			    			
+			    				owner.setText("Not Defined");
+			    				s.setScene(sc1);//установка сцены
+				    			s.show();//запуск стейджа
+			    			}
+			    			if(status[(int) x][(int) y]==1){
+			    				owner.setVisible(true);
+			    				owner.setText("Yours");
+			    				s.setScene(sc1);//установка сцены
+				    			s.show();//запуск стейджа
+			    			}
+		    				s.setScene(sc1);//установка сцены
+			    			s.show();//запуск стейджа
+		    				}
+		    				
+		    			}	
+		    			if(ll==3&&money>48000&&status[(int) x][(int) y]==0){
+		    				if(nextTurn.isDisable()==false){
+		    				System.out.println("bp");
+		    				LOSS = LOSS+1800;
+		    				
+		    				money = money-48000;
+		    				double dwinp = money/1000000.0;
+		    				winp.setProgress(dwinp);
+		    				moneyl.setText(""+money);
+		    				status[(int) x][(int) y]=1;
+		    				if(status[(int) x][(int) y]==0){
+			    				owner.setVisible(true);
+			    			
+			    				owner.setText("Not Defined");
+			    				s.setScene(sc1);//установка сцены
+				    			s.show();//запуск стейджа
+			    			}
+			    			if(status[(int) x][(int) y]==1){
+			    				owner.setVisible(true);
+			    				owner.setText("Yours");
+			    				s.setScene(sc1);//установка сцены
+				    			s.show();//запуск стейджа
+			    			}
+		    				s.setScene(sc1);//установка сцены
+			    			s.show();//запуск стейджа
+		    				}
+		    				
+		    			}	
+		    			if(ll==4&&money>96000&&status[(int) x][(int) y]==0){
+		    				if(nextTurn.isDisable()==false){
+		    				System.out.println("bp");
+		    				LOSS = LOSS+3600;
+		    				
+		    				money = money-96000;
+		    				double dwinp = money/1000000.0;
+		    				winp.setProgress(dwinp);
+		    				moneyl.setText(""+money);
+		    				status[(int) x][(int) y]=1;
+		    				if(status[(int) x][(int) y]==0){
+			    				owner.setVisible(true);
+			    			
+			    				owner.setText("Not Defined");
+			    				s.setScene(sc1);//установка сцены
+				    			s.show();//запуск стейджа
+			    			}
+			    			if(status[(int) x][(int) y]==1){
+			    				owner.setVisible(true);
+			    				owner.setText("Yours");
+			    				s.setScene(sc1);//установка сцены
+				    			s.show();//запуск стейджа
+			    			}
+		    			
+			    			s.setScene(sc1);//установка сцены
+			    			s.show();//запуск стейджа
+		    			}
+		    			}	
+		    			MOVE_C=1;
+		    			
+		    			}
+		    				
+		    				
+		    			});//
+	    			
+	    			
+	    			
+	    			
+	    			
 	    			System.out.println("lol");
 	    			finfo.setVisible(true);
 	    			lpanel.setVisible(false);
@@ -1251,7 +1403,7 @@ public class Client extends Application {
 		    			level.setLayoutY(735);
 		    			description.setLayoutY(680);
 		    			owner.setVisible(false);
-		    			
+		    			buyf.setDisable(true);
 		    			
 	    			});
 	    			
