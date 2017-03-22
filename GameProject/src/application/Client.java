@@ -449,7 +449,11 @@ public class Client extends Application {
 		resume.setOnAction(resum->{
 			menui.setVisible(false);
 			resume.setVisible(false);
-			
+			for(int i = 0;i<circles.size();i++){
+	    			Circle ss = circles.get(i);
+	    			ss.setOpacity(1);
+	    			
+	    		}
 		});
 		
 		
@@ -505,8 +509,10 @@ public class Client extends Application {
 		buys.setOpacity(0);
 		buys.setDisable(true);
 		buys.setOnAction(ggex->{
-		if(nextTurn.isDisable()==false){
-			String ssellc = sellc.getText();
+		
+			if(nextTurn.isDisable()==false){
+				
+				String ssellc = sellc.getText();
 			int isellc = Integer.parseInt(ssellc);
 			if(ore>=isellc){
 				ore = ore - isellc;
@@ -559,7 +565,12 @@ public class Client extends Application {
 		 bank.setOpacity(0);
 		 bank.setDisable(false);
 		 bank.setOnAction(buy->{
-			//sellw set visibe;
+			 for(int i = 0;i<circles.size();i++){
+	    			Circle ss = circles.get(i);
+	    			ss.setOpacity(0);
+	    			
+	    		}
+			 //sellw set visibe;
 			 sellw.setVisible(true); 
 			 sellc.setVisible(true);
 				sellc.setDisable(false);
@@ -569,7 +580,12 @@ public class Client extends Application {
 				
 				sexit.setDisable(false);
 				sexit.setOnAction(ll->{
-					 sellw.setVisible(false); 
+					for(int i = 0;i<circles.size();i++){
+		    			Circle ss = circles.get(i);
+		    			ss.setOpacity(1);
+		    			
+		    		} 
+					sellw.setVisible(false); 
 					 sellc.setVisible(false);
 						sellc.setDisable(true);
 						sellr.setVisible(false);
@@ -591,13 +607,18 @@ public class Client extends Application {
 		menu.setPrefWidth(75);//
 		menu.setOpacity(0);
 		menu.setOnAction(bb->{
-			
+				
 			
 			if(menuIsPressed==1){
 				menui.setVisible(false);
 				System.out.println("f");
 				resume.setDisable(true);
 				resume.setDisable(true);
+				for(int i = 0;i<circles.size();i++){
+ 	    			Circle ss = circles.get(i);
+ 	    			ss.setOpacity(1);
+ 	    			
+ 	    		}
 				s.show();//запуск стейджа
 				
 				
@@ -608,7 +629,11 @@ public class Client extends Application {
 				System.out.println("t");
 				resume.setDisable(false);
 				gexit.setDisable(false);
-				
+				for(int i = 0;i<circles.size();i++){
+ 	    			Circle ss = circles.get(i);
+ 	    			ss.setOpacity(0);
+ 	    			
+ 	    		}
 				s.setScene(sc1);//установка сцены
 				s.show();//запуск стейджа
 				
@@ -1226,6 +1251,11 @@ public class Client extends Application {
 		    			bcost.setVisible(false);
 		    			bchance.setVisible(false);
 		    			bprofit.setVisible(false);
+		    			for(int i = 0;i<circles.size();i++){
+			    			Circle s = circles.get(i);
+			    			s.setOpacity(1);
+			    			
+			    		}
 		    			if(status[(int) x][(int) y]==0){
 		    				owner.setText("Not Defined");
 		    				owner.setVisible(false);
@@ -1247,7 +1277,8 @@ public class Client extends Application {
 	    			System.out.println(ll);
 	    			if(ll==1&&money>8000&&status[(int) x][(int) y]==0){
 	    				if(nextTurn.isDisable()==false){
-	    				LOSS = LOSS+300;
+	    					
+	    					LOSS = LOSS+300;
 	    				QPROFIT = QPROFIT+6;
 	    				System.out.println("bp");
 	    				money = money-8000;
@@ -1273,6 +1304,40 @@ public class Client extends Application {
 		    				owner.setVisible(true);
 		    				
 		    			}
+		    			for(int i=0;i<12;i++){
+	 	           			for(int j = 0;j<6;j++){
+	 	           			if(status[i][j]==1){
+	 	           				Circle c = new Circle();
+	 	           				c.setRadius(5);
+	 	           				c.setCenterX(155+67*i);
+	 	           				c.setCenterY(86+95*j);
+	 	           			c.setFill(Color.GREEN);
+	 	           		System.out.println("circle");
+	 	           			a1.getChildren().add(c);
+	 	           		circles.add(c);
+	 	           			}//revolution	
+	 	           		if(status[i][j]==2){
+	 	           		Circle c2 = new Circle();
+	           				c2.setRadius(5);
+	           				c2.setCenterX(155+67*i);
+	           				c2.setCenterY(86+95*j);
+	           			c2.setFill(Color.RED);
+	           		System.out.println("circle2");
+	           			a1.getChildren().add(c2);	
+	           			circles.add(c2);
+ 	           				
+ 	           			}	
+	 	           				
+	 	           				
+	 	           				
+	 	           			}
+	 	           			
+	 	            		}//
+		    			 for(int i = 0;i<circles.size();i++){
+		 	    			Circle ss = circles.get(i);
+		 	    			ss.setOpacity(0);
+		 	    			
+		 	    		}
 		    			s.setScene(sc1);//установка сцены
 		    			s.show();//запуск стейджа
 	    			}}
@@ -1280,7 +1345,8 @@ public class Client extends Application {
 	    				
 	    			if(ll==2&&money>16000&&status[(int) x][(int) y]==0){
 	    				if(nextTurn.isDisable()==false){
-	    				System.out.println("bp");
+	    					
+	    					System.out.println("bp");
 	    				LOSS = LOSS+300;
 	    				QPROFIT = QPROFIT+12;
 	    				money = money-16000;
@@ -1306,6 +1372,40 @@ public class Client extends Application {
 		    				owner.setVisible(true);
 		    				
 		    			}
+		    			for(int i=0;i<12;i++){
+	 	           			for(int j = 0;j<6;j++){
+	 	           			if(status[i][j]==1){
+	 	           				Circle c = new Circle();
+	 	           				c.setRadius(5);
+	 	           				c.setCenterX(155+67*i);
+	 	           				c.setCenterY(86+95*j);
+	 	           			c.setFill(Color.GREEN);
+	 	           		System.out.println("circle");
+	 	           			a1.getChildren().add(c);
+	 	           		circles.add(c);
+	 	           			}//revolution	
+	 	           		if(status[i][j]==2){
+	 	           		Circle c2 = new Circle();
+	           				c2.setRadius(5);
+	           				c2.setCenterX(155+67*i);
+	           				c2.setCenterY(86+95*j);
+	           			c2.setFill(Color.RED);
+	           		System.out.println("circle2");
+	           			a1.getChildren().add(c2);	
+	           			circles.add(c2);
+ 	           				
+ 	           			}	
+	 	           				
+	 	           				
+	 	           				
+	 	           			}
+	 	           			
+	 	            		}//
+		    			 for(int i = 0;i<circles.size();i++){
+		 	    			Circle ss = circles.get(i);
+		 	    			ss.setOpacity(0);
+		 	    			
+		 	    		}
 		    			s.setScene(sc1);//установка сцены
 		    			s.show();//запуск стейджа
 	    				}
@@ -1313,7 +1413,8 @@ public class Client extends Application {
 	    			}	
 	    			if(ll==3&&money>32000&&status[(int) x][(int) y]==0){
 	    				if(nextTurn.isDisable()==false){
-	    				System.out.println("bp");
+	    					
+	    					System.out.println("bp");
 	    				LOSS = LOSS+300;
 	    				QPROFIT = QPROFIT+24;
 	    				money = money-32000;
@@ -1339,14 +1440,48 @@ public class Client extends Application {
 		    				owner.setVisible(true);
 		    				
 		    			}
+		    			for(int i=0;i<12;i++){
+	 	           			for(int j = 0;j<6;j++){
+	 	           			if(status[i][j]==1){
+	 	           				Circle c = new Circle();
+	 	           				c.setRadius(5);
+	 	           				c.setCenterX(155+67*i);
+	 	           				c.setCenterY(86+95*j);
+	 	           			c.setFill(Color.GREEN);
+	 	           		System.out.println("circle");
+	 	           			a1.getChildren().add(c);
+	 	           		circles.add(c);
+	 	           			}//revolution	
+	 	           		if(status[i][j]==2){
+	 	           		Circle c2 = new Circle();
+	           				c2.setRadius(5);
+	           				c2.setCenterX(155+67*i);
+	           				c2.setCenterY(86+95*j);
+	           			c2.setFill(Color.RED);
+	           		System.out.println("circle2");
+	           			a1.getChildren().add(c2);	
+	           			circles.add(c2);
+ 	           				
+ 	           			}	
+	 	           				
+	 	           				
+	 	           				
+	 	           			}
+	 	           			
+	 	            		}//
+		    			 for(int i = 0;i<circles.size();i++){
+		 	    			Circle ss = circles.get(i);
+		 	    			ss.setOpacity(0);
+		 	    			
+		 	    		}
 		    			s.setScene(sc1);//установка сцены
 		    			s.show();//запуск стейджа
 	    				}
 	    				
 	    			}	
 	    			if(ll==4&&money>64000&&status[(int) x][(int) y]==0){
-	    				if(nextTurn.isDisable()==false){
-	    				System.out.println("bp");
+	    				
+	    					System.out.println("bp");
 	    				LOSS = LOSS+300;
 	    				QPROFIT = QPROFIT+48;
 	    				money = money-64000;
@@ -1372,7 +1507,42 @@ public class Client extends Application {
 		    				owner.setVisible(true);
 		    				
 		    			}
-		    			s.setScene(sc1);//установка сцены
+		    			if(nextTurn.isDisable()==false){
+	    					for(int i=0;i<12;i++){
+		 	           			for(int j = 0;j<6;j++){
+		 	           			if(status[i][j]==1){
+		 	           				Circle c = new Circle();
+		 	           				c.setRadius(5);
+		 	           				c.setCenterX(155+67*i);
+		 	           				c.setCenterY(86+95*j);
+		 	           			c.setFill(Color.GREEN);
+		 	           		System.out.println("circle");
+		 	           			a1.getChildren().add(c);
+		 	           		circles.add(c);
+		 	           			}//revolution	
+		 	           		if(status[i][j]==2){
+		 	           		Circle c2 = new Circle();
+		           				c2.setRadius(5);
+		           				c2.setCenterX(155+67*i);
+		           				c2.setCenterY(86+95*j);
+		           			c2.setFill(Color.RED);
+		           		System.out.println("circle2");
+		           			a1.getChildren().add(c2);	
+		           			circles.add(c2);
+	 	           				
+	 	           			}	
+		 	           				
+		 	           				
+		 	           				
+		 	           			}
+		 	           			
+		 	            		}//
+	    					 for(int i = 0;i<circles.size();i++){
+	    			    			Circle ss = circles.get(i);
+	    			    			ss.setOpacity(0);
+	    			    			
+	    			    		}
+	    					s.setScene(sc1);//установка сцены
 		    			s.show();//запуск стейджа
 	    			}
 	    			}	
@@ -1428,6 +1598,11 @@ public class Client extends Application {
 		    			description.setLayoutY(680);
 		    			salary.setVisible(false);
 		    			qcost.setVisible(false);
+		    			for(int i = 0;i<circles.size();i++){
+			    			Circle s = circles.get(i);
+			    			s.setOpacity(1);
+			    			
+			    		}
 	    			});
 	    			
 	    			s.setScene(sc1);//установка сцены
@@ -1446,7 +1621,8 @@ public class Client extends Application {
 		    			System.out.println(ll);
 		    			if(ll==1&&money>12000&&status[(int) x][(int) y]==0){
 		    				if(nextTurn.isDisable()==false){
-		    				LOSS = LOSS+450;
+		    					
+		    					LOSS = LOSS+450;
 		    				
 		    				System.out.println("bp");
 		    				money = money-12000;
@@ -1472,6 +1648,40 @@ public class Client extends Application {
 			    				owner.setVisible(true);
 			    				
 			    			}
+			    			for(int i=0;i<12;i++){
+		 	           			for(int j = 0;j<6;j++){
+		 	           			if(status[i][j]==1){
+		 	           				Circle c = new Circle();
+		 	           				c.setRadius(5);
+		 	           				c.setCenterX(155+67*i);
+		 	           				c.setCenterY(86+95*j);
+		 	           			c.setFill(Color.GREEN);
+		 	           		System.out.println("circle");
+		 	           			a1.getChildren().add(c);
+		 	           		circles.add(c);
+		 	           			}//revolution	
+		 	           		if(status[i][j]==2){
+		 	           		Circle c2 = new Circle();
+		           				c2.setRadius(5);
+		           				c2.setCenterX(155+67*i);
+		           				c2.setCenterY(86+95*j);
+		           			c2.setFill(Color.RED);
+		           		System.out.println("circle2");
+		           			a1.getChildren().add(c2);	
+		           			circles.add(c2);
+	 	           				
+	 	           			}	
+		 	           				
+		 	           				
+		 	           				
+		 	           			}
+		 	           			
+		 	            		}//
+			    			 for(int i = 0;i<circles.size();i++){
+			 	    			Circle ss = circles.get(i);
+			 	    			ss.setOpacity(0);
+			 	    			
+			 	    		}
 			    			s.setScene(sc1);//установка сцены
 			    			s.show();//запуск стейджа
 		    			}}
@@ -1480,6 +1690,7 @@ public class Client extends Application {
 		    			if(ll==2&&money>24000&&status[(int) x][(int) y]==0){
 		    				if(nextTurn.isDisable()==false){
 		    				System.out.println("bp");
+		    				
 		    				LOSS = LOSS+900;
 		    				
 		    				money = money-24000;
@@ -1505,6 +1716,40 @@ public class Client extends Application {
 			    				owner.setVisible(true);
 			    				
 			    			}
+			    			for(int i=0;i<12;i++){
+		 	           			for(int j = 0;j<6;j++){
+		 	           			if(status[i][j]==1){
+		 	           				Circle c = new Circle();
+		 	           				c.setRadius(5);
+		 	           				c.setCenterX(155+67*i);
+		 	           				c.setCenterY(86+95*j);
+		 	           			c.setFill(Color.GREEN);
+		 	           		System.out.println("circle");
+		 	           			a1.getChildren().add(c);
+		 	           		circles.add(c);
+		 	           			}//revolution	
+		 	           		if(status[i][j]==2){
+		 	           		Circle c2 = new Circle();
+		           				c2.setRadius(5);
+		           				c2.setCenterX(155+67*i);
+		           				c2.setCenterY(86+95*j);
+		           			c2.setFill(Color.RED);
+		           		System.out.println("circle2");
+		           			a1.getChildren().add(c2);	
+		           			circles.add(c2);
+	 	           				
+	 	           			}	
+		 	           				
+		 	           				
+		 	           				
+		 	           			}
+		 	           			
+		 	            		}//
+			    			 for(int i = 0;i<circles.size();i++){
+			 	    			Circle ss = circles.get(i);
+			 	    			ss.setOpacity(0);
+			 	    			
+			 	    		}
 			    			s.setScene(sc1);//установка сцены
 			    			s.show();//запуск стейджа
 		    				
@@ -1512,7 +1757,8 @@ public class Client extends Application {
 		    			}}	
 		    			if(ll==3&&money>48000&&status[(int) x][(int) y]==0){
 		    				if(nextTurn.isDisable()==false){
-		    				System.out.println("bp");
+		    					
+		    					System.out.println("bp");
 		    				LOSS = LOSS+1800;
 		    				
 		    				money = money-48000;
@@ -1538,6 +1784,40 @@ public class Client extends Application {
 			    				owner.setVisible(true);
 			    				
 			    			}
+			    			for(int i=0;i<12;i++){
+		 	           			for(int j = 0;j<6;j++){
+		 	           			if(status[i][j]==1){
+		 	           				Circle c = new Circle();
+		 	           				c.setRadius(5);
+		 	           				c.setCenterX(155+67*i);
+		 	           				c.setCenterY(86+95*j);
+		 	           			c.setFill(Color.GREEN);
+		 	           		System.out.println("circle");
+		 	           			a1.getChildren().add(c);
+		 	           		circles.add(c);
+		 	           			}//revolution	
+		 	           		if(status[i][j]==2){
+		 	           		Circle c2 = new Circle();
+		           				c2.setRadius(5);
+		           				c2.setCenterX(155+67*i);
+		           				c2.setCenterY(86+95*j);
+		           			c2.setFill(Color.RED);
+		           		System.out.println("circle2");
+		           			a1.getChildren().add(c2);	
+		           			circles.add(c2);
+	 	           				
+	 	           			}	
+		 	           				
+		 	           				
+		 	           				
+		 	           			}
+		 	           			
+		 	            		}//
+			    			 for(int i = 0;i<circles.size();i++){
+			 	    			Circle ss = circles.get(i);
+			 	    			ss.setOpacity(0);
+			 	    			
+			 	    		}
 			    			s.setScene(sc1);//установка сцены
 			    			s.show();//запуск стейджа
 		    				}
@@ -1545,7 +1825,8 @@ public class Client extends Application {
 		    			}	
 		    			if(ll==4&&money>96000&&status[(int) x][(int) y]==0){
 		    				if(nextTurn.isDisable()==false){
-		    				System.out.println("bp");
+		    					
+		    					System.out.println("bp");
 		    				LOSS = LOSS+3600;
 		    				
 		    				money = money-96000;
@@ -1571,9 +1852,44 @@ public class Client extends Application {
 			    				owner.setVisible(true);
 			    				
 			    			}
+			    			for(int i=0;i<12;i++){
+		 	           			for(int j = 0;j<6;j++){
+		 	           			if(status[i][j]==1){
+		 	           				Circle c = new Circle();
+		 	           				c.setRadius(5);
+		 	           				c.setCenterX(155+67*i);
+		 	           				c.setCenterY(86+95*j);
+		 	           			c.setFill(Color.GREEN);
+		 	           		System.out.println("circle");
+		 	           			a1.getChildren().add(c);
+		 	           		circles.add(c);
+		 	           			}//revolution	
+		 	           		if(status[i][j]==2){
+		 	           		Circle c2 = new Circle();
+		           				c2.setRadius(5);
+		           				c2.setCenterX(155+67*i);
+		           				c2.setCenterY(86+95*j);
+		           			c2.setFill(Color.RED);
+		           		System.out.println("circle2");
+		           			a1.getChildren().add(c2);	
+		           			circles.add(c2);
+	 	           				
+	 	           			}	
+		 	           				
+		 	           				
+		 	           				
+		 	           			}
+		 	           			
+		 	            		}//
+			    			 for(int i = 0;i<circles.size();i++){
+			 	    			Circle ss = circles.get(i);
+			 	    			ss.setOpacity(0);
+			 	    			
+			 	    		}
 			    			s.setScene(sc1);//установка сцены
 			    			s.show();//запуск стейджа
-		    			}
+		    			
+		    				}
 		    			}	
 		    			MOVE_C=1;
 		    			}
@@ -1913,7 +2229,8 @@ public void updateUi(Stage s){
 			 	           			c.setFill(Color.GREEN);
 			 	           		System.out.println("circle");
 			 	           			a1.getChildren().add(c);
-			 	           			}	
+			 	           		circles.add(c);
+			 	           			}//revolution	
 			 	           		if(status[i][j]==2){
 			 	           		Circle c2 = new Circle();
 			           				c2.setRadius(5);
@@ -1922,7 +2239,7 @@ public void updateUi(Stage s){
 			           			c2.setFill(Color.RED);
 			           		System.out.println("circle2");
 			           			a1.getChildren().add(c2);	
-		 	           				
+			           			circles.add(c2);
 		 	           				
 		 	           			}	
 			 	           				
