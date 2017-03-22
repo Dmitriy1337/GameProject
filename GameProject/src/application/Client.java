@@ -36,6 +36,7 @@ import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -43,11 +44,15 @@ import javafx.stage.Stage;
 public class Client extends Application {
 	static BufferedReader br; // буферизировнный читатель сокета 
 	static BufferedWriter bw; // буферизированный писатель в сокет 
-	
+	ArrayList<Circle> circles = new ArrayList<Circle>();
+	int h = 0;
+	String pmass="";
 	int QPROFIT=0;
+	String fmass="";
 	int RPROFIT=0;
 	int LOSS=0;
-	
+	int RES=0;
+	int eres=0;
 	ImageView eb;
 	Label moneyl;
 	AnchorPane a1 ;
@@ -72,6 +77,7 @@ public class Client extends Application {
 	String TURN_ID="";
 	ProgressBar winp;
 	Button buyq;
+	Button use;
 	Button buyf;
 
 	int ore = 0;
@@ -82,12 +88,14 @@ public class Client extends Application {
 	int menuIsPressed = 0;
 	ImageView oType;
 	Button nextTurn;
+	Button bank;
 	//
 	Label tcost;
 	Label name;
 	Label bcost,bchance,bprofit;
 	Label level;
 	Label description;
+	Label resl;
 	Label owner;
 	Label acost;
 	Label aprofit;
@@ -95,6 +103,7 @@ public class Client extends Application {
 	Label nres;
 	Label salary;
 	Label qcost;
+	TextArea er;
 	ImageView cityinfo;
 	ImageView cran1;
 	ImageView exc;
@@ -236,7 +245,13 @@ public class Client extends Application {
 		progbar.setFitWidth(300);//
 		a1.getChildren().add(progbar);
 		
+		ImageView leftbar = new ImageView("img/leftp.png");//бэкграунд верхней	панели
 		
+		leftbar.setLayoutX(0);//
+		leftbar.setLayoutY(90);//
+		leftbar.setFitHeight(600);//
+		leftbar.setFitWidth(150);//
+		a1.getChildren().add(leftbar);
 		
 		ImageView menub = new ImageView("img/menub.png");//кнопка меню
 		menub.setLayoutX(0);//
@@ -391,7 +406,7 @@ public class Client extends Application {
 		orel.setLayoutY(13);
 		a1.getChildren().add(orel);
 		
-		Label resl = new Label(""+res); //показатель материалов
+		 resl = new Label(""+res); //показатель материалов
 		resl.setFont(new Font("Showcard Gothic",40));
 		resl.setLayoutX(1220);
 		resl.setLayoutY(13);
@@ -438,6 +453,88 @@ public class Client extends Application {
 		});
 		
 		
+		ImageView sellw = new ImageView("img/sellw.png");//иконка материалов
+		sellw.setLayoutX(100);//
+		sellw.setLayoutY(150);//
+		sellw.setFitHeight(250);//6x95height
+		sellw.setFitWidth(400);//12x100width
+		sellw.setVisible(false);
+		a1.getChildren().add(sellw);
+		
+		
+		TextArea sellc = new TextArea("0");
+		sellc.setLayoutX(130);
+		sellc.setLayoutY(243);
+		sellc.setPrefHeight(20);
+		sellc.setMaxHeight(20);
+		sellc.setPrefWidth(110);
+		sellc.setVisible(false);
+		sellc.setDisable(true);
+		sellc.setFont(new Font("Showcard Gothic",20));
+		a1.getChildren().add(sellc);
+		
+		TextArea sellr = new TextArea("0");
+		sellr.setLayoutX(130);
+		sellr.setLayoutY(328);
+		sellr.setPrefHeight(20);
+		sellr.setMaxHeight(20);
+	
+		sellr.setPrefWidth(110);
+		sellr.setVisible(false);
+		sellr.setDisable(true);
+		sellr.setFont(new Font("Showcard Gothic",20));
+		a1.getChildren().add(sellr);
+		
+		
+		Button sexit = new Button();
+		sexit.setLayoutX(442);//
+		sexit.setLayoutY(162);//
+		sexit.setPrefHeight(40);//
+		sexit.setPrefWidth(40);//
+		sexit.setOpacity(0);
+		sexit.setDisable(true);
+		a1.getChildren().add(sexit);
+		
+		
+		
+		Button buys = new Button();
+		buys.setLayoutX(320);//
+		buys.setLayoutY(260);//
+		buys.setPrefHeight(50);//
+		buys.setPrefWidth(130);//
+		buys.setOpacity(0);
+		buys.setDisable(true);
+		buys.setOnAction(ggex->{
+		if(nextTurn.isDisable()==false){
+			String ssellc = sellc.getText();
+			int isellc = Integer.parseInt(ssellc);
+			if(ore>=isellc){
+				ore = ore - isellc;
+				money = money+(isellc*30);
+				orel.setText(""+ore);
+				moneyl.setText(""+money);
+				
+			}
+			String ssellr = sellr.getText();
+			int isellr = Integer.parseInt(ssellr);
+			if(res>=isellr){
+				res = res - isellr;
+				money = money+(isellr*75);
+				resl.setText(""+res);
+				moneyl.setText(""+money);
+				
+			}
+			
+		
+		}	
+		s.setScene(sc1);//установка сцены
+		s.show();//запуск стейджа	
+			
+			
+		});
+		a1.getChildren().add(buys);
+		
+		
 		Button gexit = new Button();
 		gexit.setLayoutX(568);//
 		gexit.setLayoutY(465);//
@@ -452,6 +549,40 @@ public class Client extends Application {
 		});
 		a1.getChildren().add(resume);
 		a1.getChildren().add(gexit);
+		
+		
+		 bank = new Button();
+		 bank.setLayoutX(30);//
+		 bank.setLayoutY(110);//
+		 bank.setPrefHeight(90);//
+		 bank.setPrefWidth(90);//
+		 bank.setOpacity(0);
+		 bank.setDisable(false);
+		 bank.setOnAction(buy->{
+			//sellw set visibe;
+			 sellw.setVisible(true); 
+			 sellc.setVisible(true);
+				sellc.setDisable(false);
+				sellr.setVisible(true);
+				sellr.setDisable(false);
+				buys.setDisable(false);
+				
+				sexit.setDisable(false);
+				sexit.setOnAction(ll->{
+					 sellw.setVisible(false); 
+					 sellc.setVisible(false);
+						sellc.setDisable(true);
+						sellr.setVisible(false);
+						sellr.setDisable(true);
+						buys.setDisable(true);	
+					
+					
+				});
+				
+		 });
+		 a1.getChildren().add(bank);
+		
+		
 		
 		Button menu = new Button();
 		menu.setLayoutX(0);//50
@@ -513,7 +644,7 @@ public class Client extends Application {
 			nextTurn.setPrefHeight(75);//
 			nextTurn.setPrefWidth(320);//
 			nextTurn.setDisable(false);
-			nextTurn.setOpacity(1);
+			nextTurn.setOpacity(0);
 		System.out.println("Turnid"+TURN_ID);
 			
 			nextTurn.setOnAction(nturn->{
@@ -521,15 +652,26 @@ public class Client extends Application {
 				money = money-LOSS;
 			moneyl.setText(""+money);
 			
+			for(int i = 0;i<12;i++){
+				for(int j = 0;j<6;j++){
+					pmass = pmass+status[i][j];
+					
+					
+				}
+			}
+			
+			
+			
 			if(TURN_ID.equals("1")){
 				System.out.println("TURNID3"+TURN_ID);		
 				try {
 						tapcounter++;
 						
-						socketWriter.write("5555/1");
+						socketWriter.write(pmass+"/1");
 						socketWriter.write("\n"); //добавляем "новою строку", дабы readLine() сервера сработал
 				        socketWriter.flush(); // отправляем
-						} catch (IOException e) {
+				        pmass="";		
+				} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
@@ -541,9 +683,10 @@ public class Client extends Application {
 					System.out.println("TURNID3"+TURN_ID);	
 					try{
 					System.out.print("test");
-						socketWriter.write("5555/2");
+						socketWriter.write(pmass+"/2");
 					socketWriter.write("\n"); //добавляем "новою строку", дабы readLine() сервера сработал
 			        socketWriter.flush(); // отправляем
+					pmass="";
 					}
 			        catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -789,22 +932,25 @@ public class Client extends Application {
 		buyq.setPrefWidth(500);//
 		buyq.setDisable(true);
 		buyq.setOpacity(0);
+		a1.getChildren().add(buyq);
+		
+		use = new Button();
+		use.setLayoutX(450);//50
+		use.setLayoutY(610);//125
+		use.setPrefHeight(80);//
+		use.setPrefWidth(250);//
+		use.setDisable(true);
+		use.setOpacity(0);
+		a1.getChildren().add(use);
 		
 		
-		buyf = new Button();
-		buyf.setLayoutX(800);//50
-		buyf.setLayoutY(320);//125
-		buyf.setPrefHeight(100);//
-		buyf.setPrefWidth(500);//
-		buyf.setDisable(true);
-		buyf.setOpacity(0);
-		a1.getChildren().add(buyf);
 		
-		TextArea er = new TextArea("test");
-		er.setLayoutX(330);
+		 er = new TextArea("0");
+		er.setLayoutX(310);
 		er.setLayoutY(620);
 		er.setPrefHeight(19);
-		
+		er.setDisable(true);
+		er.setVisible(false);
 		er.setPrefWidth(110);
 		er.setFont(new Font("Showcard Gothic",27));
 		a1.getChildren().add(er);
@@ -965,7 +1111,16 @@ public class Client extends Application {
 		    	
 		    	
 	    		infomenu.setOnAction(bb2->{
-	    		if(oType.getImage()==c){
+	    		for(int i = 0;i<circles.size();i++){
+	    			Circle s = circles.get(i);
+	    			s.setOpacity(0);
+	    			
+	    		}
+	    			
+	    			
+	    			
+	    			
+	    			if(oType.getImage()==c){
 	    			System.out.println("lol");
 	    			cityinfo.setVisible(true);
 	    			lpanel.setVisible(false);
@@ -1084,7 +1239,8 @@ public class Client extends Application {
 	    		}	
 	    		if(oType.getImage()==o){
 	    			buyq.setOnAction(ha->{
-	    			if(MOVE_C==0){
+	    				if(nextTurn.isDisable()==false){
+	    				if(MOVE_C==0&&status[(int) x][(int) y]==0){
 	    				char l = level.getText().charAt(0);	
 	    			String l2 = ""+l;
 	    			int ll = Integer.parseInt(l2);
@@ -1112,7 +1268,12 @@ public class Client extends Application {
 		    				s.setScene(sc1);//установка сцены
 			    			s.show();//запуск стейджа
 		    			}
-	    				s.setScene(sc1);//установка сцены
+		    			if(status[(int) x][(int) y]==2){
+		    				owner.setText("Your Enemy");
+		    				owner.setVisible(true);
+		    				
+		    			}
+		    			s.setScene(sc1);//установка сцены
 		    			s.show();//запуск стейджа
 	    			}}
 	    				
@@ -1140,7 +1301,12 @@ public class Client extends Application {
 		    				s.setScene(sc1);//установка сцены
 			    			s.show();//запуск стейджа
 		    			}
-	    				s.setScene(sc1);//установка сцены
+		    			if(status[(int) x][(int) y]==2){
+		    				owner.setText("Your Enemy");
+		    				owner.setVisible(true);
+		    				
+		    			}
+		    			s.setScene(sc1);//установка сцены
 		    			s.show();//запуск стейджа
 	    				}
 	    				
@@ -1168,7 +1334,12 @@ public class Client extends Application {
 		    				s.setScene(sc1);//установка сцены
 			    			s.show();//запуск стейджа
 		    			}
-	    				s.setScene(sc1);//установка сцены
+		    			if(status[(int) x][(int) y]==2){
+		    				owner.setText("Your Enemy");
+		    				owner.setVisible(true);
+		    				
+		    			}
+		    			s.setScene(sc1);//установка сцены
 		    			s.show();//запуск стейджа
 	    				}
 	    				
@@ -1196,14 +1367,18 @@ public class Client extends Application {
 		    				s.setScene(sc1);//установка сцены
 			    			s.show();//запуск стейджа
 		    			}
-	    			
+		    			if(status[(int) x][(int) y]==2){
+		    				owner.setText("Your Enemy");
+		    				owner.setVisible(true);
+		    				
+		    			}
 		    			s.setScene(sc1);//установка сцены
 		    			s.show();//запуск стейджа
 	    			}
 	    			}	
 	    			MOVE_C=1;
 	    			
-	    			}
+	    			}}
 	    				
 	    				
 	    			});//
@@ -1221,13 +1396,19 @@ public class Client extends Application {
 	    				s.setScene(sc1);//установка сцены
 		    			s.show();//запуск стейджа
 	    			}
+	    			
+	    			if(status[(int) x][(int) y]==2){
+	    				owner.setText("Your Enemy");
+	    				owner.setVisible(true);
+	    				
+	    			}
 	    			qinfo.setVisible(true);
 	    			cpt.setVisible(true);
 	    			qcost.setVisible(true);
 	    			salary.setVisible(true);
 	    			lpanel.setVisible(false);
 	    			buyq.setDisable(false);
-	    			buyf.setDisable(false);
+	    			
 	    			oType.setLayoutY(155);
 	    			name.setLayoutY(170);
 	    			level.setLayoutY(250);
@@ -1237,6 +1418,8 @@ public class Client extends Application {
 	    			closeim.setOnAction(cl->{
 	    				qinfo.setVisible(false);
 		    			lpanel.setVisible(true);
+		    			buyq.setDisable(true);
+		    			
 		    			oType.setLayoutY(665);
 		    			name.setLayoutY(680);
 		    			owner.setVisible(false);
@@ -1253,8 +1436,10 @@ public class Client extends Application {
 	    		}	
 	    		if(oType.getImage()==r){
 	    			
-	    			buyf.setOnAction(ha->{
-		    			if(MOVE_C==0){
+	    			buyq.setOnAction(ha->{
+	    				System.out.println("status"+status[(int) x][(int) y]);
+	    				if(nextTurn.isDisable()==false){
+	    				if(MOVE_C==0&&status[(int) x][(int) y]==0){
 		    				char l = level.getText().charAt(0);	
 		    			String l2 = ""+l;
 		    			int ll = Integer.parseInt(l2);
@@ -1282,7 +1467,12 @@ public class Client extends Application {
 			    				s.setScene(sc1);//установка сцены
 				    			s.show();//запуск стейджа
 			    			}
-		    				s.setScene(sc1);//установка сцены
+			    			if(status[(int) x][(int) y]==2){
+			    				owner.setText("Your Enemy");
+			    				owner.setVisible(true);
+			    				
+			    			}
+			    			s.setScene(sc1);//установка сцены
 			    			s.show();//запуск стейджа
 		    			}}
 		    				
@@ -1310,11 +1500,16 @@ public class Client extends Application {
 			    				s.setScene(sc1);//установка сцены
 				    			s.show();//запуск стейджа
 			    			}
-		    				s.setScene(sc1);//установка сцены
+			    			if(status[(int) x][(int) y]==2){
+			    				owner.setText("Your Enemy");
+			    				owner.setVisible(true);
+			    				
+			    			}
+			    			s.setScene(sc1);//установка сцены
 			    			s.show();//запуск стейджа
-		    				}
 		    				
-		    			}	
+		    				
+		    			}}	
 		    			if(ll==3&&money>48000&&status[(int) x][(int) y]==0){
 		    				if(nextTurn.isDisable()==false){
 		    				System.out.println("bp");
@@ -1338,7 +1533,12 @@ public class Client extends Application {
 			    				s.setScene(sc1);//установка сцены
 				    			s.show();//запуск стейджа
 			    			}
-		    				s.setScene(sc1);//установка сцены
+			    			if(status[(int) x][(int) y]==2){
+			    				owner.setText("Your Enemy");
+			    				owner.setVisible(true);
+			    				
+			    			}
+			    			s.setScene(sc1);//установка сцены
 			    			s.show();//запуск стейджа
 		    				}
 		    				
@@ -1366,13 +1566,17 @@ public class Client extends Application {
 			    				s.setScene(sc1);//установка сцены
 				    			s.show();//запуск стейджа
 			    			}
-		    			
+			    			if(status[(int) x][(int) y]==2){
+			    				owner.setText("Your Enemy");
+			    				owner.setVisible(true);
+			    				
+			    			}
 			    			s.setScene(sc1);//установка сцены
 			    			s.show();//запуск стейджа
 		    			}
 		    			}	
 		    			MOVE_C=1;
-		    			
+		    			}
 		    			}
 		    				
 		    				
@@ -1381,43 +1585,107 @@ public class Client extends Application {
 	    			
 	    			
 	    			
-	    			
+	    			char l = level.getText().charAt(0);	
+	    			String l2 = ""+l;
+	    			int ll2 = Integer.parseInt(l2);
 	    			System.out.println("lol");
 	    			finfo.setVisible(true);
 	    			lpanel.setVisible(false);
 	    			oType.setLayoutY(155);
+	    			er.setVisible(true);
 	    			name.setLayoutY(170);
+	    			buyq.setDisable(false);
 	    			level.setLayoutY(250);
 	    			description.setLayoutY(170);
-	    			if(status[(int) x][(int) y]==0){
-	    				owner.setVisible(true);
-	    				owner.setText("Not Defined");
-	    			}
-	    			closeim.setDisable(false);
-	    			closeim.setOnAction(cl->{
+	    			use.setDisable(false);
+	    			er.setDisable(false);
+	    			owner.setVisible(true);
+	    			
+	    			 
+	    			
+	    			use.setOnAction(clicked->{
+	    				if(nextTurn.isDisable()==false&&status[(int) x][(int) y]==1){
+	    					eres = Integer.parseInt(er.getText());
+	    					System.out.println("pressed+"+"//"+eres+"/"+er.getText());
+	    					if(ll2==1&&eres<=9&&ore>=eres){
+	    						System.out.println("pressed2");
+	    						ore  =ore- eres;
+	    					RES = RES+eres;
+	    					orel.setText(""+ore);
+	    					
+	    				}
+	    				if(ll2==2&&eres<=18&&ore>=eres){
+	    					ore  =ore-  eres;
+	    					RES = RES+eres;
+		    				orel.setText(""+ore);	
+		    					
+		    				}
+	    				if(ll2==3&&eres<=36&&ore>=eres){
+	    					ore  =ore-  eres;
+	    					RES = RES+eres;
+		    				orel.setText(""+ore);
+		    					
+		    				}
+	    				if(ll2==4&&eres<=72&&ore>=eres){
+	    					ore  =ore- eres;
+	    					RES = RES+eres;
+		    				orel.setText(""+ore);	
+		    					
+		    				}
 	    				
+	    				
+	    				
+	    				}});
+	    			
+	    			
+	    			
+	    			if(status[(int) x][(int) y]==0){
+	    				owner.setText("Not Defined");
+	    				owner.setVisible(true);
+	    				
+	    			}
+	    			
+	    			if(status[(int) x][(int) y]==1){
+	    				owner.setText("Yours");
+	    				owner.setVisible(true);
+	    				
+	    			}
+	    			if(status[(int) x][(int) y]==2){
+	    				owner.setText("Your Enemy");
+	    				owner.setVisible(true);
+	    				
+	    			}closeim.setDisable(false);
+	    			closeim.setOnAction(cl->{
+	    				er.setDisable(true);
+	    				use.setDisable(true);
+	    				er.setVisible(false);
 	    				finfo.setVisible(false);
 		    			lpanel.setVisible(true);
 		    			oType.setLayoutY(665);
 		    			name.setLayoutY(680);
+		    			buyq.setDisable(true);
 		    			level.setLayoutY(735);
 		    			description.setLayoutY(680);
 		    			owner.setVisible(false);
-		    			buyf.setDisable(true);
+		    			for(int i = 0;i<circles.size();i++){
+			    			Circle s = circles.get(i);
+			    			s.setOpacity(1);
+			    			
+			    		}
 		    			
 	    			});
 	    			
 	    			s.setScene(sc1);//установка сцены
 	    			s.show();//запуск стейджа
 	    			
-	    		}	
-	    		});
+	    			
+	    		}});
 	    		infomenu.setDisable(false);
 	    		
 	    		
 		    	event.consume();
 		    }
-		    }
+	    		}
 		};
 		
 		a1.addEventHandler(MouseEvent.MOUSE_CLICKED, handler);
@@ -1431,11 +1699,18 @@ public class Client extends Application {
 	mSecondThread.start();	
 	try {
 		
-		
-		socketWriter.write("5555");
+		for(int i = 0;i<12;i++){
+			for(int j = 0;j<6;j++){
+				pmass = pmass+status[i][j];
+				
+				
+			}
+		}
+		socketWriter.write(pmass);
 		socketWriter.write("\n"); //добавляем "новою строку", дабы readLine() сервера сработал
         socketWriter.flush(); // отправляем
-		} catch (IOException e) {
+	pmass = "";	
+	} catch (IOException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	} //пишем строку пользователя
@@ -1461,7 +1736,8 @@ public void updateUi(Stage s){
 	s.show();
 }
 	 private class Receiver implements Runnable{
-	        /**
+	   
+		 /**
 	         * run() вызовется после запуска нити из конструктора клиента чата.
 	         */
 	        public void run() {
@@ -1492,7 +1768,79 @@ public void updateUi(Stage s){
 	                    System.out.println("Turnid2"+TURN_ID);
 	                    String[]parts = line.split("/");
 	 	               tt = parts[1];
+	 	             fmass = parts[0];
 	 	               System.out.println(":"+tt+"/"+TURN_ID);
+	 	              System.out.println("fmass "+fmass);
+	 	               int smass[] = new int[72];
+	 	              
+	 	               for(int i=0;i<72;i++){
+	 	            	  char ch = fmass.charAt(i);
+	 	            	  String mch = ""+ch;
+	 	            	   smass[i]=Integer.parseInt(mch) ;
+	 	            	   
+	 	               }
+	 	               
+	 	              if(TURN_ID.equals("1")){
+	 	            	  if(tt.equals("2")){
+	 	            		 for(int j=0;j<12;j++){ 
+	 		 	            	 for(int k = 0;k<6;k++){ 
+	 		 	            	 status[j][k]=smass[h]; 
+	 		 	            	 if(status[j][k]==1){ 
+	 		 	            	 status[j][k]=2; 
+	 		 	            	 } 
+
+	 		 	            	 else if(status[j][k]==2){ 
+	 		 	            		status[j][k]=1; 
+
+	 		 	            	 } 
+	 		 	            	 h++; 
+	 		 	            	
+	 		 	            	 } }
+	 		 	           h=0;
+	 		 	               
+	 		 	           String ststring = "";
+	 		 	           for(int i = 0;i<12;i++){
+	 		 	        	   for(int j = 0;j<6;j++){
+	 		 	        		   ststring+=status[i][j];
+	 		 	        		   
+	 		 	        		   
+	 		 	        	   }
+	 		 	           }
+	 		 	           System.out.println("status"+ststring);
+	 		 	         ststring = "";  
+	 	            	  }
+	 	              }
+	 	             if(TURN_ID.equals("2")){
+	 	            	  if(tt.equals("1")){
+	 	            		 for(int j=0;j<12;j++){ 
+	 		 	            	 for(int k = 0;k<6;k++){ 
+	 		 	            	 status[j][k]=smass[h]; 
+	 		 	            	 if(status[j][k]==1){ 
+	 		 	            	 status[j][k]=2; 
+	 		 	            	 } 
+
+	 		 	            	 else if(status[j][k]==2){ 
+	 		 	            		status[j][k]=1; 
+
+	 		 	            	 } 
+	 		 	            	 h++; 
+	 		 	            	
+	 		 	            	 } }
+	 		 	           h=0;
+	 		 	               
+	 		 	           String ststring = "";
+	 		 	           for(int i = 0;i<12;i++){
+	 		 	        	   for(int j = 0;j<6;j++){
+	 		 	        		   ststring+=status[i][j];
+	 		 	        		   
+	 		 	        		   
+	 		 	        	   }
+	 		 	           }
+	 		 	           System.out.println("status"+ststring);
+	 		 	         ststring = "";  
+	 	            	  }
+	 	              }
+	 	           
 	 	               if(TURN_ID.equals("1")){
 	 	            	  System.out.println("+"+tt);
 	 	            	   
@@ -1504,6 +1852,38 @@ public void updateUi(Stage s){
 	 	            			 eb.setImage(bb);	
 	 	            		 ore = ore+QPROFIT;
 	 	            		 orel.setText(""+ore);
+	 	            		 
+	 	            		res = res+RES;
+	 	            		 resl.setText(""+res); 
+	 	            		for(int i=0;i<12;i++){
+	 	           			for(int j = 0;j<6;j++){
+	 	           			if(status[i][j]==1){
+	 	           				Circle c = new Circle();
+	 	           				c.setRadius(5);
+	 	           				c.setCenterX(155+67*i);
+	 	           				c.setCenterY(86+95*j);
+	 	           			c.setFill(Color.GREEN);
+	 	           		System.out.println("circle");
+	 	           			a1.getChildren().add(c);
+	 	           			circles.add(c);
+	 	           			}	
+	 	           		if(status[i][j]==2){
+	 	           		Circle c2 = new Circle();
+	           				c2.setRadius(5);
+	           				c2.setCenterX(155+67*i);
+	           				c2.setCenterY(86+95*j);
+	           			c2.setFill(Color.RED);
+	           		System.out.println("circle2");
+	           			a1.getChildren().add(c2);	
+	           			circles.add(c2);
+ 	           				
+ 	           			}	
+	 	           				
+	 	           				
+	 	           				
+	 	           			}
+	 	           			
+	 	            		}//
 	 	            		  });
 	 	            		
 	 	            	  }
@@ -1521,6 +1901,37 @@ public void updateUi(Stage s){
 	 	            			 eb.setImage(bb);
 	 	            			 ore = ore+QPROFIT;
 		 	            		 orel.setText(""+ore);
+		 	            		res = res+RES;
+		 	            		 resl.setText(""+res); 
+		 	            		for(int i=0;i<12;i++){
+			 	           			for(int j = 0;j<6;j++){
+			 	           			if(status[i][j]==1){
+			 	           				Circle c = new Circle();
+			 	           				c.setRadius(5);
+			 	           				c.setCenterX(155+67*i);
+			 	           				c.setCenterY(86+95*j);
+			 	           			c.setFill(Color.GREEN);
+			 	           		System.out.println("circle");
+			 	           			a1.getChildren().add(c);
+			 	           			}	
+			 	           		if(status[i][j]==2){
+			 	           		Circle c2 = new Circle();
+			           				c2.setRadius(5);
+			           				c2.setCenterX(155+67*i);
+			           				c2.setCenterY(86+95*j);
+			           			c2.setFill(Color.RED);
+			           		System.out.println("circle2");
+			           			a1.getChildren().add(c2);	
+		 	           				
+		 	           				
+		 	           			}	
+			 	           				
+			 	           				
+			 	           				
+			 	           			}
+			 	           			
+			 	            		}//
+	 	            		  
 	 	            		  });
 	 	            		   
 	 	            	   }
