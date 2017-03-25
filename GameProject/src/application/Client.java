@@ -46,6 +46,7 @@ public class Client extends Application {
 	static BufferedWriter bw; // буферизированный писатель в сокет 
 	ArrayList<Circle> circles = new ArrayList<Circle>();
 	int h = 0;
+	EventHandler handler ;
 	String pmass="";
 	int QPROFIT=0;
 	String fmass="";
@@ -57,12 +58,22 @@ public class Client extends Application {
 	Label moneyl;
 	AnchorPane a1 ;
 	Scene sc1;
+	Button participate;
+	Button adv;
+	Button bribery;
+	ImageView py;
 	Image bb2;
 	Image bb;
+	
+	Image win;
+	Image lose;
+	Image standart;
 	Label orel;
 	String m = "";
 	int tid = 0;
 	Label cpt;
+	int T_COUNT=0;
+	int TURN_P;
 	Label mpt;
 	String tt="";
 	int tapcounter;
@@ -72,19 +83,24 @@ public class Client extends Application {
     private PrintWriter output;
     static AffableThread mSecondThread;
     String line = null;
+   ImageView build;
     String lin2e = "";
     int money=50000;
 	String TURN_ID="";
 	ProgressBar winp;
+	ProgressBar tprogress;
 	Button buyq;
 	Button use;
 	Button buyf;
-
+	int B_COUNT=0;
 	int ore = 0;
 	int res = 0;
 	int[][]map =new int[12][6];
 	int[][]status =new int[12][6];
 	int tecnic[] = new int[6];
+	int [][]usr = new int[12][6];
+	int [][]bstatus = new int[12][6];
+	double [][]prog = new double[12][6];
 	int menuIsPressed = 0;
 	ImageView oType;
 	Button nextTurn;
@@ -114,7 +130,7 @@ public class Client extends Application {
 	ImageView helic;
 	ImageView cran2;
 	Button infomenu;
-	
+	int A_COUNT=0;
 	Socket so;  // это будет сокет для сервера
     BufferedReader socketReader; // буферизированный читатель с сервера
     BufferedWriter socketWriter; // буферизированный писатель на сервер
@@ -171,7 +187,27 @@ public class Client extends Application {
 			
 		}		
 		
-		
+		for(int i = 0;i<12;i++){
+			for(int j = 0;j<6;j++){
+				
+				usr[i][j]=0;
+			}
+			
+		}	
+		for(int i = 0;i<12;i++){
+			for(int j = 0;j<6;j++){
+				
+				prog[i][j]=0;
+			}
+			
+		}	
+		for(int i = 0;i<12;i++){
+			for(int j = 0;j<6;j++){
+				
+				bstatus[i][j]=0;
+			}
+			
+		}	
 		map [0][0]=1 ;
 				 String oak = "Oak City";
 				 String oakd ="Small city near the outer edge. It's only one brick factory near the city.";
@@ -301,11 +337,16 @@ public class Client extends Application {
 		winp.setLayoutX(990);
 		winp.setLayoutY(135);
 		
+		
+		
+		
 		double dwinp = money/1000000.0;
 		System.out.println(money+"/"+dwinp);
 		winp.setProgress(dwinp);
 		winp.setPrefWidth(250);
 		a1.getChildren().add(winp);
+		
+		
 		
 		ProgressBar housepp = new ProgressBar();
 		housepp.setLayoutX(990);
@@ -661,6 +702,8 @@ public class Client extends Application {
 			
 			
 			
+			
+			
 			 bb2 = new Image("img/endbutt2.png");
 			 bb = new Image("img/endbutt.png");
 			nextTurn = new Button();
@@ -767,13 +810,17 @@ public class Client extends Application {
 		
 		owner = new Label("city"); //имя обьекта
 		owner.setFont(new Font("Showcard Gothic",30));
+		owner.setTextFill(Color.WHITE);
+		
 		owner.setLayoutX(330);
+		
 		owner.setLayoutY(320);//170
 		owner.setVisible(false);
 		a1.getChildren().add(owner);
 		
 		qcost = new Label("city"); //имя обьекта
 		qcost.setFont(new Font("Showcard Gothic",30));
+		qcost.setTextFill(Color.WHITE);
 		qcost.setLayoutX(320);
 		qcost.setLayoutY(443);//170
 		qcost.setVisible(false);
@@ -782,6 +829,7 @@ public class Client extends Application {
 		
 		salary = new Label("city"); //имя обьекта
 		salary.setFont(new Font("Showcard Gothic",30));
+		salary.setTextFill(Color.WHITE);
 		salary.setLayoutX(360);
 		salary.setLayoutY(400);//170
 		salary.setVisible(false);
@@ -790,6 +838,7 @@ public class Client extends Application {
 		
 		
 		profit = new Label("city"); //имя обьекта
+		profit.setTextFill(Color.WHITE);
 		profit.setFont(new Font("Showcard Gothic",25));
 		profit.setLayoutX(620);
 		profit.setLayoutY(520);//170
@@ -799,6 +848,7 @@ public class Client extends Application {
 		
 		acost = new Label("city"); //имя обьекта
 		acost.setFont(new Font("Showcard Gothic",25));
+		acost.setTextFill(Color.WHITE);
 		acost.setLayoutX(1100);
 		acost.setLayoutY(505);//170
 		acost.setVisible(false);
@@ -806,6 +856,7 @@ public class Client extends Application {
 		
 		aprofit = new Label("city"); //имя обьекта
 		aprofit.setFont(new Font("Showcard Gothic",25));
+		aprofit.setTextFill(Color.WHITE);
 		aprofit.setLayoutX(1100);
 		aprofit.setLayoutY(565);//170
 		aprofit.setVisible(false);
@@ -816,6 +867,7 @@ public class Client extends Application {
 
 		bcost = new Label("city"); //имя обьекта
 		bcost.setFont(new Font("Showcard Gothic",25));
+		bcost.setTextFill(Color.WHITE);
 		bcost.setLayoutX(1100);
 		bcost.setLayoutY(625);//170
 		bcost.setVisible(false);
@@ -823,6 +875,7 @@ public class Client extends Application {
 
 		bchance = new Label("city"); //имя обьекта
 		bchance.setFont(new Font("Showcard Gothic",25));
+		bchance.setTextFill(Color.WHITE);
 		bchance.setLayoutX(1100);
 		bchance.setLayoutY(665);//170
 		bchance.setVisible(false);
@@ -830,6 +883,7 @@ public class Client extends Application {
 
 		bprofit = new Label("city"); //имя обьекта
 		bprofit.setFont(new Font("Showcard Gothic",25));
+		bprofit.setTextFill(Color.WHITE);
 		bprofit.setLayoutX(1100);
 		bprofit.setLayoutY(700);//170
 		bprofit.setVisible(false);
@@ -838,6 +892,7 @@ public class Client extends Application {
 		
 		tcost = new Label("city"); //имя обьекта
 		tcost.setFont(new Font("Showcard Gothic",30));
+		tcost.setTextFill(Color.WHITE);
 		tcost.setLayoutX(400);
 		tcost.setLayoutY(450);//170
 		tcost.setVisible(false);
@@ -845,6 +900,7 @@ public class Client extends Application {
 		
 		nres = new Label("city"); //имя обьекта
 		nres.setFont(new Font("Showcard Gothic",30));
+		nres.setTextFill(Color.WHITE);
 		nres.setLayoutX(460);
 		nres.setLayoutY(550);//170
 		nres.setVisible(false);
@@ -854,6 +910,7 @@ public class Client extends Application {
 		
 		cpt = new Label("city"); //имя обьекта
 		cpt.setFont(new Font("Showcard Gothic",30));
+		cpt.setTextFill(Color.WHITE);
 		cpt.setLayoutX(440);
 		cpt.setLayoutY(363);//170
 		cpt.setVisible(false);
@@ -861,6 +918,7 @@ public class Client extends Application {
 		
 		mpt = new Label("city"); //имя обьекта
 		mpt.setFont(new Font("Showcard Gothic",30));
+		mpt.setTextFill(Color.WHITE);
 		mpt.setLayoutX(440);
 		mpt.setLayoutY(363);//170
 		mpt.setVisible(false);
@@ -869,18 +927,22 @@ public class Client extends Application {
 		
 		name = new Label("city"); //имя обьекта
 		name.setFont(new Font("Showcard Gothic",40));
+		name.setTextFill(Color.WHITE);
 		name.setLayoutX(170);
 		name.setLayoutY(680);//170
 		name.setVisible(false);
 		a1.getChildren().add(name);
 		level = new Label("lvl"); //имя обьекта
 		level.setFont(new Font("Showcard Gothic",27));
+		level.setTextFill(Color.WHITE);
 		level.setLayoutX(170);
 		level.setLayoutY(735);//170
 		level.setVisible(false);
 		a1.getChildren().add(level);
 		description = new Label("hi"); //имя обьекта
-		description.setFont(new Font("Showcard Gothic",27));
+		description.setFont(new Font("Showcard Gothic",20));
+		description.setTextFill(Color.WHITE);
+		description.setWrapText(true);
 		description.setPrefWidth(600);
 		description.setPrefHeight(100);
 		description.setLayoutX(700);
@@ -888,6 +950,18 @@ public class Client extends Application {
 		description.setVisible(false);
 		a1.getChildren().add(description);
 		
+		
+
+		 participate = new Button();
+		 participate.setLayoutX(790);//50
+		 participate.setLayoutY(315);//125
+		 participate.setPrefHeight(101);//
+		 participate.setPrefWidth(513);//
+		 participate.setDisable(true);
+		 participate.setOpacity(0);
+		
+		 
+		 a1.getChildren().add(participate);
 		
 		exc = new ImageView("img/excav.png");//50+10
 		exc.setLayoutX(50);//
@@ -941,6 +1015,16 @@ public class Client extends Application {
 		a1.getChildren().add(helic);
 		
 		
+		py = new ImageView("img/py.png");//50+10
+		py.setLayoutX(790);//
+		py.setLayoutY(315);//
+		py.setFitHeight(101);//6x95height
+		py.setFitWidth(513);//12x100width
+		py.setVisible(false);
+		a1.getChildren().add(py);
+		
+		
+		
 		Button closeim = new Button();
 		closeim.setLayoutX(10);//
 		closeim.setLayoutY(85);//
@@ -981,9 +1065,41 @@ public class Client extends Application {
 		a1.getChildren().add(er);
 		
 		
+
+		tprogress = new ProgressBar();
+		tprogress.setLayoutX(339);
+		tprogress.setLayoutY(370);
+		tprogress.setProgress(0);
+		tprogress.setPrefWidth(250);
+		tprogress.setVisible(false);
+		a1.getChildren().add(tprogress);
 		
-		EventHandler handler = new EventHandler<InputEvent>() {
-		    public void handle(InputEvent event) {
+		adv =new Button();
+		adv.setLayoutX(790);//50
+		adv.setLayoutY(315);//125
+		adv.setPrefHeight(101);//
+		adv.setPrefWidth(513/2);//
+		adv.setDisable(true);
+		adv.setOpacity(0);
+		a1.getChildren().add(adv);
+		
+		bribery =new Button();
+		bribery.setLayoutX(1046);//50
+		bribery.setLayoutY(315);//125
+		bribery.setPrefHeight(101);//
+		bribery.setPrefWidth(513/2);//
+		bribery.setDisable(true);
+		bribery.setOpacity(0);
+		a1.getChildren().add(bribery);
+		 win = new Image("img/win.png");
+		 lose = new Image("img/lose.png");
+		 standart = new Image("img/py.png");
+		 handler = new EventHandler<InputEvent>() {
+		   
+			 
+			 
+			 
+			 public void handle(InputEvent event) {
 		    	Point location = MouseInfo.getPointerInfo().getLocation();
 		        double x = (int)(location.getX()-150)/67;
 		        double y =(int) (location.getY()-80)/95;
@@ -1136,7 +1252,8 @@ public class Client extends Application {
 		    	
 		    	
 	    		infomenu.setOnAction(bb2->{
-	    		for(int i = 0;i<circles.size();i++){
+	    			a1.removeEventHandler(MouseEvent.MOUSE_CLICKED, handler);
+	    			for(int i = 0;i<circles.size();i++){
 	    			Circle s = circles.get(i);
 	    			s.setOpacity(0);
 	    			
@@ -1147,6 +1264,188 @@ public class Client extends Application {
 	    			
 	    			if(oType.getImage()==c){
 	    			System.out.println("lol");
+	    			if(status[(int) x][(int) y]==0||status[(int) x][(int) y]==4){
+	    			participate.setDisable(false);
+	    			
+	    			}
+	    			if(status[(int) x][(int) y]==3){
+	    			if(bstatus[(int) x][(int) y]==0){
+	    				py.setImage(standart);
+	    			}
+	    			if(bstatus[(int) x][(int) y]==1){
+	    				py.setImage(win);
+	    			System.out.println("ttt1");
+	    			}
+	    			if(bstatus[(int) x][(int) y]==2){
+	    				py.setImage(lose);
+	    				System.out.println("ttt2");
+	    			}
+	    			}
+	    			participate.setOnAction(l->{
+	    				if(tprogress.getProgress()!=0){
+	    				if((status[(int) x][(int) y]==0||status[(int) x][(int) y]==4)&&T_COUNT==0&&Integer.parseInt(tcost.getText())<=money){
+	    				
+	    				money = money -Integer.parseInt(tcost.getText()); 	
+	    				moneyl.setText(""+money);	
+	    				prog[(int) x][(int) y]+=0.1;
+	    				tprogress.setProgress(prog[(int) x][(int) y]);
+	    				status[(int) x][(int) y]=3;
+	    				py.setVisible(true);
+	    				
+	    				
+	    				T_COUNT=1;	
+	    				adv.setDisable(false);
+	    				bribery.setDisable(false);
+	    				adv.setOnAction(k->{
+	    				if(A_COUNT==0){
+	    					String ss[] = acost.getText().split("/");
+	    				String ss1  = ss[0].replace("$", "");
+	    				
+	    				if(money>Integer.parseInt(ss1)){
+	    					money = money -Integer.parseInt(ss1);
+	    					moneyl.setText(""+money);
+	    					String a1 = aprofit.getText().replace("+","" );
+	    					String a2[] = a1.split("%");
+	    					
+	    					prog[(int) x][(int) y]+=Double.parseDouble(a2[0])/100;
+	    					tprogress.setProgress(prog[(int) x][(int) y]);
+	    				}
+	    					
+	    				A_COUNT = 1;
+	    				}
+	    				}
+	    				);
+	    				bribery.setOnAction(m->{
+	    					if(B_COUNT==0&&money>Integer.parseInt(bcost.getText().replace("$",""))&&bstatus[(int) x][(int) y] ==0){
+		    				String ss1  = acost.getText().replace("$", "");
+	    					int a= (int)(Math.random()*100+1);
+	    					money = money - Integer.parseInt(bcost.getText().replace("$",""));
+	    					moneyl.setText(""+money);
+	    					if(a<Integer.parseInt(bchance.getText().replace("%", ""))){
+	    						py.setImage(win);
+	    					String f = bprofit.getText().replace("%", "");
+	    					f = f.replace("+", "");
+	    						prog[(int) x][(int) y] += Double.parseDouble(f)/100;
+	    						tprogress.setProgress(prog[(int) x][(int) y]);
+	    						bstatus[(int) x][(int) y] = 1;
+	    					}
+	    					else{
+	    						py.setImage(lose);	
+	    						bstatus[(int) x][(int) y] = 2;
+	    					}
+	    					
+		    				B_COUNT=1;
+	    					}	
+	    				});//
+	    				
+	    				for(int i=0;i<12;i++){
+	 	           			for(int j = 0;j<6;j++){
+	 	           			if(status[i][j]==1){
+	 	           				Circle c = new Circle();
+	 	           				c.setRadius(5);
+	 	           				c.setCenterX(155+67*i);
+	 	           				c.setCenterY(86+95*j);
+	 	           			c.setFill(Color.GREEN);
+	 	           		System.out.println("circle");
+	 	           			a1.getChildren().add(c);
+	 	           		circles.add(c);
+	 	           			}//revolution	
+	 	           		if(status[i][j]==2){
+	 	           		Circle c2 = new Circle();
+	           				c2.setRadius(5);
+	           				c2.setCenterX(155+67*i);
+	           				c2.setCenterY(86+95*j);
+	           			c2.setFill(Color.RED);
+	           		System.out.println("circle2");
+	           			a1.getChildren().add(c2);	
+	           			circles.add(c2);
+ 	           				
+ 	           			}	
+	 	           	if(status[i][j]==3){
+	 	           		Circle c2 = new Circle();
+	           				c2.setRadius(5);
+	           				c2.setCenterX(155+67*i);
+	           				c2.setCenterY(86+95*j);
+	           			c2.setFill(Color.ORANGE);
+	           		System.out.println("circle2");
+	           			a1.getChildren().add(c2);	
+	           			circles.add(c2);
+ 	           				
+ 	           			}			
+	 	           				
+	 	           				
+	 	           			}
+	 	           			
+	 	            		}//
+	    				for(int i = 0;i<circles.size();i++){
+	    	    			Circle s = circles.get(i);
+	    	    			s.setOpacity(0);
+	    	    			
+	    	    		}
+	    				s.setScene(sc1);//установка сцены
+		    			s.show();//запуск стейджа
+		    			
+	    				}
+	    				
+	    				
+	    				
+	    			}
+	    				else{
+	    				status[(int) x][(int) y]=1;	
+	    				String d = profit.getText().replace("$", "");
+	    				String dd[] = d.split("/");
+	    				TURN_P+=Integer.parseInt(dd[0]);
+	    				
+	    				}	
+	    			
+	    			});
+	    			if(status[(int) x][(int) y]==3){
+    				py.setVisible(true);
+    				adv.setDisable(false);
+    				adv.setOnAction(k->{
+	    				if(A_COUNT==0){
+    					String ss[] = acost.getText().split("/");
+	    				String ss1  = ss[0].replace("$", "");
+	    				System.out.println("f"+ss1);
+	    				if(money>Integer.parseInt(ss1)){
+	    					money = money -Integer.parseInt(ss1);
+	    					moneyl.setText(""+money);
+	    					String a1 = aprofit.getText().replace("+","" );
+	    					String a2[] = a1.split("%");
+	    					
+	    					prog[(int) x][(int) y]+=Double.parseDouble(a2[0])/100;
+	    					tprogress.setProgress(prog[(int) x][(int) y]);
+	    				}
+	    					
+	    				}});
+    				bribery.setOnAction(m->{
+    					if(B_COUNT==0&&money>Integer.parseInt(bcost.getText().replace("$",""))&&bstatus[(int) x][(int) y] ==0){
+	    				String ss1  = acost.getText().replace("$", "");
+    					int a= (int)(Math.random()*100+1);
+    					money = money - Integer.parseInt(bcost.getText().replace("$",""));
+    					moneyl.setText(""+money);
+    					if(a<Integer.parseInt(bchance.getText().replace("%", ""))){
+    						py.setImage(win);
+    					String f = bprofit.getText().replace("%", "");
+    					f = f.replace("+", "");
+    						prog[(int) x][(int) y] += Double.parseDouble(f)/100;
+    						tprogress.setProgress(prog[(int) x][(int) y]);
+    						bstatus[(int) x][(int) y] = 1;
+    					}
+    					else{
+    						py.setImage(lose);	
+    						bstatus[(int) x][(int) y] = 2;
+    					}
+    					
+	    				B_COUNT=1;
+    					}	
+    				});//
+    				
+    				
+    				bribery.setDisable(false);
+	    			}
+	    			tprogress.setProgress(prog[(int) x][(int) y]);
+	    			tprogress.setVisible(true);
 	    			cityinfo.setVisible(true);
 	    			lpanel.setVisible(false);
 	    			oType.setLayoutY(155);
@@ -1163,66 +1462,66 @@ public class Client extends Application {
 	    			if(map[(int) x][(int) y]==1){
 	    				tcost.setText("500");
 	    				profit.setText("4500$/turn");
-	    			nres.setText("500");
+	    			nres.setText("66");
 	    			cran1.setVisible(true);
 	    			exc.setVisible(true);
 	    			acost.setText("1000$/turn");
-	    			aprofit.setText("+3%/turn");
-	    			bcost.setText("5000$");
+	    			aprofit.setText("+10%/turn");
+	    			bcost.setText("2000$");
 	    			bchance.setText("70%");
-	    			bprofit.setText("+15%");
+	    			bprofit.setText("+25%");
 	    			
 	    			}
 	    			if(map[(int) x][(int) y]==2){
 	    				tcost.setText("500");
 	    				profit.setText("4500$/turn");
-	    				nres.setText("520");
+	    				nres.setText("66");
 	    				cran1.setVisible(true);
 	    				conc.setVisible(true);
 	    				acost.setText("1000$/turn");
-		    			aprofit.setText("+3%/turn");
-		    			bcost.setText("5000$");
+		    			aprofit.setText("+10%/turn");
+		    			bcost.setText("2000$");
 		    			bchance.setText("70%");
-		    			bprofit.setText("+15%");
+		    			bprofit.setText("+25%");
 	    			}
 	    			if(map[(int) x][(int) y]==3){
-	    				tcost.setText("800");
+	    				tcost.setText("132");
 	    				profit.setText("7650$/turn");
-	    				nres.setText("850");
+	    				nres.setText("120");
 	    				cran1.setVisible(true);
 	    				conc.setVisible(true);
 	    				exc.setVisible(true);
 	    				acost.setText("1500$/turn");
-		    			aprofit.setText("+5%/turn");
-		    			bcost.setText("15000$");
+		    			aprofit.setText("+15%/turn");
+		    			bcost.setText("4000$");
 		    			bchance.setText("60%");
-		    			bprofit.setText("+19%");
+		    			bprofit.setText("+28%");
 	    			}
 	    			if(map[(int) x][(int) y]==4){
-	    				tcost.setText("800");
+	    				tcost.setText("138");
 	    				profit.setText("7600$/turn");
 	    				nres.setText("1000");
 	    				cran2.setVisible(true);
 		    			exc.setVisible(true);
 		    			helic.setVisible(true);
 		    			acost.setText("1500$/turn");
-		    			aprofit.setText("+5%/turn");
-		    			bcost.setText("15000$");
+		    			aprofit.setText("+15%/turn");
+		    			bcost.setText("4000$");
 		    			bchance.setText("60%");
-		    			bprofit.setText("+19%");
+		    			bprofit.setText("+29%");
 	    			}
 	    			if(map[(int) x][(int) y]==5){
-	    				tcost.setText("1400");
+	    				tcost.setText("250");
 	    				profit.setText("14000$/turn");
-	    				nres.setText("2000");
+	    				nres.setText("276");
 	    				cran2.setVisible(true);
 		    			exc.setVisible(true);
 		    			helic.setVisible(true);
 		    			lorry.setVisible(true);
 		    			conc.setVisible(true);
 		    			acost.setText("2900$/turn");
-		    			aprofit.setText("+8%/turn");
-		    			bcost.setText("25000$");
+		    			aprofit.setText("+15%/turn");
+		    			bcost.setText("8000$");
 		    			bchance.setText("45%");
 		    			bprofit.setText("+20%");
 	    			}
@@ -1232,7 +1531,15 @@ public class Client extends Application {
 	    			}
 	    			closeim.setDisable(false);
 	    			closeim.setOnAction(cl->{
-	    				cityinfo.setVisible(false);
+	    				a1.addEventHandler(MouseEvent.MOUSE_CLICKED, handler);
+	    				if(status[(int) x][(int) y]==3){
+	        				py.setVisible(false);
+	        				adv.setDisable(true);
+	        				bribery.setDisable(true);	
+	    				}
+	    	    			tprogress.setVisible(false);
+	    	    			participate.setDisable(true);
+	    	    			cityinfo.setVisible(false);
 		    			lpanel.setVisible(true);
 		    			oType.setLayoutY(665);
 		    			name.setLayoutY(680);
@@ -1256,7 +1563,7 @@ public class Client extends Application {
 			    			s.setOpacity(1);
 			    			
 			    		}
-		    			if(status[(int) x][(int) y]==0){
+		    			if(status[(int) x][(int) y]==0||status[(int) x][(int) y]==3){
 		    				owner.setText("Not Defined");
 		    				owner.setVisible(false);
 		    				
@@ -1586,6 +1893,7 @@ public class Client extends Application {
 	    			
 	    			closeim.setDisable(false);
 	    			closeim.setOnAction(cl->{
+	    				a1.addEventHandler(MouseEvent.MOUSE_CLICKED, handler);
 	    				qinfo.setVisible(false);
 		    			lpanel.setVisible(true);
 		    			buyq.setDisable(true);
@@ -1920,33 +2228,35 @@ public class Client extends Application {
 	    			 
 	    			
 	    			use.setOnAction(clicked->{
+	    				
 	    				if(nextTurn.isDisable()==false&&status[(int) x][(int) y]==1){
 	    					eres = Integer.parseInt(er.getText());
 	    					System.out.println("pressed+"+"//"+eres+"/"+er.getText());
-	    					if(ll2==1&&eres<=9&&ore>=eres){
+	    					if(ll2==1&&eres<=9&&ore>=eres&&(9-usr[(int) x][(int) y])>eres){
 	    						System.out.println("pressed2");
 	    						ore  =ore- eres;
-	    					RES = RES+eres;
+	    						usr[(int) x][(int) y]+=eres;
+	    						RES = RES+eres;
 	    					orel.setText(""+ore);
 	    					
 	    				}
-	    				if(ll2==2&&eres<=18&&ore>=eres){
+	    				if(ll2==2&&eres<=18&&ore>=eres&&(18-usr[(int) x][(int) y])>eres){
 	    					ore  =ore-  eres;
 	    					RES = RES+eres;
 		    				orel.setText(""+ore);	
-		    					
+		    				usr[(int) x][(int) y]+=eres;
 		    				}
-	    				if(ll2==3&&eres<=36&&ore>=eres){
+	    				if(ll2==3&&eres<=36&&ore>=eres&&(36-usr[(int) x][(int) y])>eres){
 	    					ore  =ore-  eres;
 	    					RES = RES+eres;
 		    				orel.setText(""+ore);
-		    					
+		    				usr[(int) x][(int) y]+=eres;	
 		    				}
-	    				if(ll2==4&&eres<=72&&ore>=eres){
+	    				if(ll2==4&&eres<=72&&ore>=eres&&(72-usr[(int) x][(int) y])>eres){
 	    					ore  =ore- eres;
 	    					RES = RES+eres;
 		    				orel.setText(""+ore);	
-		    					
+		    				usr[(int) x][(int) y]+=eres;	
 		    				}
 	    				
 	    				
@@ -1972,6 +2282,7 @@ public class Client extends Application {
 	    				
 	    			}closeim.setDisable(false);
 	    			closeim.setOnAction(cl->{
+	    				a1.addEventHandler(MouseEvent.MOUSE_CLICKED, handler);
 	    				er.setDisable(true);
 	    				use.setDisable(true);
 	    				er.setVisible(false);
@@ -2109,6 +2420,10 @@ public void updateUi(Stage s){
 	 		 	            		status[j][k]=1; 
 
 	 		 	            	 } 
+	 		 	            	else if(status[j][k]==3){
+	 		 	            		status[j][k]=4; 	 
+	 		 	            	 }
+	 		 	            	
 	 		 	            	 h++; 
 	 		 	            	
 	 		 	            	 } }
@@ -2139,6 +2454,14 @@ public void updateUi(Stage s){
 	 		 	            		status[j][k]=1; 
 
 	 		 	            	 } 
+	 		 	            	
+	 		 	            	else if(status[j][k]==3){
+	 		 	            		status[j][k]=4; 	 
+	 		 	            	 }
+	 		 	            	
+	 		 	            	
+	 		 	            	 
+	 		 	            	 
 	 		 	            	 h++; 
 	 		 	            	
 	 		 	            	 } }
@@ -2159,9 +2482,16 @@ public void updateUi(Stage s){
 	 	           
 	 	               if(TURN_ID.equals("1")){
 	 	            	  System.out.println("+"+tt);
-	 	            	   
+	 	            	
 	 	            	  if(tt.equals("2")){
-	 	            		 System.out.println("+++++++");
+	 	            		 for(int i = 0;i<12;i++){
+	 	 	        			for(int j = 0;j<6;j++){
+	 	 	        				
+	 	 	        				usr[i][j]=0;
+	 	 	        			}
+	 	 	        			
+	 	 	        		}	
+	 	            		  System.out.println("+++++++");
 	 	            		  Platform.runLater(() -> {
 	 	            			 System.out.println("+++++++");
 	 	            			  nextTurn.setDisable(false);    
@@ -2171,6 +2501,12 @@ public void updateUi(Stage s){
 	 	            		 
 	 	            		res = res+RES;
 	 	            		 resl.setText(""+res); 
+	 	            		RES= 0;
+	 	            		T_COUNT = 0;
+	 	            		A_COUNT = 0;
+	 	            		B_COUNT = 0;
+	 	            		money = money+TURN_P;
+	 	            		moneyl.setText(""+money);
 	 	            		for(int i=0;i<12;i++){
 	 	           			for(int j = 0;j<6;j++){
 	 	           			if(status[i][j]==1){
@@ -2194,8 +2530,28 @@ public void updateUi(Stage s){
 	           			circles.add(c2);
  	           				
  	           			}	
-	 	           				
-	 	           				
+	 	           	if(status[i][j]==3){
+	 	           		Circle c2 = new Circle();
+	           				c2.setRadius(5);
+	           				c2.setCenterX(155+67*i);
+	           				c2.setCenterY(86+95*j);
+	           			c2.setFill(Color.ORANGE);
+	           		System.out.println("circle2");
+	           			a1.getChildren().add(c2);	
+	           			circles.add(c2);
+ 	           				
+ 	           			}			
+	 	       	if(status[i][j]==4){
+ 	           		Circle c2 = new Circle();
+           				c2.setRadius(5);
+           				c2.setCenterX(155+67*i);
+           				c2.setCenterY(86+95*j);
+           			c2.setFill(Color.YELLOW);
+           		System.out.println("circle2");
+           			a1.getChildren().add(c2);	
+           			circles.add(c2);
+	           				
+	           			}			
 	 	           				
 	 	           			}
 	 	           			
@@ -2208,7 +2564,13 @@ public void updateUi(Stage s){
 	 	            	  
 	 	            	   if(tt.equals("1")){
 	 	            		  System.out.println("+++++++");
-	 	            		   	   
+	 	            		 for(int i = 0;i<12;i++){
+	 	 	        			for(int j = 0;j<6;j++){
+	 	 	        				
+	 	 	        				usr[i][j]=0;
+	 	 	        			}
+	 	 	        			
+	 	 	        		}	   
 	 	            		
 	 	            		
 	 	            		  Platform.runLater(() -> {
@@ -2219,6 +2581,13 @@ public void updateUi(Stage s){
 		 	            		 orel.setText(""+ore);
 		 	            		res = res+RES;
 		 	            		 resl.setText(""+res); 
+		 	            		RES= 0;
+		 	            		T_COUNT = 0;
+		 	            		A_COUNT = 0;
+		 	            		B_COUNT = 0;
+		 	            		money = money+TURN_P;
+		 	            		moneyl.setText(""+money);
+		 	            		
 		 	            		for(int i=0;i<12;i++){
 			 	           			for(int j = 0;j<6;j++){
 			 	           			if(status[i][j]==1){
@@ -2242,8 +2611,28 @@ public void updateUi(Stage s){
 			           			circles.add(c2);
 		 	           				
 		 	           			}	
-			 	           				
-			 	           				
+			 	           	if(status[i][j]==3){
+			 	           		Circle c2 = new Circle();
+			           				c2.setRadius(5);
+			           				c2.setCenterX(155+67*i);
+			           				c2.setCenterY(86+95*j);
+			           			c2.setFill(Color.ORANGE);
+			           		System.out.println("circle2");
+			           			a1.getChildren().add(c2);	
+			           			circles.add(c2);
+		 	           				
+		 	           			}		
+			 	       	if(status[i][j]==4){
+		 	           		Circle c2 = new Circle();
+		           				c2.setRadius(5);
+		           				c2.setCenterX(155+67*i);
+		           				c2.setCenterY(86+95*j);
+		           			c2.setFill(Color.YELLOW);
+		           		System.out.println("circle2");
+		           			a1.getChildren().add(c2);	
+		           			circles.add(c2);
+	 	           				
+	 	           			}		
 			 	           				
 			 	           			}
 			 	           			
