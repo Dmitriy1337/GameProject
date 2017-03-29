@@ -1,6 +1,5 @@
 package application;
 
-
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.io.BufferedReader;
@@ -42,9 +41,20 @@ import javafx.stage.Stage;
 
 
 public class Client extends Application {
-	static BufferedReader br; // буферизировнный читатель сокета 
-	static BufferedWriter bw; // буферизированный писатель в сокет 
+	static BufferedReader br;   
+	static BufferedWriter bw; 
 	ArrayList<Circle> circles = new ArrayList<Circle>();
+	ArrayList<Integer> listp  = new ArrayList<Integer>();
+	
+	
+	int m1 = 0;
+	int y1 =0;
+	int j1=0;
+	int k1= 0;
+	int m2 = 0;
+	int y2 =0;
+	int j2=0;
+	int k2= 0;
 	int h = 0;
 	EventHandler handler ;
 	String pmass="";
@@ -59,9 +69,11 @@ public class Client extends Application {
 	Label moneyl;
 	AnchorPane a1 ;
 	Scene sc1;
+	Button participate1;
 	Button participate;
 	Button adv;
 	Button bribery;
+	Button list;
 	ImageView py;
 	Image bb2;
 	Image bb;
@@ -76,10 +88,11 @@ public class Client extends Application {
 	int T_COUNT=0;
 	int TURN_P = 0;
 	Label mpt;
+	Label mapt;
 	String tt="";
 	int tapcounter;
 	int MOVE_C=0;;
-	static Socket s;  // это будет сокет для сервера
+	static Socket s;  
 	private BufferedReader input;
     private PrintWriter output;
     static AffableThread mSecondThread;
@@ -121,6 +134,27 @@ public class Client extends Application {
 	Label nres;
 	Label salary;
 	Label qcost;
+	Label listo;
+	Label listo1;
+	Label listl;
+	Label listl1;
+	Label listh;
+	Label listh1;
+	Label listk;
+	Label listk1;
+	Label mm1;
+	Label yy1;
+	Label jj1;
+	Label kk1;
+	Label mm2;
+	Label yy2;
+	Label jj2;
+	Label kk2;
+	Label city1;
+	Label city2;
+	Label city3;
+	Label city4;
+	Label city5;
 	TextArea er;
 	ImageView cityinfo;
 	ImageView cran1;
@@ -133,19 +167,19 @@ public class Client extends Application {
 	ImageView cran2;
 	Button infomenu;
 	int A_COUNT=0;
-	Socket so;  // это будет сокет для сервера
-    BufferedReader socketReader; // буферизированный читатель с сервера
-    BufferedWriter socketWriter; // буферизированный писатель на сервер
-     BufferedReader userInput; // буферизированный читатель пользовательского ввода с консоли
+	Socket so;  // yoi aoaao nieao aey na?aa?a
+    BufferedReader socketReader; // aooa?ece?iaaiiue ?eoaoaeu n na?aa?a
+    BufferedWriter socketWriter; // aooa?ece?iaaiiue ienaoaeu ia na?aa?
+     BufferedReader userInput; // aooa?ece?iaaiiue ?eoaoaeu iieuciaaoaeuneiai aaiaa n eiiniee
 	
     
     
     
-    public synchronized void close() {//метод синхронизирован, чтобы исключить двойное закрытие.
-        if (!so.isClosed()) { // проверяем, что сокет не закрыт...
+    public synchronized void close() {//iaoia neio?iiece?iaai, ?oiau enee??eou aaieiia cae?uoea.
+        if (!so.isClosed()) { // i?iaa?yai, ?oi nieao ia cae?uo...
             try {
-                so.close(); // закрываем...
-                System.exit(0); // выходим!
+                so.close(); // cae?uaaai...
+                System.exit(0); // auoiaei!
             } catch (IOException ignored) {
                 ignored.printStackTrace();
             }
@@ -159,9 +193,9 @@ public class Client extends Application {
 			so = new Socket("localhost",23454);
 			 socketReader = new BufferedReader(new InputStreamReader(so.getInputStream(), "UTF-8"));
 		        socketWriter = new BufferedWriter(new OutputStreamWriter(so.getOutputStream(), "UTF-8"));
-		        // создаем читателя с консоли (от пользователя)
+		        // nicaaai ?eoaoaey n eiiniee (io iieuciaaoaey)
 		      
-		        new Thread(new Receiver()).start();// создаем и запускаем нить асинхронного чтения из сокета
+		        new Thread(new Receiver()).start();// nicaaai e caioneaai ieou aneio?iiiiai ?oaiey ec nieaoa
 
 		  } catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
@@ -169,8 +203,8 @@ public class Client extends Application {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} // создаем сокет
-	        // создаем читателя и писателя в сокет с дефолной кодировкой UTF-8
+		} // nicaaai nieao
+	        // nicaaai ?eoaoaey e ienaoaey a nieao n aaoieiie eiae?iaeie UTF-8
 		
 		
 		
@@ -273,7 +307,7 @@ public class Client extends Application {
 		
 		
 		
-		ImageView upbg = new ImageView("img/upbg.png");//бэкграунд верхней	панели
+		ImageView upbg = new ImageView("img/upbg.png");//ayea?aoia aa?oiae	iaiaee
 		
 		upbg.setLayoutX(0);//
 		upbg.setLayoutY(0);//
@@ -282,15 +316,15 @@ public class Client extends Application {
 		a1.getChildren().add(upbg);
 		
 		
-		ImageView progbar = new ImageView("img/progressbar.png");//бэкграунд верхней	панели
+		ImageView progbar = new ImageView("img/progressbar.png");//ayea?aoia aa?oiae	iaiaee
 		
 		progbar.setLayoutX(970);//
 		progbar.setLayoutY(90);//
-		progbar.setFitHeight(250);//
+		progbar.setFitHeight(150);//
 		progbar.setFitWidth(300);//
 		a1.getChildren().add(progbar);
 		
-		ImageView leftbar = new ImageView("img/leftp.png");//бэкграунд верхней	панели
+		ImageView leftbar = new ImageView("img/leftp.png");//ayea?aoia aa?oiae	iaiaee
 		
 		leftbar.setLayoutX(0);//
 		leftbar.setLayoutY(90);//
@@ -298,7 +332,7 @@ public class Client extends Application {
 		leftbar.setFitWidth(150);//
 		a1.getChildren().add(leftbar);
 		
-		ImageView menub = new ImageView("img/menub.png");//кнопка меню
+		ImageView menub = new ImageView("img/menub.png");//eiiiea iai?
 		menub.setLayoutX(0);//
 		menub.setLayoutY(0);//
 		menub.setFitHeight(75);//
@@ -306,35 +340,37 @@ public class Client extends Application {
 		a1.getChildren().add(menub);//
 	
 
-		ImageView music = new ImageView("img/musicon.png");//кнопка вкл/выкл музыку
+		ImageView music = new ImageView("img/musicon.png");//eiiiea aee/auee iocueo
 		music.setLayoutX(80);//
 		music.setLayoutY(0);//
 		music.setFitHeight(75);//
 		music.setFitWidth(75);//
 		a1.getChildren().add(music);//
 	
-		ImageView qu = new ImageView("img/qest.png");//кнопка об игре
+		ImageView qu = new ImageView("img/qest.png");//eiiiea ia ea?a
 		qu.setLayoutX(160);//
 		qu.setLayoutY(0);//
 		qu.setFitHeight(75);//
 		qu.setFitWidth(75);//
 		a1.getChildren().add(qu);
 	
-		 eb = new ImageView("img/endbutt.png");//кнопка передачи хода
+		 eb = new ImageView("img/endbutt.png");//eiiiea ia?aaa?e oiaa
 		eb.setLayoutX(300);//
 		eb.setLayoutY(0);//
 		eb.setFitHeight(80);//
 		eb.setFitWidth(350);//
 		a1.getChildren().add(eb);
+		 
 		
-		ImageView goldcounter = new ImageView("img/money.png");//иконка денег
+		
+		ImageView goldcounter = new ImageView("img/money.png");//eeiiea aaiaa
 		goldcounter.setLayoutX(700);//
 		goldcounter.setLayoutY(5);//
 		goldcounter.setFitHeight(70);//
 		goldcounter.setFitWidth(70);//
 		a1.getChildren().add(goldcounter);
 		
-		ImageView orecounter = new ImageView("img/ore.png");//иконка сырья
+		ImageView orecounter = new ImageView("img/ore.png");//eeiiea nu?uy
 		orecounter.setLayoutX(950);//
 		orecounter.setLayoutY(5);//
 		orecounter.setFitHeight(70);//
@@ -344,7 +380,7 @@ public class Client extends Application {
 		
 		 winp = new ProgressBar();
 		winp.setLayoutX(990);
-		winp.setLayoutY(135);
+		winp.setLayoutY(155);
 		
 		
 		
@@ -357,32 +393,12 @@ public class Client extends Application {
 		
 		
 		
-		ProgressBar housepp = new ProgressBar();
-		housepp.setLayoutX(990);
-		housepp.setLayoutY(180);
-		housepp.setProgress(0.6);
-		housepp.setPrefWidth(250);
-		a1.getChildren().add(housepp);
-		
-		ProgressBar quarryp = new ProgressBar();
-		quarryp.setLayoutX(990);
-		quarryp.setLayoutY(240);
-		quarryp.setProgress(0.6);
-		quarryp.setPrefWidth(250);
-		a1.getChildren().add(quarryp);
-		
-		
-		ProgressBar factp = new ProgressBar();
-		factp.setLayoutX(990);
-		factp.setLayoutY(285);
-		factp.setProgress(0.6);
-		factp.setPrefWidth(250);
-		a1.getChildren().add(factp);
 		
 		
 		
 		
-		ImageView rescounter = new ImageView("img/res.png");//иконка материалов
+		
+		ImageView rescounter = new ImageView("img/res.png");//eeiiea iaoa?eaeia
 		rescounter.setLayoutX(1140);//
 		rescounter.setLayoutY(5);//
 		rescounter.setFitHeight(70);//
@@ -390,7 +406,7 @@ public class Client extends Application {
 		a1.getChildren().add(rescounter);
 		
 		
-		ImageView mapi = new ImageView("img/map.png");//карта
+		ImageView mapi = new ImageView("img/map.png");//ea?oa
 		mapi.setLayoutX(150);//
 		mapi.setLayoutY(80);//
 		mapi.setFitHeight(570);//6x95height
@@ -403,7 +419,7 @@ public class Client extends Application {
 				
 				if(map[i][j]==1||map[i][j]==2||map[i][j]==3||map[i][j]==4||map[i][j]==5){
 				
-				ImageView house = new ImageView("img/cityi.png");//бэкграунд верхней	панели
+				ImageView house = new ImageView("img/cityi.png");//ayea?aoia aa?oiae	iaiaee
 				house.setLayoutX(150+67*i);//
 				house.setLayoutY(85+95*j);//
 				house.setFitHeight(70);//
@@ -412,7 +428,7 @@ public class Client extends Application {
 			}
 				if(map[i][j]==11||map[i][j]==12||map[i][j]==13||map[i][j]==14||map[i][j]==15||map[i][j]==16||map[i][j]==17||map[i][j]==18||map[i][j]==19||map[i][j]==20){
 					
-					ImageView ore = new ImageView("img/orei.png");//бэкграунд верхней	панели
+					ImageView ore = new ImageView("img/orei.png");//ayea?aoia aa?oiae	iaiaee
 					ore.setLayoutX(150+67*i);//
 					ore.setLayoutY(85+95*j);//
 					ore.setFitHeight(70);//
@@ -421,7 +437,7 @@ public class Client extends Application {
 				}
 				if(map[i][j]==21||map[i][j]==22||map[i][j]==23||map[i][j]==24||map[i][j]==25||map[i][j]==26||map[i][j]==27||map[i][j]==28||map[i][j]==29||map[i][j]==30){
 					
-					ImageView res = new ImageView("img/factl.png");//бэкграунд верхней	панели
+					ImageView res = new ImageView("img/factl.png");//ayea?aoia aa?oiae	iaiaee
 					res.setLayoutX(150+67*i);//
 					res.setLayoutY(85+95*j);//
 					res.setFitHeight(70);//
@@ -444,25 +460,25 @@ public class Client extends Application {
 		
 		
 		
-		 moneyl = new Label(""+money); //показатель денег
+		 moneyl = new Label(""+money); //iieacaoaeu aaiaa
 		moneyl.setFont(new Font("Showcard Gothic",40));
 		moneyl.setLayoutX(780);
 		moneyl.setLayoutY(13);
 		a1.getChildren().add(moneyl);
 		
-		 orel = new Label(""+ore); //показатель сырьяфаывп
+		 orel = new Label(""+ore); //iieacaoaeu nu?uyoauai
 		orel.setFont(new Font("Showcard Gothic",40));
 		orel.setLayoutX(1030);
 		orel.setLayoutY(13);
 		a1.getChildren().add(orel);
 		
-		 resl = new Label(""+res); //показатель материалов
+		 resl = new Label(""+res); //iieacaoaeu iaoa?eaeia
 		resl.setFont(new Font("Showcard Gothic",40));
 		resl.setLayoutX(1220);
 		resl.setLayoutY(13);
 		a1.getChildren().add(resl);
 		
-		ImageView menui = new ImageView("img/pausem.png");//иконка материалов
+		ImageView menui = new ImageView("img/pausem.png");//eeiiea iaoa?eaeia
 		menui.setLayoutX(535);//
 		menui.setLayoutY(130);//
 		menui.setFitHeight(500);//6x95height
@@ -471,7 +487,7 @@ public class Client extends Application {
 		a1.getChildren().add(menui);
 		
 		
-		 lpanel = new ImageView("img/lowpanel.png");//иконка материалов
+		 lpanel = new ImageView("img/lowpanel.png");//eeiiea iaoa?eaeia
 		lpanel.setLayoutX(0);//
 		lpanel.setLayoutY(610);//
 		lpanel.setFitHeight(220);//80
@@ -497,8 +513,9 @@ public class Client extends Application {
 		resume.setOpacity(0);
 		resume.setDisable(true);
 		resume.setOnAction(resum->{
+			a1.addEventHandler(MouseEvent.MOUSE_CLICKED, handler);
 			menui.setVisible(false);
-			resume.setVisible(false);
+			resume.setDisable(true);
 			for(int i = 0;i<circles.size();i++){
 	    			Circle ss = circles.get(i);
 	    			ss.setOpacity(1);
@@ -507,14 +524,21 @@ public class Client extends Application {
 		});
 		
 		
-		ImageView sellw = new ImageView("img/sellw.png");//иконка материалов
+		ImageView sellw = new ImageView("img/sellw.png");//eeiiea iaoa?eaeia
 		sellw.setLayoutX(100);//
 		sellw.setLayoutY(150);//
 		sellw.setFitHeight(250);//6x95height
 		sellw.setFitWidth(400);//12x100width
 		sellw.setVisible(false);
 		a1.getChildren().add(sellw);
-		
+		 
+		ImageView list1 = new ImageView("img/list.png");
+		 list1.setLayoutX(145);//
+		 list1.setLayoutY(80);//
+		 list1.setFitHeight(570);//6x95height
+		 list1.setFitWidth(810);//12x100width
+		 list1.setVisible(false);
+		 a1.getChildren().add(list1);
 		
 		TextArea sellc = new TextArea("0");
 		sellc.setLayoutX(130);
@@ -583,8 +607,8 @@ public class Client extends Application {
 			
 		
 		}	
-		s.setScene(sc1);//установка сцены
-		s.show();//запуск стейджа	
+		s.setScene(sc1);//onoaiiaea noaiu
+		s.show();//caione noaea?a	
 			
 			
 		});
@@ -599,6 +623,7 @@ public class Client extends Application {
 		gexit.setOpacity(0);
 		gexit.setDisable(true);
 		gexit.setOnAction(gex->{
+			
 			System.exit(0);
 			//a1.getChildren().remove(gexit);
 			
@@ -615,6 +640,34 @@ public class Client extends Application {
 		 bank.setOpacity(0);
 		 bank.setDisable(false);
 		 bank.setOnAction(buy->{
+			 for(int i = 0;i<circles.size();i++){
+	    			Circle ss = circles.get(i);
+	    			ss.setOpacity(1);
+	    			
+	    		} 
+				a1.addEventHandler(MouseEvent.MOUSE_CLICKED, handler);
+				list1.setVisible(false); 
+				listo.setVisible(false);
+				listo1.setVisible(false);
+				listl.setVisible(false);
+				listl1.setVisible(false);
+				listh.setVisible(false);
+				listh1.setVisible(false);
+		        listk.setVisible(false);
+			    listk1.setVisible(false);
+			    mm1.setVisible(false);
+             mm2.setVisible(false);
+				yy1.setVisible(false);
+				yy2.setVisible(false);
+				jj1.setVisible(false);
+				jj2.setVisible(false);
+				kk1.setVisible(false);
+				kk2.setVisible(false);
+				city1.setVisible(false);	
+				city2.setVisible(false);
+				city3.setVisible(false);
+				city4.setVisible(false);
+				city5.setVisible(false);
 			 for(int i = 0;i<circles.size();i++){
 	    			Circle ss = circles.get(i);
 	    			ss.setOpacity(0);
@@ -648,6 +701,246 @@ public class Client extends Application {
 		 });
 		 a1.getChildren().add(bank);
 		
+
+			Button lexit = new Button();
+			lexit.setLayoutX(890);//
+			lexit.setLayoutY(80);//
+			lexit.setPrefHeight(50);//
+			lexit.setPrefWidth(50);//
+			lexit.setOpacity(0);
+			lexit.setDisable(true);
+			a1.getChildren().add(lexit);
+			   
+		 
+		 
+		 
+		   list  = new Button();
+		   list.setLayoutX(30);//
+		   list.setLayoutY(350);//
+		   list.setPrefHeight(90);//
+		   list.setPrefWidth(90);//
+		   list.setOpacity(0);
+		   list.setDisable(false);
+		   list.setVisible(true);
+		   list.setOnAction(lis->{	 
+			   for(int i = 0;i<circles.size();i++){
+	    			Circle ss = circles.get(i);
+	    			ss.setOpacity(1);
+	    			
+	    		} 
+				sellw.setVisible(false); 
+				 sellc.setVisible(false);
+					sellc.setDisable(true);
+					sellr.setVisible(false);
+					sellr.setDisable(true);
+					buys.setDisable(true);	
+			   for(int i = 0;i<circles.size();i++){
+	    			Circle ss = circles.get(i);
+	    			ss.setOpacity(0);
+	    			
+	    		}
+			   list1.setVisible(true);
+				a1.removeEventHandler(MouseEvent.MOUSE_CLICKED, handler);
+			   
+			   
+			   
+			   
+			   String mm = Integer.toString(m1);
+			   String yy = Integer.toString(y1);
+			   String jj = Integer.toString(j1);
+			   String kk = Integer.toString(k1);
+			   String mml = Integer.toString(m2);
+			   String yyl = Integer.toString(y2);
+			   String jjl = Integer.toString(j2);
+			   String kkl = Integer.toString(k2);
+			   for(int z =0;z<listp.size();z++){
+			   if(listp.contains(1)){
+			   
+		     
+		      if (m1 ==1){
+		      listo.setText("Stone/Sand Quarry 1 lvl");
+		      } 
+		      else{
+		    	listo.setText("Stone/Sand Quarries 1 lvl");  
+		      }
+		      listo.setVisible(true);
+		      mm1.setText(mm);
+			  mm1.setVisible(true);
+			   //listl.setVisible(true);
+		   
+			   }
+		   if(listp.contains(2)){
+			   if (y1 ==1){
+				      listl.setText("Stone/Sand Quarry 2 lvl");
+				      } 
+				      else{
+				    	listl.setText("Stone/Sand Quarries 2 lvl");  
+				      }
+				      listl.setVisible(true);
+				      yy1.setText(yy);
+					  yy1.setVisible(true); 
+		   }
+		   if(listp.contains(3)){
+			   if (j1 ==1){
+				      listh.setText("Stone/Sand Quarry 3 lvl");
+				      } 
+				      else{
+				    	listh.setText("Stone/Sand Quarries 3 lvl");  
+				      }
+				      listh.setVisible(true);
+				      jj1.setText(jj);
+					 jj1.setVisible(true); 
+		   }
+		   if(listp.contains(4)){
+			   if (k1 ==1){
+				      listk.setText("Stone/Sand Quarry 4 lvl");
+				      } 
+				      else{
+				    	listk.setText("Stone/Sand Quarries 4  lvl");  
+				      }
+				      listk.setVisible(true);
+				      kk1.setText(kk);
+					  kk1.setVisible(true); 
+		   }
+		   if(listp.contains(5)){
+			   if (m2 ==1){
+				      listo1.setText("Brick/Concrete Factory 1 lvl");
+				       
+				     
+			          
+			   } 
+				      else{
+				    	listo1.setText("Brick/Concrete Factory 1 lvl");  
+				    	 
+				      }
+			      
+			   listo1.setVisible(true);
+				      mm2.setText(mml);
+					  mm2.setVisible(true); 
+		   }  
+		   if(listp.contains(6)){
+			   if (y2 ==1){
+				      listl1.setText("Brick/Concrete Factory 2 lvl");
+				      
+				     
+			          
+			   } 
+				      else{
+				    	listl1.setText("Brick/Concrete Factory 2 lvl");  
+				    	
+				      }
+			      
+			   listl1.setVisible(true);
+				      yy2.setText(yyl);
+					  yy2.setVisible(true); 
+		   }  
+		   if(listp.contains(7)){
+			   if (j2 ==1){
+				      listh1.setText("Brick/Concrete Factory 3 lvl");
+				     
+				     
+			          
+			   } 
+				      else{
+				    	listh1.setText("Brick/Concrete Factory 3 lvl");  
+				    	 
+				      }
+			      
+			   listh1.setVisible(true);
+				      jj2.setText(jjl);
+					  jj2.setVisible(true); 
+		   } 
+		   if(listp.contains(8)){
+			   if (k2 ==1){
+				      listk1.setText("Brick/Concrete Factory 4 lvl");
+				      
+				     
+			          
+			   } 
+				      else{
+				    	listk1.setText("Brick/Concrete Factory 4 lvl");  
+				    	 
+				      }
+			      
+			   listk1.setVisible(true);
+				      kk2.setText(kkl);
+					  kk2.setVisible(true); 
+		   } 
+			  
+		   if(listp.contains(9)){
+			   city1.setText("Oak City");
+			   city1.setVisible(true);
+		     
+			   } 
+			   
+			  
+		   if(listp.contains(10)){
+			   city2.setText("Pine-Lake-City");
+			   city2.setVisible(true);
+
+		     
+			   } 
+			  
+		   if(listp.contains(11)){
+			   city3.setText("New - Birch");
+			   city3.setVisible(true);
+
+		     
+			   } 
+			  
+		   if(listp.contains(12)){
+			   city4.setText("San-Acacia");
+			   city4.setVisible(true);
+
+		     
+			   } 
+			  
+		   if(listp.contains(13)){
+			   city5.setText("Las - Fir");
+			   city5.setVisible(true);
+
+		     
+			   } 
+			   
+			   
+			   }   
+			   
+			   
+			   lexit.setDisable(false);
+			   lexit.setOnAction(l1->{
+					for(int i = 0;i<circles.size();i++){
+		    			Circle ss = circles.get(i);
+		    			ss.setOpacity(1);
+		    			
+		    		} 
+					a1.addEventHandler(MouseEvent.MOUSE_CLICKED, handler);
+					list1.setVisible(false); 
+					listo.setVisible(false);
+					listo1.setVisible(false);
+					listl.setVisible(false);
+					listl1.setVisible(false);
+					listh.setVisible(false);
+					listh1.setVisible(false);
+			        listk.setVisible(false);
+				    listk1.setVisible(false);
+				    mm1.setVisible(false);
+	                mm2.setVisible(false);
+					yy1.setVisible(false);
+					yy2.setVisible(false);
+					jj1.setVisible(false);
+					jj2.setVisible(false);
+					kk1.setVisible(false);
+					kk2.setVisible(false);
+					city1.setVisible(false);	
+					city2.setVisible(false);
+					city3.setVisible(false);
+					city4.setVisible(false);
+					city5.setVisible(false);
+					
+				});
+		   
+		   });
+		   a1.getChildren().add(list);
 		
 		
 		Button menu = new Button();
@@ -657,19 +950,19 @@ public class Client extends Application {
 		menu.setPrefWidth(75);//
 		menu.setOpacity(0);
 		menu.setOnAction(bb->{
-				
+			a1.removeEventHandler(MouseEvent.MOUSE_CLICKED, handler);	
 			
 			if(menuIsPressed==1){
 				menui.setVisible(false);
 				System.out.println("f");
 				resume.setDisable(true);
-				resume.setDisable(true);
+				gexit.setDisable(true);
 				for(int i = 0;i<circles.size();i++){
  	    			Circle ss = circles.get(i);
  	    			ss.setOpacity(1);
  	    			
  	    		}
-				s.show();//запуск стейджа
+				s.show();//caione noaea?a
 				
 				
 			}
@@ -684,8 +977,8 @@ public class Client extends Application {
  	    			ss.setOpacity(0);
  	    			
  	    		}
-				s.setScene(sc1);//установка сцены
-				s.show();//запуск стейджа
+				s.setScene(sc1);//onoaiiaea noaiu
+				s.show();//caione noaea?a
 				
 				
 			}
@@ -802,8 +1095,8 @@ public class Client extends Application {
 						tapcounter++;
 						
 						socketWriter.write(pmass+"/1");
-						socketWriter.write("\n"); //добавляем "новою строку", дабы readLine() сервера сработал
-				        socketWriter.flush(); // отправляем
+						socketWriter.write("\n"); //aiaaaeyai "iiai? no?ieo", aaau readLine() na?aa?a n?aaioae
+				        socketWriter.flush(); // ioi?aaeyai
 				        pmass="";		
 				} catch (IOException e) {
 						// TODO Auto-generated catch block
@@ -818,8 +1111,8 @@ public class Client extends Application {
 					try{
 					System.out.print("test");
 						socketWriter.write(pmass+"/2");
-					socketWriter.write("\n"); //добавляем "новою строку", дабы readLine() сервера сработал
-			        socketWriter.flush(); // отправляем
+					socketWriter.write("\n"); //aiaaaeyai "iiai? no?ieo", aaau readLine() na?aa?a n?aaioae
+			        socketWriter.flush(); // ioi?aaeyai
 					pmass="";
 					}
 			        catch (IOException e) {
@@ -830,8 +1123,8 @@ public class Client extends Application {
 				
 			nextTurn.setDisable(true);
 			eb.setImage(bb2);
-			s.setScene(sc1);//установка сцены
-    		s.show();//запуск стейджа
+			s.setScene(sc1);//onoaiiaea noaiu
+    		s.show();//caione noaea?a
 			});
 			a1.getChildren().add(nextTurn);
 			
@@ -874,7 +1167,7 @@ public class Client extends Application {
 		
 		
 		
-		owner = new Label("city"); //имя обьекта
+		owner = new Label("city"); //eiy iauaeoa
 		owner.setFont(new Font("Showcard Gothic",30));
 		owner.setTextFill(Color.WHITE);
 		
@@ -884,7 +1177,7 @@ public class Client extends Application {
 		owner.setVisible(false);
 		a1.getChildren().add(owner);
 		
-		qcost = new Label("city"); //имя обьекта
+		qcost = new Label("city"); //eiy iauaeoa
 		qcost.setFont(new Font("Showcard Gothic",30));
 		qcost.setTextFill(Color.WHITE);
 		qcost.setLayoutX(320);
@@ -893,7 +1186,7 @@ public class Client extends Application {
 		a1.getChildren().add(qcost);
 		
 		
-		salary = new Label("city"); //имя обьекта
+		salary = new Label("city"); //eiy iauaeoa
 		salary.setFont(new Font("Showcard Gothic",30));
 		salary.setTextFill(Color.WHITE);
 		salary.setLayoutX(360);
@@ -903,7 +1196,7 @@ public class Client extends Application {
 		
 		
 		
-		profit = new Label("city"); //имя обьекта
+		profit = new Label("city"); //eiy iauaeoa
 		profit.setTextFill(Color.WHITE);
 		profit.setFont(new Font("Showcard Gothic",25));
 		profit.setLayoutX(620);
@@ -912,7 +1205,7 @@ public class Client extends Application {
 		a1.getChildren().add(profit);
 		
 		
-		acost = new Label("city"); //имя обьекта
+		acost = new Label("city"); //eiy iauaeoa
 		acost.setFont(new Font("Showcard Gothic",25));
 		acost.setTextFill(Color.WHITE);
 		acost.setLayoutX(1100);
@@ -920,7 +1213,7 @@ public class Client extends Application {
 		acost.setVisible(false);
 		a1.getChildren().add(acost);
 		
-		aprofit = new Label("city"); //имя обьекта
+		aprofit = new Label("city"); //eiy iauaeoa
 		aprofit.setFont(new Font("Showcard Gothic",25));
 		aprofit.setTextFill(Color.WHITE);
 		aprofit.setLayoutX(1100);
@@ -931,7 +1224,7 @@ public class Client extends Application {
 		
 		
 
-		bcost = new Label("city"); //имя обьекта
+		bcost = new Label("city"); //eiy iauaeoa
 		bcost.setFont(new Font("Showcard Gothic",25));
 		bcost.setTextFill(Color.WHITE);
 		bcost.setLayoutX(1100);
@@ -939,7 +1232,7 @@ public class Client extends Application {
 		bcost.setVisible(false);
 		a1.getChildren().add(bcost);
 
-		bchance = new Label("city"); //имя обьекта
+		bchance = new Label("city"); //eiy iauaeoa
 		bchance.setFont(new Font("Showcard Gothic",25));
 		bchance.setTextFill(Color.WHITE);
 		bchance.setLayoutX(1100);
@@ -947,7 +1240,7 @@ public class Client extends Application {
 		bchance.setVisible(false);
 		a1.getChildren().add(bchance);
 
-		bprofit = new Label("city"); //имя обьекта
+		bprofit = new Label("city"); //eiy iauaeoa
 		bprofit.setFont(new Font("Showcard Gothic",25));
 		bprofit.setTextFill(Color.WHITE);
 		bprofit.setLayoutX(1100);
@@ -956,7 +1249,7 @@ public class Client extends Application {
 		a1.getChildren().add(bprofit);
 		
 		
-		tcost = new Label("city"); //имя обьекта
+		tcost = new Label("city"); //eiy iauaeoa
 		tcost.setFont(new Font("Showcard Gothic",30));
 		tcost.setTextFill(Color.WHITE);
 		tcost.setLayoutX(400);
@@ -964,7 +1257,7 @@ public class Client extends Application {
 		tcost.setVisible(false);
 		a1.getChildren().add(tcost);
 		
-		nres = new Label("city"); //имя обьекта
+		nres = new Label("city"); //eiy iauaeoa
 		nres.setFont(new Font("Showcard Gothic",30));
 		nres.setTextFill(Color.WHITE);
 		nres.setLayoutX(460);
@@ -972,9 +1265,156 @@ public class Client extends Application {
 		nres.setVisible(false);
 		a1.getChildren().add(nres);
 		
+		listo = new Label("");
+		listo.setFont(new Font("Showcard Gothic", 25));	
+		listo.setLayoutX(200);
+		listo.setLayoutY(110);
+		listo.setVisible(false);
+		a1.getChildren().add(listo);
+		
+		listo1 = new Label("");
+		listo1.setFont(new Font("Showcard Gothic", 25));	
+		listo1.setLayoutX(200);
+		listo1.setLayoutY(360);
+		listo1.setVisible(false);
+		a1.getChildren().add(listo1);
 		
 		
-		cpt = new Label("city"); //имя обьекта
+		listl = new Label( "");
+		listl.setFont(new Font("Showcard Gothic", 25));	
+		listl.setLayoutX(200);
+		listl.setLayoutY(160);
+		listl.setVisible(false);
+		a1.getChildren().add(listl);
+		
+		listl1 = new Label( "");
+		listl1.setFont(new Font("Showcard Gothic", 25));	
+		listl1.setLayoutX(200);
+		listl1.setLayoutY(420);
+		listl1.setVisible(false);
+		a1.getChildren().add(listl1);
+		
+		listh = new Label( "");
+		listh.setFont(new Font("Showcard Gothic", 25));	
+		listh.setLayoutX(200);
+		listh.setLayoutY(210);
+		listh.setVisible(false);
+		a1.getChildren().add(listh); 
+		
+		listh1 = new Label( "");
+		listh1.setFont(new Font("Showcard Gothic", 25));	
+		listh1.setLayoutX(200);
+		listh1.setLayoutY(480);
+		listh1.setVisible(false);
+		a1.getChildren().add(listh1);
+		
+		listk = new Label( "");
+		listk.setFont(new Font("Showcard Gothic", 25));	
+		listk.setLayoutX(200);
+		listk.setLayoutY(260);
+		listk.setVisible(false);
+		a1.getChildren().add(listk);
+		
+		listk1 = new Label( "");
+		listk1.setFont(new Font("Showcard Gothic", 25));	
+		listk1.setLayoutX(200);
+		listk1.setLayoutY(540);
+		listk1.setVisible(false);
+		a1.getChildren().add(listk1);
+		
+		mm1 = new Label("");
+		mm1.setFont(new Font("Showcard Gothic", 25));	
+		mm1.setLayoutX(180);
+		mm1.setLayoutY(110);
+		mm1.setVisible(false);
+		a1.getChildren().add(mm1);
+		
+		mm2 = new Label("");
+		mm2.setFont(new Font("Showcard Gothic", 25));	
+		mm2.setLayoutX(180);
+		mm2.setLayoutY(360);
+		mm2.setVisible(false);
+		a1.getChildren().add(mm2);
+		
+		yy1 = new Label("");
+		yy1.setFont(new Font("Showcard Gothic", 25));	
+		yy1.setLayoutX(180);
+		yy1.setLayoutY(160);
+		yy1.setVisible(false);
+		a1.getChildren().add(yy1);
+		
+		yy2 = new Label("");
+		yy2.setFont(new Font("Showcard Gothic", 25));	
+		yy2.setLayoutX(180);
+		yy2.setLayoutY(420);
+		yy2.setVisible(false);
+		a1.getChildren().add(yy2);
+		
+		jj1 = new Label("");
+		jj1.setFont(new Font("Showcard Gothic", 25));	
+		jj1.setLayoutX(180);
+		jj1.setLayoutY(210);
+		jj1.setVisible(false);
+		a1.getChildren().add(jj1);
+		
+		jj2 = new Label("");
+		jj2.setFont(new Font("Showcard Gothic", 25));	
+		jj2.setLayoutX(180);
+		jj2.setLayoutY(480);
+		jj2.setVisible(false);
+		a1.getChildren().add(jj2);
+		
+		kk1 = new Label("");
+		kk1.setFont(new Font("Showcard Gothic", 25));	
+		kk1.setLayoutX(180);
+		kk1.setLayoutY(260);
+		kk1.setVisible(false);
+		a1.getChildren().add(kk1);
+		
+		kk2 = new Label("");
+		kk2.setFont(new Font("Showcard Gothic", 25));	
+		kk2.setLayoutX(180);
+		kk2.setLayoutY(540);
+		kk2.setVisible(false);
+		a1.getChildren().add(kk2);
+		
+		city1 = new Label("");
+		city1.setFont(new Font("Showcard Gothic", 25));	
+		city1.setLayoutX(640);
+		city1.setLayoutY(170);
+		city1.setVisible(false);
+		a1.getChildren().add(city1);
+		
+		
+		city2 = new Label("");
+		city2.setFont(new Font("Showcard Gothic", 25));	
+		city2.setLayoutX(640);
+		city2.setLayoutY(240);
+		city2.setVisible(false);
+		a1.getChildren().add(city2);
+		
+		city3= new Label("");
+		city3.setFont(new Font("Showcard Gothic", 25));	
+		city3.setLayoutX(640);
+		city3.setLayoutY(310);
+		city3.setVisible(false);
+		a1.getChildren().add(city3);
+		
+		city4 = new Label("");
+		city4.setFont(new Font("Showcard Gothic", 25));	
+		city4.setLayoutX(640);
+		city4.setLayoutY(380);
+		city4.setVisible(false);
+		a1.getChildren().add(city4);
+		
+		city5 = new Label("");
+		city5.setFont(new Font("Showcard Gothic", 25));	
+		city5.setLayoutX(640);
+		city5.setLayoutY(450);
+		city5.setVisible(false);
+		a1.getChildren().add(city5);
+		
+		cpt = new Label("city"); //eiy iauaeoa
 		cpt.setFont(new Font("Showcard Gothic",30));
 		cpt.setTextFill(Color.WHITE);
 		cpt.setLayoutX(440);
@@ -982,7 +1422,7 @@ public class Client extends Application {
 		cpt.setVisible(false);
 		a1.getChildren().add(cpt);
 		
-		mpt = new Label("city"); //имя обьекта
+		mpt = new Label("city"); //eiy iauaeoa
 		mpt.setFont(new Font("Showcard Gothic",30));
 		mpt.setTextFill(Color.WHITE);
 		mpt.setLayoutX(440);
@@ -991,21 +1431,33 @@ public class Client extends Application {
 		a1.getChildren().add(mpt);
 		
 		
-		name = new Label("city"); //имя обьекта
+		mapt = new Label("city"); //eiy iauaeoa
+		mapt.setFont(new Font("Showcard Gothic",30));
+		mapt.setTextFill(Color.WHITE);
+		mapt.setLayoutX(440);
+		mapt.setLayoutY(363);//170
+		mapt.setVisible(false);
+		a1.getChildren().add(mapt);
+		
+		
+		
+		
+		
+		name = new Label("city"); //eiy iauaeoa
 		name.setFont(new Font("Showcard Gothic",40));
 		name.setTextFill(Color.WHITE);
 		name.setLayoutX(170);
 		name.setLayoutY(680);//170
 		name.setVisible(false);
 		a1.getChildren().add(name);
-		level = new Label("lvl"); //имя обьекта
+		level = new Label("lvl"); //eiy iauaeoa
 		level.setFont(new Font("Showcard Gothic",27));
 		level.setTextFill(Color.WHITE);
 		level.setLayoutX(170);
 		level.setLayoutY(735);//170
 		level.setVisible(false);
 		a1.getChildren().add(level);
-		description = new Label("hi"); //имя обьекта
+		description = new Label("hi"); //eiy iauaeoa
 		description.setFont(new Font("Showcard Gothic",20));
 		description.setTextFill(Color.WHITE);
 		description.setWrapText(true);
@@ -1025,10 +1477,17 @@ public class Client extends Application {
 		 participate.setPrefWidth(513);//
 		 participate.setDisable(true);
 		 participate.setOpacity(0);
-		
-		 
 		 a1.getChildren().add(participate);
 		
+		 participate1 = new Button();
+		 participate1.setLayoutX(790);//50
+		 participate1.setLayoutY(315);//125
+		 participate1.setPrefHeight(101);//
+		 participate1.setPrefWidth(513);//
+		 participate1.setDisable(true);
+		 participate1.setOpacity(0);
+		 a1.getChildren().add(participate1);
+		 
 		exc = new ImageView("img/excav.png");//50+10
 		exc.setLayoutX(50);//
 		exc.setLayoutY(555);//
@@ -1211,8 +1670,8 @@ public class Client extends Application {
 			    		description.setVisible(true);	
 		    		}
 		    		
-		    		s.setScene(sc1);//установка сцены
-		    		s.show();//запуск стейджа
+		    		s.setScene(sc1);//onoaiiaea noaiu
+		    		s.show();//caione noaea?a
 		    		
 		    		
 		    	}
@@ -1260,15 +1719,44 @@ public class Client extends Application {
 			    		salary.setText("2400$/turn");
 			    		qcost.setText("64000$");
 		    		}
-		    		
-		    		
-		    		
-		    		
-		    		s.setScene(sc1);//установка сцены
-		    		s.show();//запуск стейджа
-		    		
-		    		
 		    	}
+		    		///
+		    		if(map[(int) x][(int) y]==21||map[(int) x][(int) y]==22||map[(int) x][(int) y]==23||map[(int) x][(int) y]==24||map[(int) x][(int) y]==25||map[(int) x][(int) y]==26||map[(int) x][(int) y]==27||map[(int) x][(int) y]==28||map[(int) x][(int) y]==29||map[(int) x][(int) y]==30){
+		    		if(map[(int) x][(int) y]==21||map[(int) x][(int) y]==22||map[(int) x][(int) y]==23||map[(int) x][(int) y]==24){
+		    			level.setText("1 lvl");
+			    		level.setVisible(true);	
+			    		cpt.setText("9/turn");
+			    		salary.setText("450$/turn");
+			    		qcost.setText("12000$");
+		    		}
+		    		if(map[(int) x][(int) y]==25||map[(int) x][(int) y]==26||map[(int) x][(int) y]==27){
+		    			level.setText("2 lvl");
+			    		level.setVisible(true);	
+			    		cpt.setText("18/turn");
+			    		salary.setText("900$/turn");
+			    		qcost.setText("24000$");
+		    		}
+		    		if(map[(int) x][(int) y]==28||map[(int) x][(int) y]==29){
+		    			level.setText("3 lvl");
+			    		level.setVisible(true);	
+			    		cpt.setText("32/turn");
+			    		salary.setText("1800$/turn");
+			    		qcost.setText("48000$");
+		    		}
+		    		if(map[(int) x][(int) y]==30){
+		    			level.setText("4 lvl");
+			    		level.setVisible(true);	
+			    		cpt.setText("64/turn");
+			    		salary.setText("3600$/turn");
+			    		qcost.setText("96000$");
+		    		}
+		    		
+		    		
+		    		s.setScene(sc1);//onoaiiaea noaiu
+		    		s.show();//caione noaea?a
+		    		
+		    		
+		    	}//
 		    	if(map[(int) x][(int) y]==21||map[(int) x][(int) y]==22||map[(int) x][(int) y]==23||map[(int) x][(int) y]==24||map[(int) x][(int) y]==25||map[(int) x][(int) y]==26||map[(int) x][(int) y]==27||map[(int) x][(int) y]==28||map[(int) x][(int) y]==29||map[(int) x][(int) y]==30){
 		    		oType.setImage(r);
 		    		oType.setVisible(true);
@@ -1311,8 +1799,8 @@ public class Client extends Application {
 		    		
 		    		
 		    		
-		    		s.setScene(sc1);//установка сцены
-		    		s.show();//запуск стейджа
+		    		s.setScene(sc1);//onoaiiaea noaiu
+		    		s.show();//caione noaea?a
 		    		
 		    		
 		    	}
@@ -1334,6 +1822,11 @@ public class Client extends Application {
 	    			if(status[(int) x][(int) y]==0||status[(int) x][(int) y]==4){
 	    			participate.setDisable(false);
 	    			
+	    			}
+	    			if(status[(int) x][(int) y]==1){
+		    			participate.setDisable(false);
+		    			py.setImage(build);
+		    		py.setVisible(true);	
 	    			}
 	    			if(status[(int) x][(int) y]==3){
 	    			if(bstatus[(int) x][(int) y]==0){
@@ -1412,10 +1905,12 @@ public class Client extends Application {
 	    						prog[(int) x][(int) y] += Double.parseDouble(f)/100;
 	    						tprogress.setProgress(prog[(int) x][(int) y]);
 	    						bstatus[(int) x][(int) y] = 1;
+	    					   
 	    					}
 	    					else{
 	    						py.setImage(lose);	
 	    						bstatus[(int) x][(int) y] = 2;
+	    					
 	    					}
 	    					
 		    				B_COUNT=1;
@@ -1425,6 +1920,7 @@ public class Client extends Application {
 	    				for(int i=0;i<12;i++){
 	 	           			for(int j = 0;j<6;j++){
 	 	           			if(status[i][j]==1){
+	 	           				
 	 	           				Circle c = new Circle();
 	 	           				c.setRadius(5);
 	 	           				c.setCenterX(155+67*i);
@@ -1466,8 +1962,8 @@ public class Client extends Application {
 	    	    			s.setOpacity(0);
 	    	    			
 	    	    		}
-	    				s.setScene(sc1);//установка сцены
-		    			s.show();//запуск стейджа
+	    				s.setScene(sc1);//onoaiiaea noaiu
+		    			s.show();//caione noaea?a
 		    			
 	    				}
 	    				
@@ -1524,43 +2020,63 @@ public class Client extends Application {
 	    				
 	    			
 	    				}});
+	    		if(status[(int) x][(int) y]==1){
+	    			participate.setDisable(true);	
+	    			participate.setOpacity(0);
+		    		participate1.setDisable(false);
 	    			
-	    			if(status[(int) x][(int) y]==1){
-	    		System.out.println("cityprofit");
-	    				py.setImage(build);
-	    		py.setVisible(true);
-	    		participate.setDisable(false);	
-	    		res = 6;////delete
-	    		participate.setOpacity(1);	
-	    		participate.setOnAction(z->{
-	    		
-	    					if(Integer.parseInt(nres.getText())>=res&&T_COUNT==0&&built[(int) x][(int) y]==0){
+	    		}
+	    		if(participate1.isDisable()==false){
+	    			
+	    			participate1.setOnAction(zz->{	
+	    			py.setImage(build);
+	    		    py.setVisible(true);
+	    		  if(Integer.parseInt(nres.getText())<=res&&T_COUNT==0&&built[(int) x][(int) y]==0){
 	    						System.out.println("buildprofit");
 	    						String d = profit.getText().replace("$", "");
     				String dd[] = d.split("/");
     				TURN_P+=Integer.parseInt(dd[0]);
 	    			res = res - Integer.parseInt(nres.getText());
 	    			resl.setText(""+res);
+	    			
 	    			built[(int) x][(int) y]=1;
-	    			
-	    			s.setScene(sc1);//установка сцены
-	    			s.show();//запуск стейджа
+	    			String name1 = name.getText();
+	    			if(name1== oak){
+	    				listp.add(9);
+	    			}
+	    			else if(name1==pls){
+	    				listp.add(10);
+	    			}///
+	    			else if(name1==newbirch){
+	    				listp.add(11);
+	    			}
+	    			else if(name1==sana){
+	    				listp.add(12);
+	    			}
+	    			else if(name1==lasf){
+	    				listp.add(13);
+	    			}
+	    			s.setScene(sc1);//onoaiiaea noaiu
+	    			s.show();//caione noaea?a
 	    			T_COUNT=1;
-	    		}	
+	    		   
 	    			
 	    			
 	    			
-	    			
-	    		});
+	    					
+	    			  
 	    		
 	    		
-	    		s.setScene(sc1);//установка сцены
-    			s.show();//запуск стейджа
+	    		
 	    			}
 	    			
-	    			
-	    			
-	    			if(status[(int) x][(int) y]==3){
+	    		});	
+	    			  
+	    		}		
+	    		s.setScene(sc1);//onoaiiaea noaiu
+    			s.show();//caione noaea?a	
+    			
+	    		if(status[(int) x][(int) y]==3){
     				py.setVisible(true);
     				adv.setDisable(false);
     				adv.setOnAction(k->{
@@ -1578,8 +2094,8 @@ public class Client extends Application {
 	    					tprogress.setProgress(prog[(int) x][(int) y]);
 	    				}
 	    					
-	    				s.setScene(sc1);//установка сцены
-		    			s.show();//запуск стейджа
+	    				s.setScene(sc1);//onoaiiaea noaiu
+		    			s.show();//caione noaea?a
 	    				}});
     				bribery.setOnAction(m->{
     					if(B_COUNT==0&&money>Integer.parseInt(bcost.getText().replace("$",""))&&bstatus[(int) x][(int) y] ==0){
@@ -1601,8 +2117,8 @@ public class Client extends Application {
     					}
     					
 	    				B_COUNT=1;
-	    				s.setScene(sc1);//установка сцены
-		    			s.show();//запуск стейджа
+	    				s.setScene(sc1);//onoaiiaea noaiu
+		    			s.show();//caione noaea?a
     					}	
     				});//
     				
@@ -1639,8 +2155,8 @@ public class Client extends Application {
 	    			}
 	    			if(map[(int) x][(int) y]==2){
 	    				tcost.setText("500");
-	    				profit.setText("4500$/turn");
-	    				nres.setText("66");
+	    				profit.setText("4550$/turn");
+	    				nres.setText("66");//60
 	    				cran1.setVisible(true);
 	    				conc.setVisible(true);
 	    				acost.setText("1000$/turn");
@@ -1652,7 +2168,7 @@ public class Client extends Application {
 	    			if(map[(int) x][(int) y]==3){
 	    				tcost.setText("132");
 	    				profit.setText("7650$/turn");
-	    				nres.setText("120");
+	    				nres.setText("120");//120
 	    				cran1.setVisible(true);
 	    				conc.setVisible(true);
 	    				exc.setVisible(true);
@@ -1665,7 +2181,7 @@ public class Client extends Application {
 	    			if(map[(int) x][(int) y]==4){
 	    				tcost.setText("138");
 	    				profit.setText("7600$/turn");
-	    				nres.setText("1000");
+	    				nres.setText("120");//1000
 	    				cran2.setVisible(true);
 		    			exc.setVisible(true);
 		    			helic.setVisible(true);
@@ -1678,7 +2194,7 @@ public class Client extends Application {
 	    			if(map[(int) x][(int) y]==5){
 	    				tcost.setText("250");
 	    				profit.setText("14000$/turn");
-	    				nres.setText("276");
+	    				nres.setText("276");//276
 	    				cran2.setVisible(true);
 		    			exc.setVisible(true);
 		    			helic.setVisible(true);
@@ -1736,8 +2252,8 @@ public class Client extends Application {
 		    			}
 	    			});//
 	    			
-	    			s.setScene(sc1);//установка сцены
-	    			s.show();//запуск стейджа
+	    			s.setScene(sc1);//onoaiiaea noaiu
+	    			s.show();//caione noaea?a
 	    			
 	    		}	
 	    		if(oType.getImage()==o){
@@ -1750,7 +2266,8 @@ public class Client extends Application {
 	    			System.out.println(ll);
 	    			if(ll==1&&money>8000&&status[(int) x][(int) y]==0){
 	    				if(nextTurn.isDisable()==false){
-	    					
+	    					listp.add(1);
+	    					m1++;
 	    					LOSS = LOSS+300;
 	    				QPROFIT = QPROFIT+6;
 	    				System.out.println("bp");
@@ -1763,14 +2280,14 @@ public class Client extends Application {
 		    				owner.setVisible(true);
 		    			
 		    				owner.setText("Not Defined");
-		    				s.setScene(sc1);//установка сцены
-			    			s.show();//запуск стейджа
+		    				s.setScene(sc1);//onoaiiaea noaiu
+			    			s.show();//caione noaea?a
 		    			}
 		    			if(status[(int) x][(int) y]==1){
 		    				owner.setVisible(true);
 		    				owner.setText("Yours");
-		    				s.setScene(sc1);//установка сцены
-			    			s.show();//запуск стейджа
+		    				s.setScene(sc1);//onoaiiaea noaiu
+			    			s.show();//caione noaea?a
 		    			}
 		    			if(status[(int) x][(int) y]==2){
 		    				owner.setText("Your Enemy");
@@ -1811,14 +2328,15 @@ public class Client extends Application {
 		 	    			ss.setOpacity(0);
 		 	    			
 		 	    		}
-		    			s.setScene(sc1);//установка сцены
-		    			s.show();//запуск стейджа
+		    			s.setScene(sc1);//onoaiiaea noaiu
+		    			s.show();//caione noaea?a
 	    			}}
 	    				
 	    				
 	    			if(ll==2&&money>16000&&status[(int) x][(int) y]==0){
 	    				if(nextTurn.isDisable()==false){
-	    					
+	    					listp.add(2);
+	    					y1++;
 	    					System.out.println("bp");
 	    				LOSS = LOSS+300;
 	    				QPROFIT = QPROFIT+12;
@@ -1831,14 +2349,14 @@ public class Client extends Application {
 		    				owner.setVisible(true);
 		    			
 		    				owner.setText("Not Defined");
-		    				s.setScene(sc1);//установка сцены
-			    			s.show();//запуск стейджа
+		    				s.setScene(sc1);//onoaiiaea noaiu
+			    			s.show();//caione noaea?a
 		    			}
 		    			if(status[(int) x][(int) y]==1){
 		    				owner.setVisible(true);
 		    				owner.setText("Yours");
-		    				s.setScene(sc1);//установка сцены
-			    			s.show();//запуск стейджа
+		    				s.setScene(sc1);//onoaiiaea noaiu
+			    			s.show();//caione noaea?a
 		    			}
 		    			if(status[(int) x][(int) y]==2){
 		    				owner.setText("Your Enemy");
@@ -1879,14 +2397,15 @@ public class Client extends Application {
 		 	    			ss.setOpacity(0);
 		 	    			
 		 	    		}
-		    			s.setScene(sc1);//установка сцены
-		    			s.show();//запуск стейджа
+		    			s.setScene(sc1);//onoaiiaea noaiu
+		    			s.show();//caione noaea?a
 	    				}
 	    				
 	    			}	
 	    			if(ll==3&&money>32000&&status[(int) x][(int) y]==0){
 	    				if(nextTurn.isDisable()==false){
-	    					
+	    					listp.add(3);
+	    					j1++;
 	    					System.out.println("bp");
 	    				LOSS = LOSS+300;
 	    				QPROFIT = QPROFIT+24;
@@ -1899,14 +2418,14 @@ public class Client extends Application {
 		    				owner.setVisible(true);
 		    			
 		    				owner.setText("Not Defined");
-		    				s.setScene(sc1);//установка сцены
-			    			s.show();//запуск стейджа
+		    				s.setScene(sc1);//onoaiiaea noaiu
+			    			s.show();//caione noaea?a
 		    			}
 		    			if(status[(int) x][(int) y]==1){
 		    				owner.setVisible(true);
 		    				owner.setText("Yours");
-		    				s.setScene(sc1);//установка сцены
-			    			s.show();//запуск стейджа
+		    				s.setScene(sc1);//onoaiiaea noaiu
+			    			s.show();//caione noaea?a
 		    			}
 		    			if(status[(int) x][(int) y]==2){
 		    				owner.setText("Your Enemy");
@@ -1947,13 +2466,14 @@ public class Client extends Application {
 		 	    			ss.setOpacity(0);
 		 	    			
 		 	    		}
-		    			s.setScene(sc1);//установка сцены
-		    			s.show();//запуск стейджа
+		    			s.setScene(sc1);//onoaiiaea noaiu
+		    			s.show();//caione noaea?a
 	    				}
 	    				
 	    			}	
 	    			if(ll==4&&money>64000&&status[(int) x][(int) y]==0){
-	    				
+	    				  listp.add(4);
+	    				  k1++;
 	    					System.out.println("bp");
 	    				LOSS = LOSS+300;
 	    				QPROFIT = QPROFIT+48;
@@ -1966,14 +2486,14 @@ public class Client extends Application {
 		    				owner.setVisible(true);
 		    			
 		    				owner.setText("Not Defined");
-		    				s.setScene(sc1);//установка сцены
-			    			s.show();//запуск стейджа
+		    				s.setScene(sc1);//onoaiiaea noaiu
+			    			s.show();//caione noaea?a
 		    			}
 		    			if(status[(int) x][(int) y]==1){
 		    				owner.setVisible(true);
 		    				owner.setText("Yours");
-		    				s.setScene(sc1);//установка сцены
-			    			s.show();//запуск стейджа
+		    				s.setScene(sc1);//onoaiiaea noaiu
+			    			s.show();//caione noaea?a
 		    			}
 		    			if(status[(int) x][(int) y]==2){
 		    				owner.setText("Your Enemy");
@@ -2015,8 +2535,8 @@ public class Client extends Application {
 	    			    			ss.setOpacity(0);
 	    			    			
 	    			    		}
-	    					s.setScene(sc1);//установка сцены
-		    			s.show();//запуск стейджа
+	    					s.setScene(sc1);//onoaiiaea noaiu
+		    			s.show();//caione noaea?a
 	    			}
 	    			}	
 	    			MOVE_C=1;
@@ -2030,14 +2550,14 @@ public class Client extends Application {
 	    				owner.setVisible(true);
 	    			
 	    				owner.setText("Not Defined");
-	    				s.setScene(sc1);//установка сцены
-		    			s.show();//запуск стейджа
+	    				s.setScene(sc1);//onoaiiaea noaiu
+		    			s.show();//caione noaea?a
 	    			}
 	    			if(status[(int) x][(int) y]==1){
 	    				owner.setVisible(true);
 	    				owner.setText("Yours");
-	    				s.setScene(sc1);//установка сцены
-		    			s.show();//запуск стейджа
+	    				s.setScene(sc1);//onoaiiaea noaiu
+		    			s.show();//caione noaea?a
 	    			}
 	    			
 	    			if(status[(int) x][(int) y]==2){
@@ -2079,8 +2599,8 @@ public class Client extends Application {
 			    		}
 	    			});
 	    			
-	    			s.setScene(sc1);//установка сцены
-	    			s.show();//запуск стейджа
+	    			s.setScene(sc1);//onoaiiaea noaiu
+	    			s.show();//caione noaea?a
 	    			
 	    		}	
 	    		if(oType.getImage()==r){
@@ -2095,7 +2615,8 @@ public class Client extends Application {
 		    			System.out.println(ll);
 		    			if(ll==1&&money>12000&&status[(int) x][(int) y]==0){
 		    				if(nextTurn.isDisable()==false){
-		    					
+		    					listp.add(5);
+		    					m2++;
 		    					LOSS = LOSS+450;
 		    				
 		    				System.out.println("bp");
@@ -2108,14 +2629,14 @@ public class Client extends Application {
 			    				owner.setVisible(true);
 			    			
 			    				owner.setText("Not Defined");
-			    				s.setScene(sc1);//установка сцены
-				    			s.show();//запуск стейджа
+			    				s.setScene(sc1);//onoaiiaea noaiu
+				    			s.show();//caione noaea?a
 			    			}
 			    			if(status[(int) x][(int) y]==1){
 			    				owner.setVisible(true);
 			    				owner.setText("Yours");
-			    				s.setScene(sc1);//установка сцены
-				    			s.show();//запуск стейджа
+			    				s.setScene(sc1);//onoaiiaea noaiu
+				    			s.show();//caione noaea?a
 			    			}
 			    			if(status[(int) x][(int) y]==2){
 			    				owner.setText("Your Enemy");
@@ -2156,14 +2677,16 @@ public class Client extends Application {
 			 	    			ss.setOpacity(0);
 			 	    			
 			 	    		}
-			    			s.setScene(sc1);//установка сцены
-			    			s.show();//запуск стейджа
+			    			s.setScene(sc1);//onoaiiaea noaiu
+			    			s.show();//caione noaea?a
 		    			}}
 		    				
 		    				
 		    			if(ll==2&&money>24000&&status[(int) x][(int) y]==0){
 		    				if(nextTurn.isDisable()==false){
-		    				System.out.println("bp");
+		    				listp.add(6);
+		    				y2++;
+		    					System.out.println("bp");
 		    				
 		    				LOSS = LOSS+900;
 		    				
@@ -2176,14 +2699,14 @@ public class Client extends Application {
 			    				owner.setVisible(true);
 			    			
 			    				owner.setText("Not Defined");
-			    				s.setScene(sc1);//установка сцены
-				    			s.show();//запуск стейджа
+			    				s.setScene(sc1);//onoaiiaea noaiu
+				    			s.show();//caione noaea?a
 			    			}
 			    			if(status[(int) x][(int) y]==1){
 			    				owner.setVisible(true);
 			    				owner.setText("Yours");
-			    				s.setScene(sc1);//установка сцены
-				    			s.show();//запуск стейджа
+			    				s.setScene(sc1);//onoaiiaea noaiu
+				    			s.show();//caione noaea?a
 			    			}
 			    			if(status[(int) x][(int) y]==2){
 			    				owner.setText("Your Enemy");
@@ -2224,14 +2747,15 @@ public class Client extends Application {
 			 	    			ss.setOpacity(0);
 			 	    			
 			 	    		}
-			    			s.setScene(sc1);//установка сцены
-			    			s.show();//запуск стейджа
+			    			s.setScene(sc1);//onoaiiaea noaiu
+			    			s.show();//caione noaea?a
 		    				
 		    				
 		    			}}	
 		    			if(ll==3&&money>48000&&status[(int) x][(int) y]==0){
 		    				if(nextTurn.isDisable()==false){
-		    					
+		    					listp.add(7);
+		    					j2++;
 		    					System.out.println("bp");
 		    				LOSS = LOSS+1800;
 		    				
@@ -2244,14 +2768,14 @@ public class Client extends Application {
 			    				owner.setVisible(true);
 			    			
 			    				owner.setText("Not Defined");
-			    				s.setScene(sc1);//установка сцены
-				    			s.show();//запуск стейджа
+			    				s.setScene(sc1);//onoaiiaea noaiu
+				    			s.show();//caione noaea?a
 			    			}
 			    			if(status[(int) x][(int) y]==1){
 			    				owner.setVisible(true);
 			    				owner.setText("Yours");
-			    				s.setScene(sc1);//установка сцены
-				    			s.show();//запуск стейджа
+			    				s.setScene(sc1);//onoaiiaea noaiu
+				    			s.show();//caione noaea?a
 			    			}
 			    			if(status[(int) x][(int) y]==2){
 			    				owner.setText("Your Enemy");
@@ -2292,14 +2816,15 @@ public class Client extends Application {
 			 	    			ss.setOpacity(0);
 			 	    			
 			 	    		}
-			    			s.setScene(sc1);//установка сцены
-			    			s.show();//запуск стейджа
+			    			s.setScene(sc1);//onoaiiaea noaiu
+			    			s.show();//caione noaea?a
 		    				}
 		    				
 		    			}	
 		    			if(ll==4&&money>96000&&status[(int) x][(int) y]==0){
 		    				if(nextTurn.isDisable()==false){
-		    					
+		    					listp.add(8);
+		    					k2++;
 		    					System.out.println("bp");
 		    				LOSS = LOSS+3600;
 		    				
@@ -2312,14 +2837,14 @@ public class Client extends Application {
 			    				owner.setVisible(true);
 			    			
 			    				owner.setText("Not Defined");
-			    				s.setScene(sc1);//установка сцены
-				    			s.show();//запуск стейджа
+			    				s.setScene(sc1);//onoaiiaea noaiu
+				    			s.show();//caione noaea?a
 			    			}
 			    			if(status[(int) x][(int) y]==1){
 			    				owner.setVisible(true);
 			    				owner.setText("Yours");
-			    				s.setScene(sc1);//установка сцены
-				    			s.show();//запуск стейджа
+			    				s.setScene(sc1);//onoaiiaea noaiu
+				    			s.show();//caione noaea?a
 			    			}
 			    			if(status[(int) x][(int) y]==2){
 			    				owner.setText("Your Enemy");
@@ -2360,8 +2885,8 @@ public class Client extends Application {
 			 	    			ss.setOpacity(0);
 			 	    			
 			 	    		}
-			    			s.setScene(sc1);//установка сцены
-			    			s.show();//запуск стейджа
+			    			s.setScene(sc1);//onoaiiaea noaiu
+			    			s.show();//caione noaea?a
 		    			
 		    				}
 		    			}	
@@ -2391,7 +2916,18 @@ public class Client extends Application {
 	    			er.setDisable(false);
 	    			owner.setVisible(true);
 	    			
-	    			 
+	    			///
+	    			
+	    			cpt.setVisible(true);
+	    			qcost.setVisible(true);
+	    			salary.setVisible(true);
+	    			
+	    			buyq.setDisable(false);
+	    			
+	    			oType.setLayoutY(155);
+	    			name.setLayoutY(170);
+	    			level.setLayoutY(250);
+	    			description.setLayoutY(170);
 	    			
 	    			use.setOnAction(clicked->{
 	    				
@@ -2460,6 +2996,20 @@ public class Client extends Application {
 		    			level.setLayoutY(735);
 		    			description.setLayoutY(680);
 		    			owner.setVisible(false);
+		    			lpanel.setVisible(true);
+		    			buyq.setDisable(true);
+		    			
+		    			oType.setLayoutY(665);
+		    			name.setLayoutY(680);
+		    			owner.setVisible(false);
+		    			level.setLayoutY(735);
+		    			cpt.setVisible(false);	
+		    			description.setLayoutY(680);
+		    			salary.setVisible(false);
+		    			qcost.setVisible(false);
+		    			
+		    			
+		    			
 		    			for(int i = 0;i<circles.size();i++){
 			    			Circle s = circles.get(i);
 			    			s.setOpacity(1);
@@ -2468,8 +3018,8 @@ public class Client extends Application {
 		    			
 	    			});
 	    			
-	    			s.setScene(sc1);//установка сцены
-	    			s.show();//запуск стейджа
+	    			s.setScene(sc1);//onoaiiaea noaiu
+	    			s.show();//caione noaea?a
 	    			
 	    			
 	    		}});
@@ -2485,10 +3035,10 @@ public class Client extends Application {
 		
 		
 		
-	s.setFullScreen(true);//фуллскрин
-	s.setScene(sc1);//установка сцены
-	s.show();//запуск стейджа
-	mSecondThread = new AffableThread();	//Создание потока
+	s.setFullScreen(true);//ooeene?ei
+	s.setScene(sc1);//onoaiiaea noaiu
+	s.show();//caione noaea?a
+	mSecondThread = new AffableThread();	//Nicaaiea iioiea
 	mSecondThread.start();	
 	try {
 		
@@ -2500,13 +3050,13 @@ public class Client extends Application {
 			}
 		}
 		socketWriter.write(pmass);
-		socketWriter.write("\n"); //добавляем "новою строку", дабы readLine() сервера сработал
-        socketWriter.flush(); // отправляем
+		socketWriter.write("\n"); //aiaaaeyai "iiai? no?ieo", aaau readLine() na?aa?a n?aaioae
+        socketWriter.flush(); // ioi?aaeyai
 	pmass = "";	
 	} catch (IOException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
-	} //пишем строку пользователя
+	} //ieoai no?ieo iieuciaaoaey
 	System.out.println(lin2e);
 	
     }
@@ -2531,13 +3081,13 @@ public void updateUi(Stage s){
 	 private class Receiver implements Runnable{
 	   
 		 /**
-	         * run() вызовется после запуска нити из конструктора клиента чата.
+	         * run() auciaaony iinea caionea ieoe ec eiino?oeoi?a eeeaioa ?aoa.
 	         */
 	        public void run() {
-	            while (!so.isClosed()) { //сходу проверяем коннект.
+	            while (!so.isClosed()) { //noiao i?iaa?yai eiiiaeo.
 	                
 	                try {
-	                    line = socketReader.readLine(); // пробуем прочесть
+	                    line = socketReader.readLine(); // i?iaoai i?i?anou
 	               
 	                    
 	                    if(tid==0){
@@ -2810,18 +3360,18 @@ public void updateUi(Stage s){
 	 	               }
 	 	               System.out.println("message"+line+"/"+TURN_ID);
 	                    
-	                } catch (IOException e) { // +если в момент чтения ошибка, то...
-	                    // проверим, что это не банальное штатное закрытие сокета сервером
+	                } catch (IOException e) { // +anee a iiiaio ?oaiey ioeaea, oi...
+	                    // i?iaa?ei, ?oi yoi ia aaiaeuiia ooaoiia cae?uoea nieaoa na?aa?ii
 	                    if ("Socket closed".equals(e.getMessage())) {
 	                        break;
 	                    }
-	                    System.out.println("Connection lost"); // а сюда мы попадем в случае ошибок сети.
-	                    close(); // ну и закрываем сокет (кстати, вызвается метод класса ChatClient, есть доступ)
+	                    System.out.println("Connection lost"); // a n?aa iu iiiaaai a neo?aa ioeaie naoe.
+	                    close(); // io e cae?uaaai nieao (enoaoe, aucaaaony iaoia eeanna ChatClient, anou ainooi)
 	                }
-	                if (line == null) {  // строка будет null если сервер прикрыл коннект по своей инициативе, сеть работает
+	                if (line == null) {  // no?iea aoaao null anee na?aa? i?ee?ue eiiiaeo ii naiae eieoeaoeaa, naou ?aaioaao
 	                    System.out.println("Server has closed connection");
-	                    close(); // ...закрываемся
-	                } else { // иначе печатаем то, что прислал сервер.
+	                    close(); // ...cae?uaaainy
+	                } else { // eia?a ia?aoaai oi, ?oi i?eneae na?aa?.
 	                  //  System.out.println("Server:" + line);
 	                	//System.out.println(line);
 	                	lin2e += line;
@@ -2836,7 +3386,7 @@ public void updateUi(Stage s){
 	 class AffableThread extends Thread
 	 {
 	 	@Override
-	 	public void run()	//Этот метод будет выполнен в побочном потоке
+	 	public void run()	//Yoio iaoia aoaao auiieiai a iiai?iii iioiea
 	 	{
 	 			 		
 	 		

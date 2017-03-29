@@ -130,7 +130,7 @@ public class Server {
                 } else if ("shutdown".equals(line)) { // если поступила команда "погасить сервер", то...
                     serverThread.interrupt(); // сначала возводим флаг у северной нити о необходимости прерваться.
                     try {
-                        new Socket("localhost", 23454); // создаем фейк-коннект (чтобы выйти из .accept())
+                        new Socket("localhost", port); // создаем фейк-коннект (чтобы выйти из .accept())
                     } catch (IOException ignored) { //ошибки неинтересны
                     } finally {
                         shutdownServer(); // а затем глушим сервер вызовом его метода shutdownServer().
