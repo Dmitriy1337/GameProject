@@ -45,7 +45,7 @@ public class Client extends Application {
 	static BufferedWriter bw; 
 	ArrayList<Circle> circles = new ArrayList<Circle>();
 	ArrayList<Integer> listp  = new ArrayList<Integer>();
-	
+	int index;
 	
 	int m1 = 0;
 	int y1 =0;
@@ -64,6 +64,7 @@ public class Client extends Application {
 	int LOSS=0;
 	int RES=0;
 	int eres=0;
+	ImageView winl;
 	Image biuld;
 	ImageView eb;
 	Label moneyl;
@@ -75,6 +76,8 @@ public class Client extends Application {
 	Button bribery;
 	Button list;
 	ImageView py;
+	Image wini;
+	Image losei;
 	Image bb2;
 	Image bb;
 	ImageView lpanel;
@@ -82,6 +85,7 @@ public class Client extends Application {
 	Image lose;
 	Image standart;
 	Label orel;
+
 	String m = "";
 	int tid = 0;
 	Label cpt;
@@ -156,6 +160,7 @@ public class Client extends Application {
 	Label city4;
 	Label city5;
 	TextArea er;
+	ImageView wl;
 	ImageView cityinfo;
 	ImageView cran1;
 	ImageView exc;
@@ -167,6 +172,7 @@ public class Client extends Application {
 	ImageView cran2;
 	Button infomenu;
 	int A_COUNT=0;
+	String ip;
 	Socket so;  // yoi aoaao nieao aey na?aa?a
     BufferedReader socketReader; // aooa?ece?iaaiiue ?eoaoaeu n na?aa?a
     BufferedWriter socketWriter; // aooa?ece?iaaiiue ienaoaeu ia na?aa?
@@ -187,10 +193,20 @@ public class Client extends Application {
     }
    
     
+    public void setIP(String ip){
+    	this.ip = ip;
+    	
+    }
+    
+    static Stage classStage = new Stage();
+    
     public void start(Stage s) {
-		 
+    	
+    	Client.classStage = s;
+
+    	System.out.println(index);
     	try {
-			so = new Socket("localhost",23454);
+			so = new Socket(ip,23454);
 			 socketReader = new BufferedReader(new InputStreamReader(so.getInputStream(), "UTF-8"));
 		        socketWriter = new BufferedWriter(new OutputStreamWriter(so.getOutputStream(), "UTF-8"));
 		        // nicaaai ?eoaoaey n eiiniee (io iieuciaaoaey)
@@ -1620,8 +1636,20 @@ public class Client extends Application {
 		 lose = new Image("img/lose.png");
 		 standart = new Image("img/py.png");
 		 build = new Image("img/build.png");
+		
+		 wini = new Image("img/victory.png");
+		 losei = new Image("img/defeat.png");
+			this.winl = new ImageView(wini);	 
+		 winl.setLayoutX(200);
+		 winl.setLayoutY(200);
+		winl.setFitHeight(400);
+		winl.setFitWidth(700);
+		winl.setOpacity(0);
+		a1.getChildren().add(winl);
+		 
 		 handler = new EventHandler<InputEvent>() {
-		   
+
+	
 			 
 			 
 			 
@@ -3060,6 +3088,7 @@ public class Client extends Application {
 	System.out.println(lin2e);
 	
     }
+
 	
   
    
@@ -3072,7 +3101,7 @@ public class Client extends Application {
 		
 		  
 		
-		launch(args);
+	launch(args);
 		
 	}
 public void updateUi(Stage s){
@@ -3174,7 +3203,11 @@ public void updateUi(Stage s){
 	 		 	            	else if(status[j][k]==3){
 	 		 	            		status[j][k]=4; 	 
 	 		 	            	 }
-	 		 	            	
+	 		 	            	else if(status[j][k]==10){
+	 		 	            		a1.removeEventHandler(MouseEvent.MOUSE_CLICKED, handler);
+	 	 	            			winl.setImage(wini);
+	 	 	            		winl.setOpacity(1); 
+	 		 	            	 }
 	 		 	            	
 	 		 	            	 
 	 		 	            	 
@@ -3200,7 +3233,10 @@ public void updateUi(Stage s){
 	 	            	  System.out.println("+"+tt);
 	 	            	
 	 	            	  if(tt.equals("2")){
-	 	            		 for(int i = 0;i<12;i++){
+	 	            		
+	 	            		  
+	 	            		
+	 	            		  for(int i = 0;i<12;i++){
 	 	 	        			for(int j = 0;j<6;j++){
 	 	 	        				
 	 	 	        				usr[i][j]=0;
@@ -3209,7 +3245,24 @@ public void updateUi(Stage s){
 	 	 	        		}	
 	 	            		  System.out.println("+++++++");
 	 	            		  Platform.runLater(() -> {
-	 	            			 System.out.println("+++++++");
+	 	            			
+	 	            			 if(money<=0){
+	 	 	            			a1.removeEventHandler(MouseEvent.MOUSE_CLICKED, handler);
+	 	 	            			winl.setImage(losei);
+	 	 	            		winl.setOpacity(1);
+	 	 	            		try {
+									status[0][0]=10;
+	 	 	            			socketWriter.write(pmass+"/2");
+									socketWriter.write("\n"); //aiaaaeyai "iiai? no?ieo", aaau readLine() na?aa?a n?aaioae
+		 	 				        socketWriter.flush(); // ioi?aaeyai
+	 	 	            		} catch (IOException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+	 	 						
+	 	 	            		}  
+	 	 	            		  
+	 	            			  System.out.println("+++++++");
 	 	            			  nextTurn.setDisable(false);    
 	 	            			 eb.setImage(bb);	
 	 	            		 ore = ore+QPROFIT;
@@ -3290,7 +3343,22 @@ public void updateUi(Stage s){
 	 	            		
 	 	            		
 	 	            		  Platform.runLater(() -> {
-	 	            			 System.out.println("+++++++");
+	 	            			 if(money<=0){
+		 	 	            			a1.removeEventHandler(MouseEvent.MOUSE_CLICKED, handler);
+		 	 	            			winl.setImage(losei);
+		 	 	            		winl.setOpacity(1);
+		 	 	            		try {
+										status[0][0]=10;
+		 	 	            			socketWriter.write(pmass+"/2");
+										socketWriter.write("\n"); //aiaaaeyai "iiai? no?ieo", aaau readLine() na?aa?a n?aaioae
+			 	 				        socketWriter.flush(); // ioi?aaeyai
+		 	 	            		} catch (IOException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+		 	 						
+		 	 	            		}  
+	 	            			  System.out.println("+++++++");
 	 	            			  nextTurn.setDisable(false);    
 	 	            			 eb.setImage(bb);
 	 	            			 ore = ore+QPROFIT;

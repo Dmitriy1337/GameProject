@@ -13,6 +13,7 @@ public class Server {
     private ServerSocket ss; // сам сервер-сокет
     private Thread serverThread; // главная нить обработки сервер-сокета
     private int port; // порт сервер сокета.
+   private static String ip;
     //очередь, где храняться все SocketProcessorы для рассылки
     BlockingQueue<SocketProcessor> q = new LinkedBlockingQueue<SocketProcessor>();
  
@@ -21,9 +22,10 @@ public class Server {
      * @param port Порт, где будем слушать входящие сообщения.
      * @throws IOException Если не удасться создать сервер-сокет, вылетит по эксепшену, объект Сервера не будет создан
      */
-    public Server(int port) throws IOException {
+    public Server(int port,String ip) throws IOException {
         ss = new ServerSocket(port); // создаем сервер-сокет
         this.port = port; // сохраняем порт.
+    this.ip = ip;
     }
  
     /**
@@ -86,7 +88,7 @@ public class Server {
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
-        new Server(23454).run(); // если сервер не создался, программа
+        new Server(23454,ip).run(); // если сервер не создался, программа
         // вылетит по эксепшену, и метод run() не запуститься
     }
  
@@ -130,7 +132,7 @@ public class Server {
                 } else if ("shutdown".equals(line)) { // если поступила команда "погасить сервер", то...
                     serverThread.interrupt(); // сначала возводим флаг у северной нити о необходимости прерваться.
                     try {
-                        new Socket("localhost", port); // создаем фейк-коннект (чтобы выйти из .accept())
+                        new Socket(ip, port); // создаем фейк-коннект (чтобы выйти из .accept())
                     } catch (IOException ignored) { //ошибки неинтересны
                     } finally {
                         shutdownServer(); // а затем глушим сервер вызовом его метода shutdownServer().
